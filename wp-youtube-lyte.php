@@ -1,10 +1,10 @@
 <?php
 /*
-Plugin Name: WP Lyte Youtube
-Plugin URI: http://futtta.be/wp-lyte-youtube
+Plugin Name: WP YouTube Lyte
+Plugin URI: http://blog.futtta.be/2010/05/18/lite-youtube-embeds-in-wordpress/
 Description: WordPress Lite YouTube Embeds (look ma, even faster!) in posts (comments and RSS feeds to come).
 Author: Frank (futtta) Goossens
-Version: 0.1
+Version: 0.1.1
 Author URI: http://blog.futtta.be/
 */
 

@@ -3,7 +3,7 @@ Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds
 Requires at least: 2.9
 Tested up to: 2.9.2
-Stable tag: 0.1
+Stable tag: 0.1.1
 
 WP-Youtube-lyte inserts "Lite YouTube Embeds" that look like normal embedded YouTube but without Flash unless clicked to reduce download size&time
 
