@@ -4,7 +4,7 @@ Plugin Name: WP YouTube Lyte
 Plugin URI: http://blog.futtta.be/2010/05/18/lite-youtube-embeds-in-wordpress/
 Description: WordPress Lite YouTube Embeds (look ma, even faster!) in posts (comments and RSS feeds to come).
 Author: Frank (futtta) Goossens
-Version: 0.1.1
+Version: 0.1.2
 Author URI: http://blog.futtta.be/
 */
 
@@ -20,7 +20,7 @@ function lyte_parse($the_content, $side=0) {
 	    
 		preg_match_all("/httpv:\/\/([a-zA-Z0-9\-\_]+\.|)youtube\.com\/watch(\?v\=|\/v\/)([a-zA-Z0-9\-\_]{11})([^<\s]*)/", $the_content, $matches, PREG_SET_ORDER); 
 		foreach($matches as $match) { 	
-			$the_content = preg_replace("/httpv:\/\/([a-zA-Z0-9\-\_]+\.|)youtube\.com\/watch(\?v\=|\/v\/)([a-zA-Z0-9\-\_]{11})([^\s<]*)/", "<div class=\"lyte\" id=\"".$match[3]."\" style=\"width:480;height:385;\"><noscript><a href=\"http://youtu.be/".$match[3]."\">Watch on YouTube</a></noscript><script>var bU='".$lyteUrl."';(function(){d=document;if(!document.getElementById('lytescr')){lyte=d.createElement('script');lyte.async=true;lyte.id='lytescr';lyte.src='".$lyteUrl."lyte-min.js';d.getElementsByTagName('head')[0].appendChild(lyte)}})();</script></div>", $the_content, 1);	
+			$the_content = preg_replace("/httpv:\/\/([a-zA-Z0-9\-\_]+\.|)youtube\.com\/watch(\?v\=|\/v\/)([a-zA-Z0-9\-\_]{11})([^\s<]*)/", "<div class=\"lyte\" id=\"".$match[3]."\" style=\"width:480;height:385;\"><noscript><a href=\"http://youtu.be/".$match[3]."\">Watch on YouTube</a></noscript><script>var bU='".$lyteUrl."';(function(){d=document;if(!document.getElementById('lytescr')){lyte=d.createElement('script');lyte.async=true;lyte.id='lytescr';lyte.src='".$lyteUrl."lyte-min.js';d.getElementsByTagName('head')[0].appendChild(lyte)}})();</script></div><div id=\"lytelinks\">Or watch this video <a href=\"http://youtu.be/".$match[3]."\">on YouTube</a> or on <a href=\"http://icant.co.uk/easy-youtube/?http://www.youtube.com/watch?v=".$match[3]."\">Accessible Youtube</a>.</div>", $the_content, 1);
 		}
 		
 	}

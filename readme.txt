@@ -3,7 +3,7 @@ Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds
 Requires at least: 2.9
 Tested up to: 2.9.2
-Stable tag: 0.1.1
+Stable tag: 0.1.2
 
 WP-Youtube-lyte inserts "Lite YouTube Embeds" that look like normal embedded YouTube but without Flash unless clicked to reduce download size&time
 
@@ -11,9 +11,9 @@ WP-Youtube-lyte inserts "Lite YouTube Embeds" that look like normal embedded You
 
 WP-Youtube-lyte inserts "Lite YouTube Embeds" in your blog. These look and feel like normal embedded YouTube, but don't use Flash unless clicked on, thereby reducing download size & time substantially. Just add a YouTube-link with "httpv" instead of "http" and WP-YouTube-lyte will replace that link with the correct (flash-less) code.
 
-WP-Youtube-lyte implements LYTE (http://blog.futtta.be/2010/04/23/high-performance-youtube-embeds/ "High Performance YouTube embeds"), which is a small javascript-solution that creates a "dummy" YouTube-player that includes the clip thumbnail and title. When clicked on, the dummy player is replaced by the Flash player.
+WP-Youtube-lyte implements [LYTE](http://blog.futtta.be/2010/04/23/high-performance-youtube-embeds/ "High Performance YouTube embeds"), which is a small javascript-solution that creates a "dummy" YouTube-player that includes the clip thumbnail and title. When clicked on, the dummy player is replaced by the Flash player.
 
-WP-Youtube-lyte can be used together with Smart Youtube. In that case WP-Youtube-lyte will take care of the default embeds (httpv), while Smart Youtube continues to parse other types (httpvh, httpvhd, httpvp, ...).
+WP-Youtube-lyte can be used together with [Smart Youtube](http://wordpress.org/extend/plugins/smart-youtube/ "Great plugin"). In that case WP-Youtube-lyte will take care of the default embeds (httpv), while Smart Youtube continues to parse other types (httpvh, httpvhd, httpvp, ...).
 
 == Installation ==
 
@@ -33,3 +33,12 @@ Just ask, I'll see what I can do.
 
 = 0.1 =
 * Initial version
+
+= 0.1.1 =
+* Changed meta-info in readme and php-file
+
+= 0.1.2 =
+Accessibility enhancements (hat tip: Ricky Buchanan):
+* added alt attributes to images
+* moved youtube link from noscript to div
+* added link to easy youtube
