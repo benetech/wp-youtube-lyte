@@ -2,9 +2,9 @@
 /*
 Plugin Name: WP YouTube Lyte
 Plugin URI: http://blog.futtta.be/2010/05/18/lite-youtube-embeds-in-wordpress/
-Description: WordPress Lite YouTube Embeds (look ma, even faster!) in posts (comments and RSS feeds to come).
+Description: WordPress Lite YouTube Embeds (look ma, even faster!) in posts.
 Author: Frank (futtta) Goossens
-Version: 0.1.2
+Version: 0.1.4
 Author URI: http://blog.futtta.be/
 */
 
