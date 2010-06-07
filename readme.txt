@@ -3,7 +3,7 @@ Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds
 Requires at least: 2.9
 Tested up to: 2.9.2
-Stable tag: 0.1.4
+Stable tag: 0.2.0
 
 "Lite YouTube Embeds" look like normal YouTube embeds but don't use Flash unless clicked, thus reducing download size & page rendering time.
 
@@ -33,7 +33,7 @@ Just ask, I'll see what I can do.
 
 == Changelog ==
 
-= 0.2.1 =
+= 0.2.0 =
 * Added a simple admin-page to allow administrators to choose if links to YouTube and Easy YouTube are added or not
 * Added some bottom-margin to the lytelinks div
 
