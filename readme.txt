@@ -3,7 +3,7 @@ Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds
 Requires at least: 2.9
 Tested up to: 2.9.2
-Stable tag: 0.2
+Stable tag: 0.2.0
 
 "Lite YouTube Embeds" look like normal YouTube embeds but don't use Flash unless clicked, thus reducing download size & page rendering time.
 
