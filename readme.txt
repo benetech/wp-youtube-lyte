@@ -3,9 +3,9 @@ Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds
 Requires at least: 2.9
 Tested up to: 2.9.2
-Stable tag: 0.1.4
+Stable tag: 0.2
 
-WP-Youtube-lyte inserts "Lite YouTube Embeds" that look like normal embedded YouTube but without Flash unless clicked to reduce download size&time
+"Lite YouTube Embeds" look like normal YouTube embeds but don't use Flash unless clicked, thus reducing download size & page rendering time.
 
 == Description ==
 
@@ -24,23 +24,24 @@ Installation is very straightforward:
 3. Place a link to a YouTube clip like this; httpv://www.youtube.com/watch?v=_SQkWbRublY
 
 == Frequently Asked Questions ==
-= What features can we expect to be added? =
-A simple admin-page where you'll be able to specify:
-
-* the default size of your video (now: 480X385)
-* wheither or not to show link to the YouTube and/or Accessible YouTube video (both are shown now)
+= What features might be added at a later stage? =
+* Extra options in the admin-page, e.g. the default size of your video (now: 480X385)
+* Having the video title link to the YouTube-page
 
 = But I would like yet other features to be added! =
-
 Just ask, I'll see what I can do.
 
 == Changelog ==
 
-= 0.1 =
-* Initial version
+= 0.2.0 =
+* Added a simple admin-page to allow administrators to choose if links to YouTube and Easy YouTube are added or not
+* Added some bottom-margin to the lytelinks div
 
-= 0.1.1 =
-* Changed meta-info in readme and php-file
+= 0.1.4 =
+* forgot to update version in the php-file for 0.1.3, causing the update not being fully propageted
+
+= 0.1.3 =
+* small bugfix release (opacity of the play-button in Chrome/Safari)
 
 = 0.1.2 =
 Accessibility enhancements (hat tip: Ricky Buchanan):
@@ -49,8 +50,8 @@ Accessibility enhancements (hat tip: Ricky Buchanan):
 * moved youtube link from noscript to div
 * added link to easy youtube
 
-= 0.1.3 =
-* small bugfix release (opacity of the play-button in Chrome/Safari)
+= 0.1.1 =
+* Changed meta-info in readme and php-file
 
-= 0.1.4 =
-* forgot to update version in the php-file for 0.1.3, causing the update not being fully propageted
+= 0.1 =
+* Initial version
