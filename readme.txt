@@ -3,17 +3,19 @@ Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds
 Requires at least: 2.9
 Tested up to: 2.9.2
-Stable tag: 0.2.1
+Stable tag: 0.2.2
 
 "Lite YouTube Embeds" look like normal YouTube embeds but don't use Flash unless clicked, thus reducing download size & page rendering time.
 
 == Description ==
 
-WP-Youtube-lyte inserts "Lite YouTube Embeds" in your blog. These look and feel like normal embedded YouTube, but don't use Flash unless clicked on, thereby reducing download size & time substantially. Just add a YouTube-link with "httpv" instead of "http" and WP-YouTube-lyte will replace that link with the correct (flash-less) code.
+WP-Youtube-lyte inserts "Lite YouTube Embeds" in your blog. These look and feel like normal embedded YouTube, but don't use Flash unless clicked on, thereby _reducing download size & rendering time substantially_. Just add a YouTube-link with "httpv" instead of "http" and WP-YouTube-lyte will replace that link with the correct (flash-less) code.
 
-WP-Youtube-lyte implements [LYTE](http://blog.futtta.be/2010/04/23/high-performance-youtube-embeds/ "High Performance YouTube embeds"), which is a small javascript-library that creates a "dummy" YouTube-player which includes the clip thumbnail and title. When clicked on, the dummy player is replaced by the Flash player.
+WP-Youtube-lyte implements [LYTE](http://blog.futtta.be/2010/04/23/high-performance-youtube-embeds/ "High Performance YouTube embeds"), which is a small javascript-library that creates a "dummy" YouTube-player which includes the clip thumbnail and title. When clicked on, the dummy player is seamlessly replaced by the Flash player.
 
 WP-Youtube-lyte can be used together with [Smart Youtube](http://wordpress.org/extend/plugins/smart-youtube/ "Great plugin"). In that case WP-Youtube-lyte will take care of the default embeds (httpv), while Smart Youtube continues to parse other types (httpvh, httpvhd, httpvp, ...).
+
+__Coming in v0.3__: support for _html5 youtube embeds_ using [newTube.js](http://futtta.be/newTube/)
 
 == Installation ==
 
@@ -27,11 +29,15 @@ Installation is very straightforward:
 = What features might be added at a later stage? =
 * Extra options in the admin-page, e.g. the default size of your video (now: 480X385)
 * Having the video title link to the YouTube-page
+* Inclusion of [newTube.js](http://futtta.be/newTube/) for html5 YouTube video embedding
 
 = But I would like yet other features to be added! =
 Just ask, I'll see what I can do.
 
 == Changelog ==
+= 0.2.2 =
+* improved the html of the form in options.php for better accessibility
+
 = 0.2.1 =
 * 0.2.0 was broken (options.php M.I.A.), 0.2.1 fixes this
 
