@@ -1,9 +1,9 @@
 === Plugin Name ===
 Contributors: futtta
-Tags: youtube, video, lyte, lite youtube embeds, html5 video
+Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5
 Requires at least: 2.9
 Tested up to: 2.9.2
-Stable tag: 0.3.0
+Stable tag: 0.3.2
 
 "Lite YouTube Embeds" look like normal YouTube embeds but don't use Flash unless clicked, thus reducing download size & page rendering time.
 
@@ -50,6 +50,9 @@ It's an re-implementation of [an earlier experiment called 'newTube.js'](http://
 Just ask, I'll see what I can do.
 
 == Changelog ==
+= 0.3.2 =
+* fixed misc. readme.txt markdown issues (again)
+
 = 0.3.0 =
 * added very experimental support for embedded html5 video (see [faq](http://wordpress.org/extend/plugins/wp-youtube-lyte/faq/))
 
