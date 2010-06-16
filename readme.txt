@@ -27,12 +27,13 @@ Installation is very straightforward:
 
 == Frequently Asked Questions ==
 = What does "experimental html5 video support" mean? =
-
 There are some preconditions to see the HTML5 video, if these aren't met you'll see a Flash-version:
+
 * It only works in browsers that support the h264 (Safari, Chrome, IE9) or webm (currently development versions of Chrome, Opera and Firefox) video codecs
 * You have to be enrolled in the [YouTube html5 beta](http://www.youtube.com/html5)
 
 There are also some possible issues:
+
 * It might break if YouTube [implements x-frame-options](http://blog.futtta.be/tag/x-frame-options/) for their video-pages
 * Positioning of the player might be a few pixels off in some browsers
 * Some buttons in the embedded player (e.g. view full screen) won't function properly
