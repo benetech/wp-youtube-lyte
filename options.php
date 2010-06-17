@@ -47,4 +47,3 @@ function lyte_settings_page() {
 </form>
 </div>
 <?php } ?>
-
