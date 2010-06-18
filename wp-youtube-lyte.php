@@ -2,9 +2,9 @@
 /*
 Plugin Name: WP YouTube Lyte
 Plugin URI: http://blog.futtta.be/tag/lyte
-Description: WordPress Lite YouTube Embeds (look ma, even faster!) in posts.
+Description: WordPress Lite YouTube Embeds (with optional HTML5 video) in posts.
 Author: Frank (futtta) Goossens
-Version: 0.3.3
+Version: 0.3.4
 Author URI: http://blog.futtta.be/
 */
 
@@ -36,10 +36,10 @@ function lyte_parse($the_content) {
 			$lytetemplate="<div class=\"lyte\" id=\"".$match[3]."\" style=\"".$lyteSettings[1]."\"><noscript><a href=\"http://youtu.be/".$match[3]."\">Watch on YouTube</a> or on <a href=\"http://icant.co.uk/easy-youtube/?http://www.youtube.com/watch?v=".$match[3]."\">Easy Youtube</a></noscript><script>var bU='".$lyteSettings[0]."';(function(){d=document;if(!document.getElementById('lytescr')){lyte=d.createElement('script');lyte.async=true;lyte.id='lytescr';lyte.src='".$lyteSettings[0].$lyteSettings[2]."';d.getElementsByTagName('head')[0].appendChild(lyte)}})();</script></div>";
 			switch ($lyteSettings[3]) {
         			case "1":
-                			$lytetemplate .= "<div id=\"lytelinks\" style=\"margin:0px 0px 10px 0px;\">Or watch this video <a href=\"http://youtu.be/".$match[3]."\">on YouTube</a>.</div>";
+                			$lytetemplate .= "<div id=\"lytelinks\" style=\"margin:0px 0px 10px 0px;\">Watch this video <a href=\"http://youtu.be/".$match[3]."\">on YouTube</a>.</div>";
                 			break;
         			case "2":
-                			$lytetemplate .= "<div id=\"lytelinks\" style=\"margin:0px 0px 10px 0px;\">Or watch this video <a href=\"http://youtu.be/".$match[3]."\">on YouTube</a> or on <a href=\"http://icant.co.uk/easy-youtube/?http://www.youtube.com/watch?v=".$match[3]."\">Easy Youtube</a>.</div>";
+                			$lytetemplate .= "<div id=\"lytelinks\" style=\"margin:0px 0px 10px 0px;\">Watch this video <a href=\"http://youtu.be/".$match[3]."\">on YouTube</a> or on <a href=\"http://icant.co.uk/easy-youtube/?http://www.youtube.com/watch?v=".$match[3]."\">Easy Youtube</a>.</div>";
         		}
 			$the_content = preg_replace("/httpv:\/\/([a-zA-Z0-9\-\_]+\.|)youtube\.com\/watch(\?v\=|\/v\/)([a-zA-Z0-9\-\_]{11})([^\s<]*)/", $lytetemplate, $the_content, 1);
 		}

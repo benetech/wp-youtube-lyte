@@ -2,8 +2,8 @@
 Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5
 Requires at least: 2.9
-Tested up to: 2.9.2
-Stable tag: 0.3.3
+Tested up to: 3.0
+Stable tag: 0.3.4
 
 "Lite YouTube Embeds" look like normal YouTube embeds but don't use Flash, thus reducing download size & page rendering time.
 
@@ -52,6 +52,11 @@ It's an re-implementation of [an earlier experiment called 'newTube.js'](http://
 Just ask, I'll see what I can do.
 
 == Changelog ==
+= 0.3.4 =
+* tested succesfully on the brand new wordpress 3.0 release
+* css changes to avoid themes messing up lyte-player layout
+* minor text tweaks
+
 = 0.3.3 =
 * the "sorry for the linebreak-release"; a linebreak at the very end of options.php caused some configurations [to produce "headers already sent" errors on all wp-admin pages](http://codex.wordpress.org/FAQ_Troubleshooting#How_do_I_solve_the_Headers_already_sent_warning_problem.3F).
 * some further readme.txt optimizations
