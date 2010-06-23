@@ -3,10 +3,10 @@ add_action('admin_menu', 'lyte_create_menu');
 
 function lyte_create_menu() {
 	add_options_page( 'WP YouTube Lyte settings', 'WP YouTube Lyte', 'manage_options', __FILE__, 'lyte_settings_page');
-	add_action( 'admin_init', 'register_mysettings' );
+	add_action( 'admin_init', 'register_lyte_settings' );
 }
 
-function register_mysettings() {
+function register_lyte_settings() {
 	register_setting( 'lyte-settings-group', 'newTube' );
 	register_setting( 'lyte-settings-group', 'show_links' );
 }
@@ -24,7 +24,7 @@ function lyte_settings_page() {
 			<td>
 				<fieldset><legend class="screen-reader-text"><span>Use Flash or HTML5 video?</span></legend>
 					<label title="normal YouTube embeds with Flash video"><input type="radio" name="newTube" value="0" <?php if (get_option('newTube')!=="1") echo "checked" ?> /> Normal YouTube embeds with Flash video. Player size: 480X385px.</label><br />
-					<label title="embed HTML5 video (highly experimental)"><input type="radio" name="newTube" value="1" <?php if (get_option('newTube')==="1") echo "checked" ?> /> Embed HTML5 video (<a href="http://wordpress.org/extend/plugins/wp-youtube-lyte/faq/" target="_blank">very experimental, see FAQ</a>). Player size: 650X390.</label><br />
+					<label title="embed HTML5 video (highly experimental)"><input type="radio" name="newTube" value="1" <?php if (get_option('newTube')==="1") echo "checked" ?> /> Embed HTML5 video (<a href="http://wordpress.org/extend/plugins/wp-youtube-lyte/faq/" target="_blank">very experimental, see FAQ</a>). Player size: 650X390px.</label><br />
 			</fieldset>
 			</td>
         </tr>

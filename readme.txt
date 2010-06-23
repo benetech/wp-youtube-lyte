@@ -3,7 +3,7 @@ Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5
 Requires at least: 2.9
 Tested up to: 3.0
-Stable tag: 0.3.4
+Stable tag: 0.3.5
 
 "Lite YouTube Embeds" look like normal YouTube embeds but don't use Flash, thus reducing download size & page rendering time.
 
@@ -52,6 +52,9 @@ It's an re-implementation of [an earlier experiment called 'newTube.js'](http://
 Just ask, I'll see what I can do.
 
 == Changelog ==
+= 0.3.5 =
+* changed function-name in options.php to avoid errors like "Fatal error: Cannot redeclare register_mysettings()"
+
 = 0.3.4 =
 * tested succesfully on the brand new wordpress 3.0 release
 * css changes to avoid themes messing up lyte-player layout
