@@ -3,7 +3,7 @@ Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5
 Requires at least: 2.9
 Tested up to: 3.0
-Stable tag: 0.3.5
+Stable tag: 0.4.0
 
 "Lite YouTube Embeds" look like normal YouTube embeds but don't use Flash, thus reducing download size & page rendering time.
 
@@ -44,14 +44,22 @@ HTML5 video will not be visible for everyone (see requirements), some visitors w
 = But YouTube does not provide embedded html5 video, so how can this work? =
 It's an re-implementation of [an earlier experiment called 'newTube.js'](http://blog.futtta.be/2010/02/04/embedding-youtube-html5-video-with-newtube/). newTube.js is sort of a dirty hack which replaces the LYTE dummy player with an iframe with overflow:hidden, in which the full YouTube-page is carefully positioned to display only the player. 
 
+= Any other bugs I should know about? =
+* The YouTube-thumbnail doesn't fit in the smaller-sized player, which will typically be visible for 16:9 videos (as YouTube adds black border on top and bottom)
+* The controls (play button & bottom control) are not optimized for the different sizes, they just scale along.
+
 = What features might be added at a later stage? =
-* Extra options in the admin-page, e.g. the default size of your video (now: 480X385 for normal YouTube flash-based video)
 * Having the video title link to the YouTube-page
+* Better quality controls for different sizes
 
 = But I would like yet other features to be added! =
 Just ask, I'll see what I can do.
 
 == Changelog ==
+= 0.4.0 =
+* add options to change player size (does not apply to html5-version)
+* noscript optimizations: show image (typically useful in rss-feeds), no text if config is to show links beneath lyte-player
+
 = 0.3.5 =
 * changed function-name in options.php to avoid errors like "Fatal error: Cannot redeclare register_mysettings()"
 
