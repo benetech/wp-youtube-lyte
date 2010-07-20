@@ -3,7 +3,7 @@ Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5
 Requires at least: 2.9
 Tested up to: 3.0
-Stable tag: 0.4.0
+Stable tag: 0.4.1
 
 "Lite YouTube Embeds" look like normal YouTube embeds but don't use Flash, thus reducing download size & page rendering time.
 
@@ -46,7 +46,7 @@ It's an re-implementation of [an earlier experiment called 'newTube.js'](http://
 
 = Any other bugs I should know about? =
 * The YouTube-thumbnail doesn't fit in the smaller-sized player, which will typically be visible for 16:9 videos (as YouTube adds black border on top and bottom)
-* The controls (play button & bottom control) are not optimized for the different sizes, they just scale along.
+* The controls (play button & bottom control) are not optimized for the different sizes, they just scale along (for now).
 
 = What features might be added at a later stage? =
 * Having the video title link to the YouTube-page
@@ -56,6 +56,11 @@ It's an re-implementation of [an earlier experiment called 'newTube.js'](http://
 Just ask, I'll see what I can do.
 
 == Changelog ==
+= 0.4.1 =
+* add fullscreen-button to player
+* disable size in options if html5 is selected
+* move player_sizes.inc to player_sizes.inc.php
+
 = 0.4.0 =
 * add options to change player size (does not apply to html5-version)
 * noscript optimizations: show image (typically useful in rss-feeds), no text if config is to show links beneath lyte-player
