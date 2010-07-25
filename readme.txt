@@ -3,7 +3,7 @@ Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5
 Requires at least: 2.9
 Tested up to: 3.0
-Stable tag: 0.4.1
+Stable tag: 0.5.0
 
 "Lite YouTube Embeds" look like normal YouTube embeds but don't use Flash, thus reducing download size & page rendering time.
 
@@ -13,7 +13,7 @@ WP-YouTube-Lyte inserts "Lite YouTube Embeds" in your blog. These look and feel 
 
 WP-YouTube-Lyte implements [LYTE](http://blog.futtta.be/2010/04/23/high-performance-youtube-embeds/ "High Performance YouTube embeds"), which is a small javascript-library that creates a "dummy" YouTube-player which includes the clip thumbnail and title. When clicked on, the dummy player is seamlessly replaced by the Flash video player.
 
-Since version 0.3 experimental support for embedding html5 YouTube video is available (implementing [newTube.js](http://blog.futtta.be/2010/02/04/embedding-youtube-html5-video-with-newtube/)), meaning WP-YouTube-Lyte allows for an entirely flash-less YouTube experience on your blog, displaying YouTube's HTML5 video in h264 or the new WebM-coded. There are some caveats though, see [FAQ](http://wordpress.org/extend/plugins/wp-youtube-lyte/faq/) for more info. 
+Experimental support for embedding html5 YouTube video is available (implementing [YouTube's new embed code](http://apiblog.youtube.com/2010/07/new-way-to-embed-youtube-videos.html)), meaning WP-YouTube-Lyte allows for an entirely flash-less YouTube experience on your blog, displaying YouTube's HTML5 video in h264 or the new WebM-coded.
 
 WP-Youtube-lyte can be used together with [Smart Youtube](http://wordpress.org/extend/plugins/smart-youtube/ "Great plugin"). In that case WP-Youtube-lyte will take care of the default embeds (httpv), while Smart Youtube continues to parse other types (httpvh, httpvhd, httpvp, ...).
 
@@ -27,25 +27,16 @@ Just install form your Wordpress "Plugins|Add New" screen and all will be well. 
 
 == Frequently Asked Questions ==
 = What does "experimental html5 video support" mean? =
-HTML5 video will not be visible for everyone (see requirements), some visitors will see the fallback Flash video instead and there are some possible caveats.
+HTML5 video will not be visible for everyone (see requirements), some visitors will see the fallback Flash video instead.
 
 = What are requirements to see embedded YouTube HTML5 video? =
 
 * It only works in browsers that support the h264 (Safari, Chrome, IE9) or WebM (currently development versions of Chrome, Opera and Firefox) video codecs
 * You have to be enrolled in the [YouTube html5 beta](http://www.youtube.com/html5)
 
-= What are the issues, bugs & caveats with embedded YouTube HTML5 video =
-
-* It might break if YouTube [implements x-frame-options](http://blog.futtta.be/tag/x-frame-options/) for their video-pages
-* Positioning of the player might be a few pixels off in some browsers
-* Some buttons in the embedded player (e.g. view full screen) won't function properly
-* This might (not) work on iphone/ipod/ipad's (there are known issues with iframes & overflow in mobile Safari that might affect html5 embedding, feedback is welcome)
-
-= But YouTube does not provide embedded html5 video, so how can this work? =
-It's an re-implementation of [an earlier experiment called 'newTube.js'](http://blog.futtta.be/2010/02/04/embedding-youtube-html5-video-with-newtube/). newTube.js is sort of a dirty hack which replaces the LYTE dummy player with an iframe with overflow:hidden, in which the full YouTube-page is carefully positioned to display only the player. 
-
-= Any other bugs I should know about? =
-* The YouTube-thumbnail doesn't fit in the smaller-sized player, which will typically be visible for 16:9 videos (as YouTube adds black border on top and bottom)
+= Any bugs/ issues should I know about? =
+* The new YouTube HTML5-embed-code is a work in progress, positioning of video isn't always perfect when fallback Flash-version is used.
+* The YouTube-thumbnail doesn't fit in the smaller-sized player, which will typically be visible when playing 16:9 videos (as YouTube adds black border on top and bottom)
 * The controls (play button & bottom control) are not optimized for the different sizes, they just scale along (for now).
 
 = What features might be added at a later stage? =
@@ -56,6 +47,10 @@ It's an re-implementation of [an earlier experiment called 'newTube.js'](http://
 Just ask, I'll see what I can do.
 
 == Changelog ==
+= 0.5.0 =
+* implemented the new [HTML5 YouTube embed code](http://apiblog.youtube.com/2010/07/new-way-to-embed-youtube-videos.html) and removed my [newTube.js-hack](http://blog.futtta.be/2010/06/16/embedding-html5-youtube-video-with-wp-youtube-lyte/) for html5-embedding
+* player size now applies to Flash- and the new HTML5-embeds
+
 = 0.4.1 =
 * add fullscreen-button to player
 * disable size in options if html5 is selected

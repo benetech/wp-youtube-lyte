@@ -4,7 +4,7 @@ Plugin Name: WP YouTube Lyte
 Plugin URI: http://blog.futtta.be/tag/lyte
 Description: WordPress Lite YouTube Embeds (with optional HTML5 video) in posts.
 Author: Frank (futtta) Goossens
-Version: 0.4.1
+Version: 0.5.0
 Author URI: http://blog.futtta.be/
 */
 
@@ -16,16 +16,15 @@ $lyteSettings[0]=$wp_lyte_plugin_url."lyte/";
 
 if (get_option('newTube')==="1") {
         $lyteSettings[1]="lyte-newtube-min.js";
-	$lyteSettings[2]="650";
-	$lyteSettings[3]="390";
 } else {
         $lyteSettings[1]="lyte-min.js";
-	include 'player_sizes.inc.php';
-	$oSize = (int) get_option('size');
-	if ((is_bool($oSize)) || ($pSize[$oSize][a]===false)) { $sel = (int) $pDefault; } else { $sel= $oSize; }
-	$lyteSettings[2]=$pSize[$sel][w];
-	$lyteSettings[3]=$pSize[$sel][h];
-	}
+}
+
+include 'player_sizes.inc.php';
+$oSize = (int) get_option('size');
+if ((is_bool($oSize)) || ($pSize[$oSize][a]===false)) { $sel = (int) $pDefault; } else { $sel= $oSize; }
+$lyteSettings[2]=$pSize[$sel][w];
+$lyteSettings[3]=$pSize[$sel][h];
 
 $lyteSettings[4]=get_option('show_links');
 

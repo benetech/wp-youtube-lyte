@@ -27,15 +27,15 @@ function lyte_settings_page() {
 			<th scope="row">Play video using Flash or HTML5-video?</th>
 			<td>
 				<fieldset><legend class="screen-reader-text"><span>Use Flash or HTML5 video?</span></legend>
-					<label title="embed HTML5 video (highly experimental)"><input type="radio" name="newTube" value="1" <?php if (get_option('newTube')==="1") echo "checked" ?> /> Embed HTML5 video (<a href="http://wordpress.org/extend/plugins/wp-youtube-lyte/faq/" target="_blank">rather experimental, see FAQ</a>). Fixed player size: 650X390px.</label><br />
+					<label title="embed HTML5 video (highly experimental)"><input type="radio" name="newTube" value="1" <?php if (get_option('newTube')==="1") echo "checked" ?> /> Embed HTML5 video (experimental, uses <a href="http://apiblog.youtube.com/2010/07/new-way-to-embed-youtube-videos.html" target="_blank">the brand new YouTube embed-code</a>)</label><br />
                                         <label title="normal YouTube embeds with Flash video"><input type="radio" name="newTube" value="0" <?php if (get_option('newTube')!=="1") echo "checked" ?> /> Normal YouTube embeds with Flash video.</label><br />
 			</fieldset>
 			</td>
         </tr>
         <tr valign="top">
-            <th scope="row">Player size (not for HTML5):</th>
+            <th scope="row">Player size:</th>
             <td>
-                 <fieldset><legend class="screen-reader-text"><span>Player size (does not work for HTML5-version)</span></legend>
+                 <fieldset><legend class="screen-reader-text"><span>Player size</span></legend>
 		<?php require 'player_sizes.inc.php';
 			$i=0;
 			if (is_bool(get_option('size'))) { $sel = (int) $pDefault; } else { $sel= (int) get_option('size'); }
@@ -69,19 +69,4 @@ function lyte_settings_page() {
 
 </form>
 </div>
-<script type="text/javascript">
-jQuery(document).ready(function($) {
-    function toggleSize() {
-        val=$("input[name='newTube']:checked").val();
-        if (val==0) {
-            $('.l_size').removeAttr("disabled")
-        } else {
-            $('.l_size').attr("disabled","disabled")
-        }
-    }
-
-    $("input[name='newTube']").click(function(){toggleSize()});
-    toggleSize();
-})
-</script>
 <?php } ?>
