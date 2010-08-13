@@ -4,7 +4,7 @@ $pDefault=2;
 $pSize[0][a]=true;
 $pSize[0][w]=425;
 $pSize[0][h]=344;
-$pSize[0][t]="Smaller 3:4 player";
+$pSize[0][t]="Smaller 4:3 player";
 
 $pSize[1][a]=true;
 $pSize[1][w]=560;
@@ -24,7 +24,7 @@ $pSize[3][t]="YouTube default for 16:9-ratio video";
 $pSize[4][a]=true;
 $pSize[4][w]=640;
 $pSize[4][h]=505;
-$pSize[4][t]="Larger 3:4 player";
+$pSize[4][t]="Larger 4:3 player";
 
 $pSize[5][a]=true;
 $pSize[5][w]=853;

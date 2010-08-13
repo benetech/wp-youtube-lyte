@@ -52,7 +52,7 @@ function lyte_settings_page() {
              </td>
          </tr>
         <tr valign="top">
-			<th scope="row">Show links below the embedded videos?</th>
+			<th scope="row">Add links below the embedded videos?</th>
 			<td>
 				<fieldset><legend class="screen-reader-text"><span>Show links?</span></legend>
 					<label title="Show YouTube-link"><input type="radio" name="show_links" value="1" <?php if (get_option('show_links')==="1") echo "checked" ?> /> Add YouTube-link.</label><br />

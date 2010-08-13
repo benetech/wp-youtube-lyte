@@ -2,8 +2,8 @@
 Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5
 Requires at least: 2.9
-Tested up to: 3.0
-Stable tag: 0.5.0
+Tested up to: 3.0.1
+Stable tag: 0.5.1
 
 "Lite YouTube Embeds" look like normal YouTube embeds but don't use Flash, thus reducing download size & page rendering time.
 
@@ -29,24 +29,25 @@ Just install form your Wordpress "Plugins|Add New" screen and all will be well. 
 = What does "experimental html5 video support" mean? =
 HTML5 video will not be visible for everyone (see requirements), some visitors will see the fallback Flash video instead.
 
-= What are requirements to see embedded YouTube HTML5 video? =
-
+= What are the requirements to see embedded YouTube HTML5 video? =
 * It only works in browsers that support the h264 (Safari, Chrome, IE9) or WebM (currently development versions of Chrome, Opera and Firefox) video codecs
 * You have to be enrolled in the [YouTube html5 beta](http://www.youtube.com/html5)
 
 = Any bugs/ issues should I know about? =
 * The new YouTube HTML5-embed-code is a work in progress, positioning of video isn't always perfect when fallback Flash-version is used.
 * The YouTube-thumbnail doesn't fit in the smaller-sized player, which will typically be visible when playing 16:9 videos (as YouTube adds black border on top and bottom)
-* The controls (play button & bottom control) are not optimized for the different sizes, they just scale along (for now).
 
 = What features might be added at a later stage? =
 * Having the video title link to the YouTube-page
-* Better quality controls for different sizes
 
 = But I would like yet other features to be added! =
 Just ask, I'll see what I can do.
 
 == Changelog ==
+= 0.5.1 =
+* added new versions of images, fitting the player width (no more ugly rescaling)
+* moved a lot of css from javascript to a css-file which gets loaded on-the-fly
+
 = 0.5.0 =
 * implemented the new [HTML5 YouTube embed code](http://apiblog.youtube.com/2010/07/new-way-to-embed-youtube-videos.html) and removed my [newTube.js-hack](http://blog.futtta.be/2010/06/16/embedding-html5-youtube-video-with-wp-youtube-lyte/) for html5-embedding
 * player size now applies to Flash- and the new HTML5-embeds
