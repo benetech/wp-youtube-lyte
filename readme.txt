@@ -3,7 +3,7 @@ Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5
 Requires at least: 2.9
 Tested up to: 3.0.1
-Stable tag: 0.5.1
+Stable tag: 0.5.2
 
 "Lite YouTube Embeds" look like normal YouTube embeds but don't use Flash, thus reducing download size & page rendering time.
 
@@ -13,7 +13,7 @@ WP-YouTube-Lyte inserts "Lite YouTube Embeds" in your blog. These look and feel 
 
 WP-YouTube-Lyte implements [LYTE](http://blog.futtta.be/2010/04/23/high-performance-youtube-embeds/ "High Performance YouTube embeds"), which is a small javascript-library that creates a "dummy" YouTube-player which includes the clip thumbnail and title. When clicked on, the dummy player is seamlessly replaced by the Flash video player.
 
-Experimental support for embedding html5 YouTube video is available (implementing [YouTube's new embed code](http://apiblog.youtube.com/2010/07/new-way-to-embed-youtube-videos.html)), meaning WP-YouTube-Lyte allows for an entirely flash-less YouTube experience on your blog, displaying YouTube's HTML5 video in h264 or the new WebM-coded.
+Experimental support for embedding html5 YouTube video is available (implementing [YouTube's new embed code](http://apiblog.youtube.com/2010/07/new-way-to-embed-youtube-videos.html)), meaning WP-YouTube-Lyte allows for an entirely flash-less YouTube experience on your blog, displaying YouTube's HTML5 video in h264 or the new WebM-codec.
 
 WP-Youtube-lyte can be used together with [Smart Youtube](http://wordpress.org/extend/plugins/smart-youtube/ "Great plugin"). In that case WP-Youtube-lyte will take care of the default embeds (httpv), while Smart Youtube continues to parse other types (httpvh, httpvhd, httpvp, ...).
 
@@ -37,13 +37,16 @@ HTML5 video will not be visible for everyone (see requirements), some visitors w
 * The new YouTube HTML5-embed-code is a work in progress, positioning of video isn't always perfect when fallback Flash-version is used.
 * The YouTube-thumbnail doesn't fit in the smaller-sized player, which will typically be visible when playing 16:9 videos (as YouTube adds black border on top and bottom)
 
-= What features might be added at a later stage? =
-* Having the video title link to the YouTube-page
-
-= But I would like yet other features to be added! =
-Just ask, I'll see what I can do.
+= I found a bug/ I would like a feature to be added! =
+* Just tell me, I like the feedback! Use the [Contact-page on my blog](http://blog.futtta.be/contact/), [leave a comment in a post about wp-youtube-lyte](http://blog.futtta.be/tag/wp-youtube-lyte/) or [create a new topic on the wordpress.org forum](http://wordpress.org/tags/wp-youtube-lyte?forum_id=10#postform).
 
 == Changelog ==
+= 0.5.2 =
+* fixed a bug where WordPress' the_excerpt function showed wp-youtube-lyte javascript as text in excerpts
+* fixed problem where google tried to index e.g. options.php (which produced ugly php errors)
+* fixed some css-related bugs, do contact me (see FAQ) if LYTE-player isn't rendered correctly in your wordpress-theme!
+* moved more css out of javascript to the static css-file
+
 = 0.5.1 =
 * added new versions of images, fitting the player width (no more ugly rescaling)
 * moved a lot of css from javascript to a css-file which gets loaded on-the-fly
