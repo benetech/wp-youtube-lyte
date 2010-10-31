@@ -3,7 +3,7 @@ Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5
 Requires at least: 2.9
 Tested up to: 3.0.1
-Stable tag: 0.5.3
+Stable tag: 0.6.0
 
 "Lite YouTube Embeds" look like normal YouTube embeds but don't use Flash, thus reducing download size & page rendering time.
 
@@ -16,6 +16,8 @@ WP-YouTube-Lyte implements [LYTE](http://blog.futtta.be/2010/04/23/high-performa
 Experimental support for embedding html5 YouTube video is available (implementing [YouTube's new embed code](http://apiblog.youtube.com/2010/07/new-way-to-embed-youtube-videos.html)), meaning WP-YouTube-Lyte allows for an entirely flash-less YouTube experience on your blog, displaying YouTube's HTML5 video in h264 or the new WebM-codec.
 
 WP-Youtube-lyte can be used together with [Smart Youtube](http://wordpress.org/extend/plugins/smart-youtube/ "Great plugin"). In that case WP-Youtube-lyte will take care of the default embeds (httpv), while Smart Youtube continues to parse other types (httpvh, httpvhd, httpvp, ...).
+
+Feedback is welcome; see [info in the faq](http://wordpress.org/extend/plugins/wp-youtube-lyte/faq/) for bug reports/ feature requests and feel free to [rate and/or report on compatibility on wordpress.org](http://wordpress.org/extend/plugins/wp-youtube-lyte/).
 
 == Installation ==
 
@@ -35,12 +37,22 @@ HTML5 video will not be visible for everyone (see requirements), some visitors w
 
 = Any bugs/ issues should I know about? =
 * The new YouTube HTML5-embed-code is a work in progress, positioning of video isn't always perfect when fallback Flash-version is used.
-* The YouTube-thumbnail doesn't fit in the smaller-sized player, which will typically be visible when playing 16:9 videos (as YouTube adds black border on top and bottom)
+* If you're using the HTML5-version and you have a WP-YouTube-Lyte widget in your sidebar, you'll notice how the controls at the bottom overlap. This is because YouTube's new embed code doesn't scale down to small sizes too great. The normal (Flash-based) player omits most controls in this case, I would expect the HTML5-version to do this as well in a not to distant future.
 
 = I found a bug/ I would like a feature to be added! =
 * Just tell me, I like the feedback! Use the [Contact-page on my blog](http://blog.futtta.be/contact/), [leave a comment in a post about wp-youtube-lyte](http://blog.futtta.be/tag/wp-youtube-lyte/) or [create a new topic on the wordpress.org forum](http://wordpress.org/tags/wp-youtube-lyte?forum_id=10#postform).
 
+= How you can help =
+* Tell me about bugs you think you've found and if you can't find any, [confirm it works with your version of WP on wordpress.org](http://wordpress.org/extend/plugins/wp-youtube-lyte/)
+* Ask me for a feature you would like to see added
+* [Rate my plugin on wordpress.org](http://wordpress.org/extend/plugins/wp-youtube-lyte/), even if you think it stinks ;-)
+
 == Changelog ==
+= 0.6.0 =
+* There now is a WP-YouTube-Lyte widget which you can add to your sidebar (see under "Appearance"->"Widgets"), as requested by the fabulous [fruityoaty](http://fruityoaty.com/)
+* The thumbnail is now stretched to use as much of the player as possible (thanks to css3's background-size:contain directive, which works in [all bleeding edge browsers](http://www.quirksmode.org/css/background.html#t012))
+* Updated the "play"-button to fit the new YouTube style
+
 = 0.5.3 =
 * we now wait for the DOM to be fully loaded (except for MS IE, where we have to wait for window.load) before kicking in, which means wp-youtube-lyte now functions correctly in Opera
 * fixed a bug where lyte's javascript would overwrite the main div's class-name (causing css-issues in some themes)

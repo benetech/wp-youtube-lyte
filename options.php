@@ -16,7 +16,7 @@ function lyte_settings_page() {
 ?>
 <div class="wrap">
 <h2>WP YouTube Lyte Settings</h2>
-<p>WP-YouTube-Lyte inserts "Lite YouTube Embeds" in your blog. These look and feel like normal embedded YouTube, but don't use Flash unless clicked on, thereby <a href="http://blog.futtta.be/2010/04/23/high-performance-youtube-embeds/" target="_blank">reducing download size & rendering time substantially</a>. The HTML5-option even allows for entirely Flash-less YouTube embeds, using H264 or WebM to play the video in compatible browsers. You can find more info on the <a href="http://wordpress.org/extend/plugins/wp-youtube-lyte/" target="_blank">wordpress.org WP-YouTube-Lyte page</a>.</p>
+<p>WP-YouTube-Lyte inserts "Lite YouTube Embeds" in your blog. These look and feel like normal embedded YouTube, but don't use Flash unless clicked on, thereby <a href="http://blog.futtta.be/2010/08/30/the-state-of-wp-youtube-lyte/" target="_blank">reducing download size & rendering time substantially</a>. The HTML5-option even allows for entirely Flash-less YouTube embeds, using H264 or WebM to play the video in compatible browsers. You can find more info on the <a href="http://wordpress.org/extend/plugins/wp-youtube-lyte/" target="_blank">wordpress.org WP-YouTube-Lyte page</a>.</p>
 <p>You can place video in your posts and pages by adding one or more http<strong>v</strong> YouTube-links to your post. These will automatically be replaced by WP-YouTube-Lyte with the correct (flash-less) code. Just replace the "http://" in the link with "httpv://", like this:
 <blockquote>http<strong>v</strong>://www.youtube.com/watch?v=QQPSMRQnNlU</blockquote></p>
 <p>You can modify WP-YouTube-Lyte's behaviour by changing the following settings:</p>

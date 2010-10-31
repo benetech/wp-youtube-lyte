@@ -4,11 +4,13 @@ Plugin Name: WP YouTube Lyte
 Plugin URI: http://blog.futtta.be/tag/lyte
 Description: WordPress Lite YouTube Embeds (with optional HTML5 video) in posts.
 Author: Frank (futtta) Goossens
-Version: 0.5.3
+Version: 0.6.0
 Author URI: http://blog.futtta.be/
 */
 
 require(dirname(__FILE__).'/options.php');
+require(dirname(__FILE__).'/player_sizes.inc.php');
+require(dirname(__FILE__).'/widget.php');
 
 $wp_lyte_plugin_url = defined('WP_PLUGIN_URL') ? trailingslashit(WP_PLUGIN_URL . '/' . dirname(plugin_basename(__FILE__))) : trailingslashit(get_bloginfo('wpurl')) . PLUGINDIR . '/' . dirname(plugin_basename(__FILE__)); 
 
@@ -20,7 +22,6 @@ if (get_option('newTube')==="1") {
         $lyteSettings[1]="lyte-min.js";
 }
 
-include 'player_sizes.inc.php';
 $oSize = (int) get_option('size');
 if ((is_bool($oSize)) || ($pSize[$oSize]['a']===false)) { $sel = (int) $pDefault; } else { $sel= $oSize; }
 $lyteSettings[2]=$pSize[$sel]['w'];
@@ -50,7 +51,7 @@ function lyte_parse($the_content) {
                                         $noscript_post="";
                                         $lytelinks_txt="<div class=\"lL\">Watch this video <a href=\"http://youtu.be/".$match[3]."\">on YouTube</a>.</div>";
 			}
-			$lytetemplate = "<div class=\"lyte\" id=\"".$match[3]."\" style=\"width:".$lyteSettings[2]."px;height:".$lyteSettings[3]."px;\"><noscript><a href=\"http://youtu.be/".$match[3]."\"><img src=\"http://img.youtube.com/vi/".$match[3]."/default.jpg\">".$noscript_post."</a></noscript><script type=\"text/javascript\">/*<![CDATA[*/var bU='".$lyteSettings[0]."';pW='".$lyteSettings[2]."';pH='".$lyteSettings[3]."';var d=document;if(d.addEventListener){d.addEventListener('DOMContentLoaded', insert, false)}else{window.onload=insert} function insert(){if(!d.getElementById('lytescr')){lytescr=d.createElement('script');lytescr.async=true;lytescr.id='lytescr';lytescr.src='".$lyteSettings[0].$lyteSettings[1]."';h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(lytescr, h)}};/*]]>*/</script></div>".$lytelinks_txt;
+			$lytetemplate = "<div class=\"lyte\" id=\"".$match[3]."\" style=\"width:".$lyteSettings[2]."px;height:".$lyteSettings[3]."px;\"><noscript><a href=\"http://youtu.be/".$match[3]."\"><img src=\"http://img.youtube.com/vi/".$match[3]."/0.jpg\">".$noscript_post."</a></noscript><script type=\"text/javascript\">/*<![CDATA[*/var bU='".$lyteSettings[0]."';pW='".$lyteSettings[2]."';pH='".$lyteSettings[3]."';var d=document;if(d.addEventListener){d.addEventListener('DOMContentLoaded', insert, false)}else{window.onload=insert} function insert(){if(!d.getElementById('lytescr')){lytescr=d.createElement('script');lytescr.async=true;lytescr.id='lytescr';lytescr.src='".$lyteSettings[0].$lyteSettings[1]."';h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(lytescr, h)}};/*]]>*/</script></div>".$lytelinks_txt;
 			$the_content = preg_replace("/httpv:\/\/([a-zA-Z0-9\-\_]+\.|)youtube\.com\/watch(\?v\=|\/v\/)([a-zA-Z0-9\-\_]{11})([^\s<]*)/", $lytetemplate, $the_content, 1);
 		}
 	}
