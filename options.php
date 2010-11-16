@@ -16,6 +16,7 @@ function lyte_settings_page() {
 ?>
 <div class="wrap">
 <h2>WP YouTube Lyte Settings</h2>
+<div style="float:left;width:70%;">
 <p>WP-YouTube-Lyte inserts "Lite YouTube Embeds" in your blog. These look and feel like normal embedded YouTube, but don't use Flash unless clicked on, thereby <a href="http://blog.futtta.be/2010/08/30/the-state-of-wp-youtube-lyte/" target="_blank">reducing download size & rendering time substantially</a>. The HTML5-option even allows for entirely Flash-less YouTube embeds, using H264 or WebM to play the video in compatible browsers. You can find more info on the <a href="http://wordpress.org/extend/plugins/wp-youtube-lyte/" target="_blank">wordpress.org WP-YouTube-Lyte page</a>.</p>
 <p>You can place video in your posts and pages by adding one or more http<strong>v</strong> YouTube-links to your post. These will automatically be replaced by WP-YouTube-Lyte with the correct (flash-less) code. Just replace the "http://" in the link with "httpv://", like this:
 <blockquote>http<strong>v</strong>://www.youtube.com/watch?v=QQPSMRQnNlU</blockquote></p>
@@ -68,5 +69,44 @@ function lyte_settings_page() {
     </p>
 
 </form>
+</div>
+<div style="float:right;width:30%" id="lyte_admin_feed">
+        <div style="margin-left:10px;margin-top:-5px;">
+                <h3>
+                        futtta about
+                        <select id="feed_dropdown" >
+                                <option value="1">WP YouTube Lyte</option>
+                                <option value="2">WordPress</option>
+                                <option value="3">Web Technology</option>
+                        </select>
+                </h3>
+                <div id="futtta_feed"></div>
+        </div>
+</div>
+
+<?php $wp_lyte_plugin_url = defined('WP_PLUGIN_URL') ? trailingslashit(WP_PLUGIN_URL . '/' . dirname(plugin_basename(__FILE__))) : trailingslashit(get_bloginfo('wpurl')) . PLUGINDIR . '/' . dirname(plugin_basename(__FILE__)); ?>
+<script src="<?php echo $wp_lyte_plugin_url; ?>external/jquery.zrssfeed.min.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?php echo $wp_lyte_plugin_url; ?>external/jquery.zrssfeed.css" />
+
+<script type="text/javascript">
+	$feed = new Array;
+	$feed[1]="http://feeds.feedburner.com/futtta_wp-youtube-lyte";
+	$feed[2]="http://feeds.feedburner.com/futtta_wordpress";
+	$feed[3]="http://feeds.feedburner.com/futtta_webtech";
+
+        jQuery(document).ready(function() {
+		show_feed(1);
+		jQuery("#feed_dropdown").change(function() { show_feed(jQuery("#feed_dropdown").val()) });
+		})
+
+	function show_feed(id) {
+  		jQuery('#futtta_feed').rssfeed($feed[id], {
+    			limit: 4,
+			date: true,
+			header: false
+  		});
+	}
+</script>
+
 </div>
 <?php } ?>

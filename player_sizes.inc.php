@@ -30,4 +30,13 @@ $pSize[5]['a']=true;
 $pSize[5]['w']=853;
 $pSize[5]['h']=505;
 $pSize[5]['t']="Larger 16:9 player";
+
+// widget sizes
+$wDefault=2;
+$wSize[1]['h']=125;
+$wSize[1]['w']=150;
+$wSize[2]['h']=133;
+$wSize[2]['w']=160;
+$wSize[3]['h']=150;
+$wSize[3]['w']=180;
 ?>
