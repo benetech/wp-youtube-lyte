@@ -3,7 +3,7 @@ Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5
 Requires at least: 2.9
 Tested up to: 3.0.1
-Stable tag: 0.6.1
+Stable tag: 0.6.2
 
 "Lite YouTube Embeds" look like normal YouTube embeds but don't use Flash, thus reducing download size & page rendering time.
 
@@ -49,10 +49,15 @@ HTML5 video will not be visible for everyone (see requirements), some visitors w
 * [Rate my plugin on wordpress.org](http://wordpress.org/extend/plugins/wp-youtube-lyte/), even if you think it stinks ;-)
 
 == Changelog ==
+= 0.6.2 =
+* bugfix: the javascript in widgets.php caused a wp youtube lyte widget not to be shown in the sidebar if no wp youtube lyte was present in the main content
+* load jquery plugins in admin screen using wp_enqueue_script rather then adding them "manually"
+* store the selected feed on the admin-page in a cookie to show the same feed next time
+
 = 0.6.1 =
 * widget size can now be set (3 sizes available, to be specified for each widget individually)
 * admin-page now contains links to most recent info (blogposts) on WP YouTube Lyte (and optionally WordPress and Web Technology in general) using [the excellent jQuery-plugin zrssfeed](http://www.zazar.net/developers/zrssfeed/)
-* bugfix: removed CDATA-wrapper from javascript as WordPress turned ]]> into ]]&lt; which broke the html (which in turn broke syndication in planets)
+* bugfix: removed CDATA-wrapper from javascript as WordPress turned ]]> into ]]&amp;gt; which broke the html (which in turn broke syndication in e.g. planets)
 
 = 0.6.0 =
 * There now is a WP-YouTube-Lyte widget which you can add to your sidebar (see under "Appearance"->"Widgets"), as requested by the fabulous [fruityoaty](http://fruityoaty.com/)

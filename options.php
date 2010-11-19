@@ -1,15 +1,30 @@
 <?php
+        $wp_lyte_plugin_url = defined('WP_PLUGIN_URL') ? trailingslashit(WP_PLUGIN_URL . '/' . dirname(plugin_basename(__FILE__))) : trailingslashit(get_bloginfo('wpurl')) . PLUGINDIR . '/' . dirname(plugin_basename(__FILE__));
+
 add_action('admin_menu', 'lyte_create_menu');
 
 function lyte_create_menu() {
 	add_options_page( 'WP YouTube Lyte settings', 'WP YouTube Lyte', 'manage_options', __FILE__, 'lyte_settings_page');
 	add_action( 'admin_init', 'register_lyte_settings' );
+	add_action( 'admin_print_scripts', 'lyte_admin_scripts' );
+	add_action( 'admin_print_styles', 'lyte_admin_styles' );
 }
 
 function register_lyte_settings() {
 	register_setting( 'lyte-settings-group', 'newTube' );
 	register_setting( 'lyte-settings-group', 'show_links' );
 	register_setting( 'lyte-settings-group', 'size' );
+}
+
+function lyte_admin_scripts() {
+	global $wp_lyte_plugin_url;
+	wp_enqueue_script('zrssfeed',$wp_lyte_plugin_url.'external/jquery.zrssfeed.min.js',array(jquery),null,true);
+	wp_enqueue_script('cookie',$wp_lyte_plugin_url.'external/jquery.cookie.min.js',array(jquery),null,true);
+}
+
+function lyte_admin_styles() {
+        global $wp_lyte_plugin_url;
+        wp_enqueue_style('zrssfeed',$wp_lyte_plugin_url.'external/jquery.zrssfeed.css');
 }
 
 function lyte_settings_page() {
@@ -84,27 +99,29 @@ function lyte_settings_page() {
         </div>
 </div>
 
-<?php $wp_lyte_plugin_url = defined('WP_PLUGIN_URL') ? trailingslashit(WP_PLUGIN_URL . '/' . dirname(plugin_basename(__FILE__))) : trailingslashit(get_bloginfo('wpurl')) . PLUGINDIR . '/' . dirname(plugin_basename(__FILE__)); ?>
-<script src="<?php echo $wp_lyte_plugin_url; ?>external/jquery.zrssfeed.min.js" type="text/javascript"></script>
-<link rel="stylesheet" href="<?php echo $wp_lyte_plugin_url; ?>external/jquery.zrssfeed.css" />
-
 <script type="text/javascript">
-	$feed = new Array;
-	$feed[1]="http://feeds.feedburner.com/futtta_wp-youtube-lyte";
-	$feed[2]="http://feeds.feedburner.com/futtta_wordpress";
-	$feed[3]="http://feeds.feedburner.com/futtta_webtech";
+	var feed = new Array;
+	feed[1]="http://feeds.feedburner.com/futtta_wp-youtube-lyte";
+	feed[2]="http://feeds.feedburner.com/futtta_wordpress";
+	feed[3]="http://feeds.feedburner.com/futtta_webtech";
+	cookie="wp-youtube-lyte_feed";
 
         jQuery(document).ready(function() {
-		show_feed(1);
+		feedid=jQuery.cookie(cookie);
+		if(typeof(feedid) !== "string") feedid=1;
+		show_feed(feedid);
 		jQuery("#feed_dropdown").change(function() { show_feed(jQuery("#feed_dropdown").val()) });
 		})
 
 	function show_feed(id) {
-  		jQuery('#futtta_feed').rssfeed($feed[id], {
+  		jQuery('#futtta_feed').rssfeed(feed[id], {
     			limit: 4,
 			date: true,
 			header: false
   		});
+		jQuery.cookie(cookie,id,{ expires: 365 });
+		jQuery("#feed_dropdown").val(id);
+		//alert(jQuery.cookie(cookie));
 	}
 </script>
 
