@@ -1,9 +1,9 @@
 === Plugin Name ===
 Contributors: futtta
-Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5
+Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5, widget
 Requires at least: 2.9
-Tested up to: 3.0.1
-Stable tag: 0.6.2
+Tested up to: 3.0.3
+Stable tag: 0.6.3
 
 "Lite YouTube Embeds" look like normal YouTube embeds but don't use Flash, thus reducing download size & page rendering time.
 
@@ -35,6 +35,9 @@ HTML5 video will not be visible for everyone (see requirements), some visitors w
 * It only works in browsers that support the h264 (Safari, Chrome, IE9) or WebM (currently development versions of Chrome, Opera and Firefox) video codecs
 * You have to be enrolled in the [YouTube html5 beta](http://www.youtube.com/html5)
 
+= Does WP YouTube Lyte protect my visitor's privacy? =
+As opposed to some of the [most important](http://blog.futtta.be/2010/12/15/wordpress-com-stats-trojan-horse-for-quantcast-tracking/) [plugins](http://blog.futtta.be/2010/01/22/add-to-any-removed-from-here/) there is no 3rd party tracking code in WP YouTube Lyte.
+
 = Any bugs/ issues should I know about? =
 * The new YouTube HTML5-embed-code is a work in progress, positioning of video isn't always perfect when fallback Flash-version is used.
 * If you're using the HTML5-version and you have a WP-YouTube-Lyte widget in your sidebar, you'll notice how the controls at the bottom overlap. This is because YouTube's new embed code doesn't scale down to small sizes too great. The normal (Flash-based) player omits most controls in this case, I would expect the HTML5-version to do this as well in a not to distant future.
@@ -49,6 +52,11 @@ HTML5 video will not be visible for everyone (see requirements), some visitors w
 * [Rate my plugin on wordpress.org](http://wordpress.org/extend/plugins/wp-youtube-lyte/), even if you think it stinks ;-)
 
 == Changelog ==
+= 0.6.3 =
+* only load jquery plugins on this plugin's options page
+* change thumbnail positiong slightly (5 pixels up)
+* tested on WordPress 3.0.3
+
 = 0.6.2 =
 * bugfix: the javascript in widgets.php caused a wp youtube lyte widget not to be shown in the sidebar if no wp youtube lyte was present in the main content
 * load jquery plugins in admin screen using wp_enqueue_script rather then adding them "manually"

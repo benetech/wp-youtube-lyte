@@ -4,10 +4,10 @@
 add_action('admin_menu', 'lyte_create_menu');
 
 function lyte_create_menu() {
-	add_options_page( 'WP YouTube Lyte settings', 'WP YouTube Lyte', 'manage_options', __FILE__, 'lyte_settings_page');
-	add_action( 'admin_init', 'register_lyte_settings' );
-	add_action( 'admin_print_scripts', 'lyte_admin_scripts' );
-	add_action( 'admin_print_styles', 'lyte_admin_styles' );
+        $hook=add_options_page( 'WP YouTube Lyte settings', 'WP YouTube Lyte', 'manage_options', 'lyte_settings_page', 'lyte_settings_page');
+        add_action( 'admin_init', 'register_lyte_settings' );
+        add_action( 'admin_print_scripts-'.$hook, 'lyte_admin_scripts' );
+        add_action( 'admin_print_styles-'.$hook, 'lyte_admin_styles' );
 }
 
 function register_lyte_settings() {
@@ -107,10 +107,12 @@ function lyte_settings_page() {
 	cookie="wp-youtube-lyte_feed";
 
         jQuery(document).ready(function() {
+		jQuery("#feed_dropdown").change(function() { show_feed(jQuery("#feed_dropdown").val()) });
+
 		feedid=jQuery.cookie(cookie);
 		if(typeof(feedid) !== "string") feedid=1;
+
 		show_feed(feedid);
-		jQuery("#feed_dropdown").change(function() { show_feed(jQuery("#feed_dropdown").val()) });
 		})
 
 	function show_feed(id) {
@@ -119,9 +121,8 @@ function lyte_settings_page() {
 			date: true,
 			header: false
   		});
-		jQuery.cookie(cookie,id,{ expires: 365 });
 		jQuery("#feed_dropdown").val(id);
-		//alert(jQuery.cookie(cookie));
+		jQuery.cookie(cookie,id,{ expires: 365 });
 	}
 </script>
 
