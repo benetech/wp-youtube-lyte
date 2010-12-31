@@ -15,7 +15,9 @@ class WYLWidget extends WP_Widget {
 	$WYLsize = apply_filters( 'widget_text', $instance['WYLsize'], $instance );
 	if ($WYLsize=="") $WYLsize=$wDefault;
 
-	parse_str(parse_url(esc_url($instance['WYLurl']),PHP_URL_QUERY),$WYLarr);
+	$WYLurl=esc_url($instance['WYLurl']);
+	$WYLqs=substr(strstr($WYLurl,'?'),1);
+	parse_str($WYLqs,$WYLarr);
 	$WYLid=$WYLarr['v'];
 
 	$wp_lyte_plugin_url = defined('WP_PLUGIN_URL') ? trailingslashit(WP_PLUGIN_URL . '/' . dirname(plugin_basename(__FILE__))) : trailingslashit(get_bloginfo('wpurl')) . PLUGINDIR . '/' . dirname(plugin_basename(__FILE__));

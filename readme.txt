@@ -2,8 +2,8 @@
 Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5, widget
 Requires at least: 2.9
-Tested up to: 3.0.3
-Stable tag: 0.6.3
+Tested up to: 3.1
+Stable tag: 0.6.4
 
 "Lite YouTube Embeds" look like normal YouTube embeds but don't use Flash, thus reducing download size & page rendering time.
 
@@ -42,6 +42,7 @@ As opposed to some of the [most important](http://blog.futtta.be/2010/12/15/word
 * The new YouTube HTML5-embed-code is a work in progress, positioning of video isn't always perfect when fallback Flash-version is used.
 * If you're using the HTML5-version and you have a WP-YouTube-Lyte widget in your sidebar, you'll notice how the controls at the bottom overlap. This is because YouTube's new embed code doesn't scale down to small sizes too great. The normal (Flash-based) player omits most controls in this case, I would expect the HTML5-version to do this as well in a not to distant future.
 * Having the same YouTube-video on one page can cause WP YouTube Lyte to malfunction (as the YouTube id is used as the div's id in the DOM, and DOM id's are supposed to be unique)
+* the normal version does not work on iPad (and probably iPhone), the HTML5-version does
 
 = I found a bug/ I would like a feature to be added! =
 * Just tell me, I like the feedback! Use the [Contact-page on my blog](http://blog.futtta.be/contact/), [leave a comment in a post about wp-youtube-lyte](http://blog.futtta.be/tag/wp-youtube-lyte/) or [create a new topic on the wordpress.org forum](http://wordpress.org/tags/wp-youtube-lyte?forum_id=10#postform).
@@ -52,6 +53,12 @@ As opposed to some of the [most important](http://blog.futtta.be/2010/12/15/word
 * [Rate my plugin on wordpress.org](http://wordpress.org/extend/plugins/wp-youtube-lyte/), even if you think it stinks ;-)
 
 == Changelog ==
+= 0.6.4 =
+* happy New Year & thanks for the 10.000 downloads so far!
+* solved an [issue with pre-5.2.1 versions of PHP which caused errors in widget.php](http://wordpress.org/support/topic/plugin-wp-youtube-lyte-parse_url-error-in-widget-version)
+* tested on iPad, the HTML5-version works
+* tested succesfully on WordPress 3.0.4 and 3.1 (release candidate)
+
 = 0.6.3 =
 * only load jquery plugins on this plugin's options page
 * change thumbnail positiong slightly (5 pixels up)
