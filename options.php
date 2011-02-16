@@ -14,12 +14,13 @@ function register_lyte_settings() {
 	register_setting( 'lyte-settings-group', 'newTube' );
 	register_setting( 'lyte-settings-group', 'show_links' );
 	register_setting( 'lyte-settings-group', 'size' );
+	register_setting( 'lyte-settings-group', 'donottrack' );
 }
 
 function lyte_admin_scripts() {
 	global $wp_lyte_plugin_url;
-	wp_enqueue_script('zrssfeed',$wp_lyte_plugin_url.'external/jquery.zrssfeed.min.js',array(jquery),null,true);
-	wp_enqueue_script('cookie',$wp_lyte_plugin_url.'external/jquery.cookie.min.js',array(jquery),null,true);
+	wp_enqueue_script('jqzrssfeed',$wp_lyte_plugin_url.'external/jquery.zrssfeed.min.js',array(jquery),null,true);
+	wp_enqueue_script('jqcookie',$wp_lyte_plugin_url.'external/jquery.cookie.min.js',array(jquery),null,true);
 }
 
 function lyte_admin_styles() {
@@ -77,6 +78,16 @@ function lyte_settings_page() {
 			</fieldset>
 			</td>
          </tr>
+	 <tr valign="top">
+	 	<th scope="row">Bonus feature: <a href="http://blog.futtta.be/tag/donottrack" target="_blank">DoNotTrack</a></th>
+		<td>
+			<fieldset>
+				<legend class="screen-reader-text"><span>Activate DoNotTrack</span></legend>
+				<label title="Enable DoNotTrack"><input type="radio" name="donottrack" value="1" <?php if (get_option('donottrack')==="1") echo "checked" ?> />Disable 3rd party tracking.</label><br />
+				<label title="Leave DoNotTrack disabled (default)"><input type="radio" name="donottrack" value="0" <?php if (get_option('donottrack')!=="1") echo "checked" ?> />I don't mind 3rd party tracking (default)</label>
+			</fieldset>
+		</td>
+	 </tr>
     </table>
     
     <p class="submit">
@@ -104,12 +115,12 @@ function lyte_settings_page() {
 	feed[1]="http://feeds.feedburner.com/futtta_wp-youtube-lyte";
 	feed[2]="http://feeds.feedburner.com/futtta_wordpress";
 	feed[3]="http://feeds.feedburner.com/futtta_webtech";
-	cookie="wp-youtube-lyte_feed";
+	cookiename="wp-youtube-lyte_feed";
 
         jQuery(document).ready(function() {
 		jQuery("#feed_dropdown").change(function() { show_feed(jQuery("#feed_dropdown").val()) });
 
-		feedid=jQuery.cookie(cookie);
+		feedid=jQuery.cookie(cookiename);
 		if(typeof(feedid) !== "string") feedid=1;
 
 		show_feed(feedid);
@@ -122,7 +133,7 @@ function lyte_settings_page() {
 			header: false
   		});
 		jQuery("#feed_dropdown").val(id);
-		jQuery.cookie(cookie,id,{ expires: 365 });
+		jQuery.cookie(cookiename,id,{ expires: 365 });
 	}
 </script>
 

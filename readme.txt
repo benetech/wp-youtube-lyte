@@ -3,7 +3,7 @@ Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5, widget
 Requires at least: 2.9
 Tested up to: 3.1
-Stable tag: 0.6.4
+Stable tag: 0.6.5
 
 "Lite YouTube Embeds" look like normal YouTube embeds but don't use Flash, thus reducing download size & page rendering time.
 
@@ -53,6 +53,13 @@ As opposed to some of the [most important](http://blog.futtta.be/2010/12/15/word
 * [Rate my plugin on wordpress.org](http://wordpress.org/extend/plugins/wp-youtube-lyte/), even if you think it stinks ;-)
 
 == Changelog ==
+= 0.6.5 =
+* updated images for html5-version to new look&feel
+* disabled "watch later" by adding variable "probably_logged_in=false" to youtube embed
+* changed lyte/lyte.css (move margin from .lt to .lyte) to allow changes to positioning of player
+* changed name of js-variable in options.php to solve small bug in rss display
+* added an (experimental) bonus feature
+
 = 0.6.4 =
 * happy New Year & thanks for the 10.000 downloads so far!
 * solved an [issue with pre-5.2.1 versions of PHP which caused errors in widget.php](http://wordpress.org/support/topic/plugin-wp-youtube-lyte-parse_url-error-in-widget-version)
