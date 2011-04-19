@@ -33,9 +33,8 @@ function lyte_settings_page() {
 <div class="wrap">
 <h2>WP YouTube Lyte Settings</h2>
 <div style="float:left;width:70%;">
-<p>WP-YouTube-Lyte inserts "Lite YouTube Embeds" in your blog. These look and feel like normal embedded YouTube, but don't use Flash unless clicked on, thereby <a href="http://blog.futtta.be/2010/08/30/the-state-of-wp-youtube-lyte/" target="_blank">reducing download size & rendering time substantially</a>. The HTML5-option even allows for entirely Flash-less YouTube embeds, using H264 or WebM to play the video in compatible browsers. You can find more info on the <a href="http://wordpress.org/extend/plugins/wp-youtube-lyte/" target="_blank">wordpress.org WP-YouTube-Lyte page</a>.</p>
-<p>You can place video in your posts and pages by adding one or more http<strong>v</strong> YouTube-links to your post. These will automatically be replaced by WP-YouTube-Lyte with the correct (flash-less) code. Just replace the "http://" in the link with "httpv://", like this:
-<blockquote>http<strong>v</strong>://www.youtube.com/watch?v=QQPSMRQnNlU</blockquote></p>
+<p>WP YouTube Lyte inserts "Lite YouTube Embeds" in your blog. These look and feel like normal embedded YouTube, but don't use Flash unless clicked on, thereby <a href="http://blog.futtta.be/2010/08/30/the-state-of-wp-youtube-lyte/" target="_blank">reducing download size & rendering time substantially</a>. When a video is played, WP-YouTube-Lyte can either activate <a href="http://apiblog.youtube.com/2010/07/new-way-to-embed-youtube-videos.html" target="_blank">YouTube's embedded html5-player</a> or the older Flash-version, depending on the settings below.</p>
+<p>You can place video and audio in your posts and pages by adding one or more http<strong>v</strong> or http<strong>a</strong> YouTube-links to your post. These will automatically be replaced by WP YouTube Lyte with the correct (flash-less) code. To add a video for example, you type a URL like <em>http<strong>v</strong>://www.youtube.com/watch?v=QQPSMRQnNlU</em>. If you want an audio-only player, you enter <em>http<strong>a</strong>://www.youtube.com/watch?v=BIQIGR-kWtc</em>. There's more info on the <a href="http://wordpress.org/extend/plugins/wp-youtube-lyte/faq/" target="_blank">wordpress.org WP YouTube Lyte FAQ page</a>.</p>
 <p>You can modify WP-YouTube-Lyte's behaviour by changing the following settings:</p>
 <form method="post" action="options.php">
     <?php settings_fields( 'lyte-settings-group' ); ?>
@@ -44,15 +43,15 @@ function lyte_settings_page() {
 			<th scope="row">Play video using Flash or HTML5-video?</th>
 			<td>
 				<fieldset><legend class="screen-reader-text"><span>Use Flash or HTML5 video?</span></legend>
-					<label title="embed HTML5 video (highly experimental)"><input type="radio" name="newTube" value="1" <?php if (get_option('newTube')==="1") echo "checked" ?> /> Embed HTML5 video (experimental, uses <a href="http://apiblog.youtube.com/2010/07/new-way-to-embed-youtube-videos.html" target="_blank">the brand new YouTube embed-code</a>)</label><br />
-                                        <label title="normal YouTube embeds with Flash video"><input type="radio" name="newTube" value="0" <?php if (get_option('newTube')!=="1") echo "checked" ?> /> Normal YouTube embeds with Flash video.</label><br />
+					<label title="embed HTML5 video"><input type="radio" name="newTube" value="1" <?php if (get_option('newTube')==="1") echo "checked" ?> /> Embed HTML5 video (uses <a href="http://apiblog.youtube.com/2010/07/new-way-to-embed-youtube-videos.html" target="_blank">the new YouTube embed-code</a>)</label><br />
+                                        <label title="normal YouTube embeds with Flash video"><input type="radio" name="newTube" value="0" <?php if (get_option('newTube')!=="1") echo "checked" ?> /> Old-style YouTube embeds with Flash video.</label><br />
 			</fieldset>
 			</td>
         </tr>
         <tr valign="top">
             <th scope="row">Player size:</th>
             <td>
-                 <fieldset><legend class="screen-reader-text"><span>Player size</span></legend>
+                <fieldset><legend class="screen-reader-text"><span>Player size</span></legend>
 		<?php require 'player_sizes.inc.php';
 			$i=0;
 			if (is_bool(get_option('size'))) { $sel = (int) $pDefault; } else { $sel= (int) get_option('size'); }
