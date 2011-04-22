@@ -24,15 +24,13 @@ class WYLWidget extends WP_Widget {
 	$lyteSettings[0]=$wp_lyte_plugin_url."lyte/";
 
 	if (get_option('newTube')==="1") {
-	        $lyteSettings[1]="lyte-newtube-min.js";
-	} else {
-		$lyteSettings[1]="lyte-min.js";
+	        $lyteSettings[1]="newtube-";
 	}
 	?>
         <?php echo $before_widget; ?>
               <?php if ( $WYLtitle ) echo $before_title . $WYLtitle . $after_title; ?>
-	      <div class="lyte widget" id="<?php echo $WYLid; ?>" style="width:<?php echo $wSize[$WYLsize]['w']; ?>px;height:<?php echo $wSize[$WYLsize]['h']; ?>px;"><noscript><a href="http://youtu.be/<?php echo $WYLid;?>"><img src="http://img.youtube.com/vi/<?php echo $WYLid; ?>/default.jpg"></a></noscript><script type="text/javascript"><!-- 
-	      var bU='<?php echo $lyteSettings[0];?>';var d=document;if(d.addEventListener){d.addEventListener('DOMContentLoaded', insert, false)}else{window.onload=insert} function insert(){if(!d.getElementById('lytescr')){lytescr=d.createElement('script');lytescr.async=true;lytescr.id='lytescr';lytescr.src='<?php echo $lyteSettings[0].$lyteSettings[1];?>';h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(lytescr, h)}};
+	      <div class="lyte widget" id="<?php echo $WYLid; ?>" style="width:<?php echo $wSize[$WYLsize]['w']; ?>px;height:<?php echo $wSize[$WYLsize]['h']; ?>px;"><noscript><a href="http://youtu.be/<?php echo $WYLid;?>"><img src="http://img.youtube.com/vi/<?php echo $WYLid; ?>/default.jpg" alt="" /></a></noscript><script type="text/javascript"><!-- 
+	      var bU='<?php echo $lyteSettings[0];?>';var nT='<?php echo $lyteSettings[1];?>';var d=document;if(d.addEventListener){d.addEventListener('DOMContentLoaded', insert, false)}else{window.onload=insert} function insert(){if(!d.getElementById('lytescr')){lytescr=d.createElement('script');lytescr.async=true;lytescr.id='lytescr';lytescr.src='<?php echo $lyteSettings[0]."lyte-min.js";?>';h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(lytescr, h)}};
 	      --></script></div>
 	      <div><?php echo $WYLtext ?></div>
               <?php echo $after_widget; ?>

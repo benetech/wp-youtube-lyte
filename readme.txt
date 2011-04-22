@@ -1,19 +1,15 @@
-=== Plugin Name ===
+=== WP YouTube Lyte ===
 Contributors: futtta
-Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5, widget
+Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5, widget, youtube audio, audio
 Requires at least: 2.9
-Tested up to: 3.1
-Stable tag: 0.6.5
+Tested up to: 3.1.1
+Stable tag: 0.7.1
 
 "Lite YouTube Embeds" look like normal YouTube embeds but don't use Flash, thus reducing download size & page rendering time.
 
 == Description ==
 
-WP-YouTube-Lyte inserts "Lite YouTube Embeds" in your blog. These look and feel like normal embedded YouTube, but don't use Flash unless clicked on, thereby [reducing download size & rendering time substantially](http://blog.futtta.be/2010/08/30/the-state-of-wp-youtube-lyte/). Just add a YouTube-link with "httpv" instead of "http" and WP-YouTube-Lyte will replace that link with the correct (flash-less) code.
-
-WP-YouTube-Lyte implements [LYTE](http://blog.futtta.be/2010/04/23/high-performance-youtube-embeds/ "High Performance YouTube embeds"), which is a small javascript-library that creates a "dummy" YouTube-player which includes the clip thumbnail and title. When clicked on, the dummy player is seamlessly replaced by the actual video player.
-
-Experimental support for embedding html5 YouTube video is available (implementing [YouTube's new embed code](http://apiblog.youtube.com/2010/07/new-way-to-embed-youtube-videos.html)), meaning WP-YouTube-Lyte allows for an entirely flash-less YouTube experience on your blog, displaying YouTube's HTML5 video in h264 or the new WebM-codec.
+WP YouTube Lyte inserts "Lite YouTube Embeds" in your blog. These look and feel like normal embedded YouTube, but don't use Flash, thereby [reducing download size & rendering time substantially](http://blog.futtta.be/2010/08/30/the-state-of-wp-youtube-lyte/). Just add a YouTube-link with "httpv" (or "httpa" if you only want to [embed YouTube's audio](http://blog.futtta.be/2011/04/19/audio-only-youtube-embedding-with-wp-youtube-lyte-0-7/)) instead of "http" and WP YouTube Lyte will replace that link with the correct (flash-less) code. When a video is played, WP YouTube Lyte can activate [YouTube's embedded html5-player](http://apiblog.youtube.com/2010/07/new-way-to-embed-youtube-videos.html) or the older Flash-version.
 
 WP-Youtube-lyte can be used together with [Smart Youtube](http://wordpress.org/extend/plugins/smart-youtube/ "Great plugin"). In that case WP-Youtube-lyte will take care of the default embeds (httpv), while Smart Youtube continues to parse other types (httpvh, httpvhd, httpvp, ...).
 
@@ -38,6 +34,11 @@ HTML5 video will not be visible for everyone (see requirements), some visitors w
 = Does WP YouTube Lyte protect my visitor's privacy? =
 As opposed to some of the [most important](http://blog.futtta.be/2010/12/15/wordpress-com-stats-trojan-horse-for-quantcast-tracking/) [plugins](http://blog.futtta.be/2010/01/22/add-to-any-removed-from-here/) there is no 3rd party tracking code in WP YouTube Lyte.
 
+= Can I use WP YouTube Lyte for a custom field? =
+As tested and confirmed by [rumultik.ru's Dimitri](http://rumultik.ru) (thanks for that man!), this indeed does work. Just pass the httpv url of such a field to lyte_parse like this: 
+`if(function_exists('lyte_parse')) { echo lyte_parse($video); }`
+and you're good to go!
+
 = Any bugs/ issues should I know about? =
 * The new YouTube HTML5-embed-code is a work in progress, positioning of video isn't always perfect when fallback Flash-version is used.
 * If you're using the HTML5-version and you have a WP-YouTube-Lyte widget in your sidebar, you'll notice how the controls at the bottom overlap. This is because YouTube's new embed code doesn't scale down to small sizes too great. The normal (Flash-based) player omits most controls in this case, I would expect the HTML5-version to do this as well in a not to distant future.
@@ -53,6 +54,18 @@ As opposed to some of the [most important](http://blog.futtta.be/2010/12/15/word
 * [Rate my plugin on wordpress.org](http://wordpress.org/extend/plugins/wp-youtube-lyte/), even if you think it stinks ;-)
 
 == Changelog ==
+= 0.7.1 =
+* re-minized lyte-min.js (there's lyte.js for your reading pleasure though)
+* thumbnail image in noscript-tags now inherits size of div (to keep it from messing up the layout when JS is not available, e.g. in a feedburner-feed)
+* the html5 version of the audio-player now is a bit higher (was 27px, now 33px) to allow scrolling through the clip
+* the html-output of the plugin now validates against xhtml 1.0 transitional (thanks for the heads-up Carolin)
+* text in frontend (i.e. what your visitors see) is translated into Dutch & French, [corrections and other translations are welcome](http://blog.futtta.be/contact/)
+
+= 0.7.0 =
+* new feature (as seen [on Pitchfork](http://pitchfork.com/ "great site for music lovers")): [audio-only YouTube embeds](http://blog.futtta.be/2011/04/19/audio-only-youtube-embedding-with-wp-youtube-lyte-0-7/) (use "httpa://" instead of "httpv://")
+* merged lyte-min.js and lyte-newtube-min.js into one file
+* added wmode=transparant when video is played in flash-mode
+
 = 0.6.5 =
 * updated images for html5-version to new look&feel
 * disabled "watch later" by adding variable "probably_logged_in=false" to youtube embed
