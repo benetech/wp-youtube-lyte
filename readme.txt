@@ -1,4 +1,4 @@
-=== Plugin Name ===
+=== WP YouTube Lyte ===
 Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5, widget, youtube audio, audio
 Requires at least: 2.9
@@ -9,7 +9,7 @@ Stable tag: 0.7.0
 
 == Description ==
 
-WP-YouTube-Lyte inserts "Lite YouTube Embeds" in your blog. These look and feel like normal embedded YouTube, but don't use Flash, thereby [reducing download size & rendering time substantially](http://blog.futtta.be/2010/08/30/the-state-of-wp-youtube-lyte/). Just add a YouTube-link with "httpv" (or "httpa" if you only want the audio) instead of "http" and WP-YouTube-Lyte will replace that link with the correct (flash-less) code. When a video is played, WP-YouTube-Lyte can activate [YouTube's embedded html5-player](http://apiblog.youtube.com/2010/07/new-way-to-embed-youtube-videos.html) or the older Flash-version.
+WP YouTube Lyte inserts "Lite YouTube Embeds" in your blog. These look and feel like normal embedded YouTube, but don't use Flash, thereby [reducing download size & rendering time substantially](http://blog.futtta.be/2010/08/30/the-state-of-wp-youtube-lyte/). Just add a YouTube-link with "httpv" (or "httpa" if you only want to [embed YouTube's audio](http://blog.futtta.be/2011/04/19/audio-only-youtube-embedding-with-wp-youtube-lyte-0-7/)) instead of "http" and WP YouTube Lyte will replace that link with the correct (flash-less) code. When a video is played, WP YouTube Lyte can activate [YouTube's embedded html5-player](http://apiblog.youtube.com/2010/07/new-way-to-embed-youtube-videos.html) or the older Flash-version.
 
 WP-Youtube-lyte can be used together with [Smart Youtube](http://wordpress.org/extend/plugins/smart-youtube/ "Great plugin"). In that case WP-Youtube-lyte will take care of the default embeds (httpv), while Smart Youtube continues to parse other types (httpvh, httpvhd, httpvp, ...).
 
@@ -54,8 +54,15 @@ and you're good to go!
 * [Rate my plugin on wordpress.org](http://wordpress.org/extend/plugins/wp-youtube-lyte/), even if you think it stinks ;-)
 
 == Changelog ==
+= 0.7.1 =
+* re-minized lyte-min.js (there's lyte.js for your reading pleasure though)
+* thumbnail image in noscript-tags now inherits size of div (to keep it from messing up the layout when JS is not available, e.g. in a feedburner-feed)
+* the html5 version of the audio-player now is a bit higher (was 27px, now 33px) to allow scrolling through the clip
+* the html-output of the plugin now validates against xhtml 1.0 transitional (thanks for the heads-up Carolin)
+* frontend text (what visitors see) available in English, Dutch and French, [corrections or other translations are welcome](http://blog.futtta.be/contact/)
+
 = 0.7.0 =
-* new feature (as seen [on Pitchfork](http://pitchfork.com/ "great site for music lovers") ): embedding YouTube with audio-only (use "httpa://" instead of "httpv://")
+* new feature (as seen [on Pitchfork](http://pitchfork.com/ "great site for music lovers")): [audio-only YouTube embeds](http://blog.futtta.be/2011/04/19/audio-only-youtube-embedding-with-wp-youtube-lyte-0-7/) (use "httpa://" instead of "httpv://")
 * merged lyte-min.js and lyte-newtube-min.js into one file
 * added wmode=transparant when video is played in flash-mode
 

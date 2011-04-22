@@ -4,7 +4,7 @@ Plugin Name: WP YouTube Lyte
 Plugin URI: http://blog.futtta.be/tag/lyte
 Description: Lite and accessible YouTube audio and video embedding.
 Author: Frank Goossens (futtta)
-Version: 0.7.0
+Version: 0.7.1
 Author URI: http://blog.futtta.be/
 */
 
@@ -46,7 +46,7 @@ function lyte_parse($the_content) {
 			} else {
 				$audioClass=" audio";
 				if ($lyteSettings[1]=="newtube-"){
-					$divHeight=27;
+					$divHeight=33;
 				} else {
 					$divHeight=25;
 				}
@@ -54,20 +54,20 @@ function lyte_parse($the_content) {
 
 			switch ($lyteSettings[4]) {
 				case "0":
-					$noscript_post="<br />".__("Watch on YouTube","wp-youtube-lyte");
+					$noscript_post="<br />".__("Watch this video on YouTube","wp-youtube-lyte");
 					$lytelinks_txt="";
 					break;
         			case "2":
 				        $noscript_post="";
-					$lytelinks_txt="<div class=\"lL\">".__("Watch this video ","wp-youtube-lyte")."<a href=\"http://youtu.be/".$match[4]."\">".__("on YouTube","wp-youtube-lyte")."</a>".__(" or on ","wp-youtube-lyte")."<a href=\"http://icant.co.uk/easy-youtube/?http://www.youtube.com/watch?v=".$match[4]."\">Easy Youtube</a>.</div>";
+					$lytelinks_txt="<div class=\"lL\">".__("Watch this video","wp-youtube-lyte")." <a href=\"http://youtu.be/".$match[4]."\">".__("on YouTube","wp-youtube-lyte")."</a> ".__("or on","wp-youtube-lyte")." <a href=\"http://icant.co.uk/easy-youtube/?http://www.youtube.com/watch?v=".$match[4]."\">Easy Youtube</a>.</div>";
 					break;
 				default:
                                         $noscript_post="";
-                                        $lytelinks_txt="<div class=\"lL\">".__("Watch this video ","wp-youtube-lyte")."<a href=\"http://youtu.be/".$match[4]."\">".__("on YouTube","wp-youtube-lyte")."</a>.</div>";
+                                        $lytelinks_txt="<div class=\"lL\">".__("Watch this video","wp-youtube-lyte")." <a href=\"http://youtu.be/".$match[4]."\">".__("on YouTube","wp-youtube-lyte")."</a>.</div>";
 			}
 
-			$lytetemplate = "<div class=\"lyte".$audioClass."\" id=\"".$match[4]."\" style=\"width:".$lyteSettings[2]."px;height:".$divHeight."px;\"><noscript><a href=\"http://youtu.be/".$match[4]."\"><img src=\"http://img.youtube.com/vi/".$match[4]."/0.jpg\">".$noscript_post."</a></noscript><script type=\"text/javascript\"><!-- \n var nT='".$lyteSettings[1]."';var bU='".$lyteSettings[0]."';var d=document;if(d.addEventListener){d.addEventListener('DOMContentLoaded', insert, false)}else{window.onload=insert} function insert(){if(!d.getElementById('lytescr')){lytescr=d.createElement('script');lytescr.async=true;lytescr.id='lytescr';lytescr.src='".$lyteSettings[0]."lyte-min.js';h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(lytescr, h)}}; \n --></script></div>".$lytelinks_txt;
-			$the_content = preg_replace("/http(v|a):\/\/([a-zA-Z0-9\-\_]+\.|)youtube\.com\/watch(\?v\=|\/v\/)([a-zA-Z0-9\-\_]{11})([^\s<]*)/", $lytetemplate, $the_content, 1);
+			$lytetemplate = "<div class=\"lyte".$audioClass."\" id=\"".$match[4]."\" style=\"width:".$lyteSettings[2]."px;height:".$divHeight."px;\"><noscript><a href=\"http://youtu.be/".$match[4]."\"><img src=\"http://img.youtube.com/vi/".$match[4]."/0.jpg\" alt=\"\" width=\"".$lyteSettings[2]."\" height=\"".$divHeight."\" />".$noscript_post."</a></noscript><script type=\"text/javascript\"><!-- \n var nT='".$lyteSettings[1]."';var bU='".$lyteSettings[0]."';var d=document;if(d.addEventListener){d.addEventListener('DOMContentLoaded', insert, false)}else{window.onload=insert} function insert(){if(!d.getElementById('lytescr')){lytescr=d.createElement('script');lytescr.async=true;lytescr.id='lytescr';lytescr.src='".$lyteSettings[0]."lyte-min.js';h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(lytescr, h)}}; \n --></script></div>".$lytelinks_txt;
+			$the_content = preg_replace("/<p>http(v|a):\/\/([a-zA-Z0-9\-\_]+\.|)youtube\.com\/watch(\?v\=|\/v\/)([a-zA-Z0-9\-\_]{11})([^\s<]*)<\/p>/", $lytetemplate, $the_content, 1);
 		}
 	}
     return $the_content;
