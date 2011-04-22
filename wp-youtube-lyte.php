@@ -8,16 +8,16 @@ Version: 0.7.1
 Author URI: http://blog.futtta.be/
 */
 
+$plugin_dir = basename(dirname(__FILE__)).'/languages';
+load_plugin_textdomain( 'wp-youtube-lyte', null, $plugin_dir );
+
+$wp_lyte_plugin_url = defined('WP_PLUGIN_URL') ? trailingslashit(WP_PLUGIN_URL . '/' . dirname(plugin_basename(__FILE__))) : trailingslashit(get_bloginfo('wpurl')) . PLUGINDIR . '/' . dirname(plugin_basename(__FILE__));
+
 require_once(dirname(__FILE__).'/options.php');
 require_once(dirname(__FILE__).'/player_sizes.inc.php');
 require_once(dirname(__FILE__).'/widget.php');
 
-$wp_lyte_plugin_url = defined('WP_PLUGIN_URL') ? trailingslashit(WP_PLUGIN_URL . '/' . dirname(plugin_basename(__FILE__))) : trailingslashit(get_bloginfo('wpurl')) . PLUGINDIR . '/' . dirname(plugin_basename(__FILE__)); 
-
-$plugin_dir = basename(dirname(__FILE__));
-load_plugin_textdomain( 'wp-youtube-lyte', null, $plugin_dir );
-
-$lyteSettings[0]=$wp_lyte_plugin_url."lyte/";
+$lyteSettings[0]=$wp_lyte_plugin_url.'lyte/';
 
 if (get_option('newTube')==="1") {
         $lyteSettings[1]="newtube-";

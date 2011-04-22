@@ -3,7 +3,7 @@ Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5, widget, youtube audio, audio
 Requires at least: 2.9
 Tested up to: 3.1.1
-Stable tag: 0.7.0
+Stable tag: 0.7.1
 
 "Lite YouTube Embeds" look like normal YouTube embeds but don't use Flash, thus reducing download size & page rendering time.
 
@@ -59,7 +59,7 @@ and you're good to go!
 * thumbnail image in noscript-tags now inherits size of div (to keep it from messing up the layout when JS is not available, e.g. in a feedburner-feed)
 * the html5 version of the audio-player now is a bit higher (was 27px, now 33px) to allow scrolling through the clip
 * the html-output of the plugin now validates against xhtml 1.0 transitional (thanks for the heads-up Carolin)
-* frontend text (what visitors see) available in English, Dutch and French, [corrections or other translations are welcome](http://blog.futtta.be/contact/)
+* text in frontend (i.e. what your visitors see) is translated into Dutch & French, [corrections and other translations are welcome](http://blog.futtta.be/contact/)
 
 = 0.7.0 =
 * new feature (as seen [on Pitchfork](http://pitchfork.com/ "great site for music lovers")): [audio-only YouTube embeds](http://blog.futtta.be/2011/04/19/audio-only-youtube-embedding-with-wp-youtube-lyte-0-7/) (use "httpa://" instead of "httpv://")
