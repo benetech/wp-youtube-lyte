@@ -15,6 +15,9 @@ class WYLWidget extends WP_Widget {
 	$WYLsize = apply_filters( 'widget_text', $instance['WYLsize'], $instance );
 	if ($WYLsize=="") $WYLsize=$wDefault;
 
+	$WYLaudio = apply_filters( 'widget_text', $instance['WYLaudio'], $instance );
+	if ($WYLaudio!=="audio") $WYLaudio="";
+
 	$WYLurl=esc_url($instance['WYLurl']);
 	$WYLqs=substr(strstr($WYLurl,'?'),1);
 	parse_str($WYLqs,$WYLarr);
@@ -29,7 +32,7 @@ class WYLWidget extends WP_Widget {
 	?>
         <?php echo $before_widget; ?>
               <?php if ( $WYLtitle ) echo $before_title . $WYLtitle . $after_title; ?>
-	      <div class="lyte widget" id="<?php echo $WYLid; ?>" style="width:<?php echo $wSize[$WYLsize]['w']; ?>px;height:<?php echo $wSize[$WYLsize]['h']; ?>px;"><noscript><a href="http://youtu.be/<?php echo $WYLid;?>"><img src="http://img.youtube.com/vi/<?php echo $WYLid; ?>/default.jpg" alt="" /></a></noscript><script type="text/javascript"><!-- 
+	      <div class="lyte widget <?php echo $WYLaudio; ?>" id="<?php echo $WYLid; ?>" style="width:<?php echo $wSize[$WYLsize]['w']; ?>px;height:<?php if($WYLaudio==="audio") {echo "25";} else {echo $wSize[$WYLsize]['h'];} ?>px;"><noscript><a href="http://youtu.be/<?php echo $WYLid;?>"><img src="http://img.youtube.com/vi/<?php echo $WYLid; ?>/default.jpg" alt="" /></a></noscript><script type="text/javascript"><!-- 
 	      var bU='<?php echo $lyteSettings[0];?>';var nT='<?php echo $lyteSettings[1];?>';var d=document;if(d.addEventListener){d.addEventListener('DOMContentLoaded', insert, false)}else{window.onload=insert} function insert(){if(!d.getElementById('lytescr')){lytescr=d.createElement('script');lytescr.async=true;lytescr.id='lytescr';lytescr.src='<?php echo $lyteSettings[0]."lyte-min.js";?>';h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(lytescr, h)}};
 	      --></script></div>
 	      <div><?php echo $WYLtext ?></div>
@@ -42,6 +45,7 @@ class WYLWidget extends WP_Widget {
 		$instance['WYLtitle'] = strip_tags($new_instance['WYLtitle']);
 		$instance['WYLurl'] = strip_tags($new_instance['WYLurl']);
 		$instance['WYLsize'] = strip_tags($new_instance['WYLsize']);
+		$instance['WYLaudio'] = strip_tags($new_instance['WYLaudio']);
 
                 if ( current_user_can('unfiltered_html') )
 			$instance['WYLtext'] = $new_instance['WYLtext'];
@@ -57,6 +61,9 @@ class WYLWidget extends WP_Widget {
         $WYLtitle = esc_attr($instance['WYLtitle']);
 	$WYLurl = esc_attr($instance['WYLurl']);
 	$WYLtext = format_to_edit($instance['WYLtext']);
+
+	$WYLaudio = esc_attr($instance['WYLaudio']);
+	if ($WYLaudio!=="audio") $WYLaudio="";
 
 	$WYLsize = esc_attr($instance['WYLsize']);
 	if ($WYLsize=="") $WYLsize=$wDefault;
@@ -79,6 +86,19 @@ class WYLWidget extends WP_Widget {
 			?>
 		</select>
 	    </label></p>
+	    <p><label for="<?php echo $this->get_field_id('WYLaudio'); ?>"><?php _e('Type:'); ?>
+                <select class="widefat" id="<?php echo $this->get_field_id('WYLaudio'); ?>" name="<?php echo $this->get_field_name('WYLaudio'); ?>">
+                        <?php
+				if($WYLaudio==="audio") {
+					$aselected=" selected=\"true\"";
+				} else {
+					$vselected=" selected=\"true\"";
+				}
+                        	echo "<option value=\"audio\"".$aselected.">audio</option>";
+				echo "<option value=\"video\"".$vselected.">video</option>";
+                        ?>
+                </select>
+            </label></p>
             <p><label for="<?php echo $this->get_field_id('WYLurl'); ?>"><?php _e('Youtube-URL:'); ?> <input class="widefat" id="<?php echo $this->get_field_id('WYLurl'); ?>" name="<?php echo $this->get_field_name('WYLurl'); ?>" type="text" value="<?php echo $WYLurl; ?>" /></label></p>
 	    <p><label for="<?php echo $this->get_field_id('WYLtext'); ?>"><?php _e('Text:'); ?> <textarea class="widefat" id="<?php echo $this->get_field_id('WYLtext'); ?>" name="<?php echo $this->get_field_name('WYLtext'); ?>" rows="16" cols="20"><?php echo $WYLtext; ?></textarea></label></p>
         <?php 
