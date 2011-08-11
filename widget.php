@@ -19,9 +19,14 @@ class WYLWidget extends WP_Widget {
 	if ($WYLaudio!=="audio") $WYLaudio="";
 
 	$WYLurl=esc_url($instance['WYLurl']);
-	$WYLqs=substr(strstr($WYLurl,'?'),1);
-	parse_str($WYLqs,$WYLarr);
-	$WYLid=$WYLarr['v'];
+
+        if (strpos($WYLurl,'youtu.be')) {
+                $WYLid=substr(parse_url($WYLurl,PHP_URL_PATH),1,11);
+        } else {
+                $WYLqs=substr(strstr($WYLurl,'?'),1);
+                parse_str($WYLqs,$WYLarr);
+                $WYLid=$WYLarr['v'];
+        }
 
 	$wp_lyte_plugin_url = defined('WP_PLUGIN_URL') ? trailingslashit(WP_PLUGIN_URL . '/' . dirname(plugin_basename(__FILE__))) : trailingslashit(get_bloginfo('wpurl')) . PLUGINDIR . '/' . dirname(plugin_basename(__FILE__));
 	$lyteSettings[0]=$wp_lyte_plugin_url."lyte/";
@@ -69,8 +74,8 @@ class WYLWidget extends WP_Widget {
 	if ($WYLsize=="") $WYLsize=$wDefault;
 
         ?>
-            <p><label for="<?php echo $this->get_field_id('WYLtitle'); ?>"><?php _e('Title:'); ?> <input class="widefat" id="<?php echo $this->get_field_id('WYLtitle'); ?>" name="<?php echo $this->get_field_name('WYLtitle'); ?>" type="text" value="<?php echo $WYLtitle; ?>" /></label></p>
-            <p><label for="<?php echo $this->get_field_id('WYLsize'); ?>"><?php _e('Size:'); ?>
+            <p><label for="<?php echo $this->get_field_id('WYLtitle'); ?>"><?php _e("Title:","wp-youtube-lyte") ?> <input class="widefat" id="<?php echo $this->get_field_id('WYLtitle'); ?>" name="<?php echo $this->get_field_name('WYLtitle'); ?>" type="text" value="<?php echo $WYLtitle; ?>" /></label></p>
+            <p><label for="<?php echo $this->get_field_id('WYLsize'); ?>"><?php _e("Size:","wp-youtube-lyte") ?>
 		<select class="widefat" id="<?php echo $this->get_field_id('WYLsize'); ?>" name="<?php echo $this->get_field_name('WYLsize'); ?>">
 			<?php
 				$x=1;
@@ -86,7 +91,7 @@ class WYLWidget extends WP_Widget {
 			?>
 		</select>
 	    </label></p>
-	    <p><label for="<?php echo $this->get_field_id('WYLaudio'); ?>"><?php _e('Type:'); ?>
+	    <p><label for="<?php echo $this->get_field_id('WYLaudio'); ?>"><?php _e("Type:","wp-youtube-lyte") ?>
                 <select class="widefat" id="<?php echo $this->get_field_id('WYLaudio'); ?>" name="<?php echo $this->get_field_name('WYLaudio'); ?>">
                         <?php
 				if($WYLaudio==="audio") {
@@ -94,13 +99,13 @@ class WYLWidget extends WP_Widget {
 				} else {
 					$vselected=" selected=\"true\"";
 				}
-                        	echo "<option value=\"audio\"".$aselected.">audio</option>";
-				echo "<option value=\"video\"".$vselected.">video</option>";
+                echo "<option value=\"audio\"".$aselected.">".__("audio","wp-youtube-lyte")."</option>";
+				echo "<option value=\"video\"".$vselected.">".__("video","wp-youtube-lyte")."</option>";
                         ?>
                 </select>
             </label></p>
-            <p><label for="<?php echo $this->get_field_id('WYLurl'); ?>"><?php _e('Youtube-URL:'); ?> <input class="widefat" id="<?php echo $this->get_field_id('WYLurl'); ?>" name="<?php echo $this->get_field_name('WYLurl'); ?>" type="text" value="<?php echo $WYLurl; ?>" /></label></p>
-	    <p><label for="<?php echo $this->get_field_id('WYLtext'); ?>"><?php _e('Text:'); ?> <textarea class="widefat" id="<?php echo $this->get_field_id('WYLtext'); ?>" name="<?php echo $this->get_field_name('WYLtext'); ?>" rows="16" cols="20"><?php echo $WYLtext; ?></textarea></label></p>
+            <p><label for="<?php echo $this->get_field_id('WYLurl'); ?>"><?php _e("Youtube-URL:","wp-youtube-lyte") ?> <input class="widefat" id="<?php echo $this->get_field_id('WYLurl'); ?>" name="<?php echo $this->get_field_name('WYLurl'); ?>" type="text" value="<?php echo $WYLurl; ?>" /></label></p>
+	    <p><label for="<?php echo $this->get_field_id('WYLtext'); ?>"><?php _e("Text:","wp-youtube-lyte") ?> <textarea class="widefat" id="<?php echo $this->get_field_id('WYLtext'); ?>" name="<?php echo $this->get_field_name('WYLtext'); ?>" rows="16" cols="20"><?php echo $WYLtext; ?></textarea></label></p>
         <?php 
     }
 } 
