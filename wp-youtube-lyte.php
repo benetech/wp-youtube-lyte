@@ -4,8 +4,10 @@ Plugin Name: WP YouTube Lyte
 Plugin URI: http://blog.futtta.be/tag/lyte
 Description: Lite and accessible YouTube audio and video embedding.
 Author: Frank Goossens (futtta)
-Version: 0.7.3
+Version: 0.8.0
 Author URI: http://blog.futtta.be/
+Text Domain: wp-youtube-lyte
+Domain Path: /languages
 */
 
 $plugin_dir = basename(dirname(__FILE__)).'/languages';
@@ -18,10 +20,6 @@ require_once(dirname(__FILE__).'/player_sizes.inc.php');
 require_once(dirname(__FILE__).'/widget.php');
 
 $lyteSettings[0]=$wp_lyte_plugin_url.'lyte/';
-
-if (get_option('newTube')==="1") {
-        $lyteSettings[1]="newtube-";
-}
 
 $oSize = (int) get_option('size');
 if ((is_bool($oSize)) || ($pSize[$oSize]['a']===false)) { $sel = (int) $pDefault; } else { $sel= $oSize; }
@@ -36,8 +34,14 @@ function lyte_parse($the_content) {
 		$char_codes = array('&#215;','&#8211;');
 		$replacements = array("x", "--");
 		$the_content=str_replace($char_codes, $replacements, $the_content);
-	    
-		preg_match_all("/http(a|v):\/\/([a-zA-Z0-9\-\_]+\.|)(youtube|youtu)(\.com|\.be)\/(watch(\?v\=|\/v\/)|)([a-zA-Z0-9\-\_]{11})([^<\s]*)/", $the_content, $matches, PREG_SET_ORDER); 
+
+	if (get_option('hidef')==="1") {
+       		$hidefClass=" hidef";
+	} else {
+		$hidefClass="";
+	}
+
+		preg_match_all("/http(a|v):\/\/([a-zA-Z0-9\-\_]+\.|)(youtube|youtu)(\.com|\.be)\/(((watch(\?v\=|\/v\/)|)([a-zA-Z0-9\-\_]{11}))|(playlist\?list\=PL([a-zA-Z0-9\-\_]{16})))([^<\s]*)/", $the_content, $matches, PREG_SET_ORDER); 
 
 		foreach($matches as $match) {
 			if ($match[1]!=="a") {
@@ -45,29 +49,43 @@ function lyte_parse($the_content) {
                                 $audioClass="";
 			} else {
 				$audioClass=" audio";
-				if ($lyteSettings[1]=="newtube-"){
-					$divHeight=33;
-				} else {
-					$divHeight=25;
-				}
+				$divHeight=38;
 			}
 
+                if ($match[11]!="") {
+                        $plClass=" playlist";
+                        $vid=$match[11];
+                        switch ($lyteSettings[4]) {
+                                case "0":
+                                        $noscript_post="<br />".__("Watch this playlist on YouTube","wp-youtube-lyte");
+                                        $lytelinks_txt="";
+                                        break;
+                                default:
+                                        $noscript_post="<br />".__("Watch this playlist on YouTube","wp-youtube-lyte");
+                                        $lytelinks_txt="<div class=\"lL\">".__("Watch this playlist","wp-youtube-lyte")." <a href=\"http://www.youtube.com/playlist?list=PL".$vid."\">".__("on YouTube","wp-youtube-lyte")."</a>.</div>";
+			}
+                        $noscript="<noscript><a href=\"http://youtube.com//".$vid."\">".$noscript_post."</a></noscript>";
+		} else if ($match[9]!="") {
+			$plClass="";
+                        $vid=$match[9];
 			switch ($lyteSettings[4]) {
 				case "0":
 					$noscript_post="<br />".__("Watch this video on YouTube","wp-youtube-lyte");
 					$lytelinks_txt="";
 					break;
-        			case "2":
-				        $noscript_post="";
+				case "2":
+					$noscript_post="";
 					$lytelinks_txt="<div class=\"lL\">".__("Watch this video","wp-youtube-lyte")." <a href=\"http://youtu.be/".$match[7]."\">".__("on YouTube","wp-youtube-lyte")."</a> ".__("or on","wp-youtube-lyte")." <a href=\"http://icant.co.uk/easy-youtube/?http://www.youtube.com/watch?v=".$match[7]."\">Easy Youtube</a>.</div>";
 					break;
 				default:
-                                        $noscript_post="";
-                                        $lytelinks_txt="<div class=\"lL\">".__("Watch this video","wp-youtube-lyte")." <a href=\"http://youtu.be/".$match[7]."\">".__("on YouTube","wp-youtube-lyte")."</a>.</div>";
+					$noscript_post="";
+					$lytelinks_txt="<div class=\"lL\">".__("Watch this video","wp-youtube-lyte")." <a href=\"http://youtu.be/".$match[7]."\">".__("on YouTube","wp-youtube-lyte")."</a>.</div>";
 			}
+			$noscript="<noscript><a href=\"http://youtu.be/".$vid."\"><img src=\"http://img.youtube.com/vi/".$vid."/0.jpg\" alt=\"\" width=\"".$lyteSettings[2]."\" height=\"".$divHeight."\" />".$noscript_post."</a></noscript>";
+		}
 
-			$lytetemplate = "<div class=\"lyte".$audioClass."\" id=\"".$match[7]."\" style=\"width:".$lyteSettings[2]."px;height:".$divHeight."px;\"><noscript><a href=\"http://youtu.be/".$match[7]."\"><img src=\"http://img.youtube.com/vi/".$match[7]."/0.jpg\" alt=\"\" width=\"".$lyteSettings[2]."\" height=\"".$divHeight."\" />".$noscript_post."</a></noscript><script type=\"text/javascript\"><!-- \n var nT='".$lyteSettings[1]."';var bU='".$lyteSettings[0]."';var d=document;if(d.addEventListener){d.addEventListener('DOMContentLoaded', insert, false)}else{window.onload=insert} function insert(){if(!d.getElementById('lytescr')){lytescr=d.createElement('script');lytescr.async=true;lytescr.id='lytescr';lytescr.src='".$lyteSettings[0]."lyte-min.js';h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(lytescr, h)}}; \n --></script></div>".$lytelinks_txt;
-			$the_content = preg_replace("/(<p>)?http(v|a):\/\/([a-zA-Z0-9\-\_]+\.|)(youtube|youtu)(\.com|\.be)\/(watch(\?v\=|\/v\/)|)([a-zA-Z0-9\-\_]{11})([^\s<]*)(<\/p>)?/", $lytetemplate, $the_content, 1);
+		$lytetemplate = "<div class=\"lyte".$audioClass.$hidefClass.$plClass."\" id=\"".$vid."\" style=\"width:".$lyteSettings[2]."px;height:".$divHeight."px;\">".$noscript."<script type=\"text/javascript\"><!-- \n var bU='".$lyteSettings[0]."';var d=document;if(d.addEventListener){d.addEventListener('DOMContentLoaded', insert, false)}else{window.onload=insert} function insert(){if(!d.getElementById('lytescr')){lytescr=d.createElement('script');lytescr.async=true;lytescr.id='lytescr';lytescr.src='".$lyteSettings[0]."lyte-min.js';h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(lytescr, h)}}; \n --></script></div>".$lytelinks_txt;
+		$the_content = preg_replace("/(<p>)?http(v|a):\/\/([a-zA-Z0-9\-\_]+\.|)(youtube|youtu)(\.com|\.be)\/(((watch(\?v\=|\/v\/)|)([a-zA-Z0-9\-\_]{11}))|(playlist\?list\=PL([a-zA-Z0-9\-\_]{16})))([^\s<]*)(<\/p>)?/", $lytetemplate, $the_content, 1);
 		}
 	}
     return $the_content;
