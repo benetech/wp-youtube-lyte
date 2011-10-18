@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: WP YouTube Lyte
-Plugin URI: http://blog.futtta.be/tag/lyte
+Plugin URI: http://blog.futtta.be/tag/wp-youtube-lyte
 Description: Lite and accessible YouTube audio and video embedding.
 Author: Frank Goossens (futtta)
 Version: 0.8.0
@@ -75,11 +75,11 @@ function lyte_parse($the_content) {
 					break;
 				case "2":
 					$noscript_post="";
-					$lytelinks_txt="<div class=\"lL\">".__("Watch this video","wp-youtube-lyte")." <a href=\"http://youtu.be/".$match[7]."\">".__("on YouTube","wp-youtube-lyte")."</a> ".__("or on","wp-youtube-lyte")." <a href=\"http://icant.co.uk/easy-youtube/?http://www.youtube.com/watch?v=".$match[7]."\">Easy Youtube</a>.</div>";
+					$lytelinks_txt="<div class=\"lL\">".__("Watch this video","wp-youtube-lyte")." <a href=\"http://youtu.be/".$vid."\">".__("on YouTube","wp-youtube-lyte")."</a> ".__("or on","wp-youtube-lyte")." <a href=\"http://icant.co.uk/easy-youtube/?http://www.youtube.com/watch?v=".$vid."\">Easy Youtube</a>.</div>";
 					break;
 				default:
 					$noscript_post="";
-					$lytelinks_txt="<div class=\"lL\">".__("Watch this video","wp-youtube-lyte")." <a href=\"http://youtu.be/".$match[7]."\">".__("on YouTube","wp-youtube-lyte")."</a>.</div>";
+					$lytelinks_txt="<div class=\"lL\">".__("Watch this video","wp-youtube-lyte")." <a href=\"http://youtu.be/".$vid."\">".__("on YouTube","wp-youtube-lyte")."</a>.</div>";
 			}
 			$noscript="<noscript><a href=\"http://youtu.be/".$vid."\"><img src=\"http://img.youtube.com/vi/".$vid."/0.jpg\" alt=\"\" width=\"".$lyteSettings[2]."\" height=\"".$divHeight."\" />".$noscript_post."</a></noscript>";
 		}

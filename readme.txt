@@ -3,7 +3,7 @@ Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5, widget, youtube audio, audio, playlist, youtube playlist, hd, performance, accessibility
 Requires at least: 2.9
 Tested up to: 3.2.1
-Stable tag: 0.7.3
+Stable tag: 0.8.0
 
 "Lite YouTube Embeds" look like normal YouTube embeds but don't use Flash, thus reducing download size & page rendering time.
 
@@ -26,6 +26,7 @@ Just install form your Wordpress "Plugins|Add New" screen and all will be well. 
 3. Place a link to a YouTube clip like this; httpv://www.youtube.com/watch?v=_SQkWbRublY
 
 == Frequently Asked Questions ==
+
 = What does "html5 video support" mean? =
 When playing, HTML5 video will not be visible for everyone (see requirements). Indeed some visitors will see the fallback Flash video instead.
 
@@ -42,6 +43,7 @@ As tested and confirmed by [rumultik.ru's Dimitri](http://rumultik.ru) (thanks f
 and you're good to go!
 
 = Any bugs/ issues should I know about? =
+* The playlist-player currently does not work on iPad or iPhone, this is a known limitation of Youtube's playlist player and [is on the todo-list to get fixed](http://groups.google.com/group/youtube-api-gdata/browse_frm/thread/adbec924f43688e5#)
 * The new YouTube embed-code doesn't look great when using WP YouTube Lyte widgets in your sidebar. This is because YouTube's embedded player doesn't scale well for small sizes, this is something that YouTube should (and hopefully will) fix at a later stage.
 * Having the same YouTube-video on one page can cause WP YouTube Lyte to malfunction (as the YouTube id is used as the div's id in the DOM, and DOM id's are supposed to be unique)
 * As youtube-nocookie.com does not serve the HTML5-player, WP YouTube Lyte uses the youtube.com domain (which provides less privacy), but as youtube-nocookie.com servers HTML5-video, this will become the default domain for WP YouTube Lyte again, 
@@ -61,12 +63,12 @@ and you're good to go!
 * dropped support for the legacy YouTube embed-code
 * updated UI elements to match new, dark YouTube player style
 * updated player sizes to match YouTube's
-* added new translations: Spanish (thanks to [Paulino Bremer](http://askpaulino.com/)) and German (by "der Tux")
+* added new translations: Spanish (front-end strings, thanks to [Paulino Brener @Social Media Travelers](http://socialmediatravelers.com/)) and German (complete, by ["der Tuxman"](http://tuxproject.de/blog))
 
 = 0.7.3 =
 * sdded support for youtu.be links
-* added sl_SI translation (thanks Mitja Miheli&#268; @arnes.si](http://www.arnes.si/)!)
-* load donottrack js in https if needed (thanks Chris @[campino2k.de](http://campino2k.de/)
+* added sl_SI translation (thanks Mitja Miheli&#268; @arnes.si](http://www.arnes.si/))
+* load donottrack js in https if needed (thanks [Chris @campino2k.de](http://campino2k.de/))
 * tested & confirmed to work perfectly with wordpress 3.2.1
 
 = 0.7.2 =
