@@ -14,6 +14,7 @@ function lyte() {
     lytes = getElementsByClassName("lyte", "div");
     for (var i = 0; i < lytes.length; i++) {
         lyte_id = lytes[i].id;
+	vid = lyte_id.substring(4);
         p = doc.getElementById(lyte_id);
         p.className += " lP";
         pW = p.clientWidth;
@@ -21,7 +22,7 @@ function lyte() {
         pl = doc.createElement('div');
         p.appendChild(pl);
         p.onclick = plaYT;
-        pl.id = "lyte_" + lyte_id;
+        pl.id = "lyte_" + vid;
         pl.className = "pL";
 
         if (p.className.indexOf('audio') !== -1) {
@@ -30,13 +31,13 @@ function lyte() {
 	} else if (p.className.indexOf('playlist') !== -1){
             setStyle(pl, 'height:' + pH + 'px;width:' + pW + 'px;');
 	    pl.innerHTML = "<img src=\"" + bU + "play.png\" alt=\"Click to play this playlist\" style=\"margin-top:" + ((pH / 2) - 30) + "px;opacity:0.7;\" onmouseover=\"this.style.opacity=1;\" onmouseout=\"this.style.opacity=0.8;\"/><img src=\"" + bU + "controls-" + pW + ".png\" width=\"100%\" id=\"ctrl\" alt=\"\" style=\"max-width:" + pW + "px;\"/>";
-	    jsonUrl = "http://gdata.youtube.com/feeds/api/playlists/"+ lyte_id +"?v=2&alt=json-in-script&callback=parsePL&fields=id,title,entry"
+	    jsonUrl = "http://gdata.youtube.com/feeds/api/playlists/"+ vid +"?v=2&alt=json-in-script&callback=parsePL&fields=id,title,entry"
 	    loadScript(jsonUrl)
 	} else {
-            setStyle(pl, 'height:' + pH + 'px;width:' + pW + 'px;background:url("http://img.youtube.com/vi/' + lyte_id + '/0.jpg") no-repeat scroll center -10px rgb(0, 0, 0);background-size:contain;');
+            setStyle(pl, 'height:' + pH + 'px;width:' + pW + 'px;background:url("http://img.youtube.com/vi/' + vid + '/0.jpg") no-repeat scroll center -10px rgb(0, 0, 0);background-size:contain;');
             pl.innerHTML = "<img src=\"" + bU + "play.png\" alt=\"Click to play this video\" style=\"margin-top:" + ((pH / 2) - 30) + "px;opacity:0.7;\" onmouseover=\"this.style.opacity=1;\" onmouseout=\"this.style.opacity=0.8;\"/><img src=\"" + bU + "controls-" + pW + ".png\" width=\"100%\" id=\"ctrl\" alt=\"\" style=\"max-width:" + pW + "px;\"/>";
 	    if (p.className.indexOf('widget') === -1) {
-	    	jsonUrl = "http://gdata.youtube.com/feeds/api/videos/" + lyte_id + "?fields=id,title&alt=json-in-script&callback=parseV";
+	    	jsonUrl = "http://gdata.youtube.com/feeds/api/videos/" + vid + "?fields=id,title&alt=json-in-script&callback=parseV";
 		loadScript(jsonUrl)
 	    }
 	}
@@ -45,6 +46,7 @@ function lyte() {
 
 function plaYT() {
     this.onclick = "";
+    vid=this.id.substring(4);
 
     if (this.className.indexOf("hidef") === -1) {
     	hidef=0;
@@ -53,9 +55,9 @@ function plaYT() {
     }
 
     if (this.className.indexOf("playlist") === -1) {
-    	eU="http://www.youtube.com/embed/" + this.id
+    	eU="http://www.youtube.com/embed/" + vid
     } else {
-    	eU="http://www.youtube.com/embed/p/" + this.id
+    	eU="http://www.youtube.com/embed/p/" + vid
     }
 
     this.innerHTML="<iframe class=\"youtube-player\" type=\"text/html\" width=\"" + this.clientWidth + "\" height=\"" + this.clientHeight + "\" src=\""+eU+"?autoplay=1&amp;rel=0&amp;egm=0&amp;iv_load_policy=3&amp;probably_logged_in=false&amp;hd="+hidef+"\" frameborder=\"0\"></iframe>"

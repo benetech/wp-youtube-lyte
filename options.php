@@ -47,15 +47,17 @@ function lyte_settings_page() {
             <td>
                 <fieldset><legend class="screen-reader-text"><span><?php _e("Player size","wp-youtube-lyte") ?></span></legend>
 		<?php require 'player_sizes.inc.php';
-			$i=0;
 			if (is_bool(get_option('size'))) { $sel = (int) $pDefault; } else { $sel= (int) get_option('size'); }
-		 	while ($pS=$pSize[$i]) { 
-				if ($pS[a]===true) {
-				?>
-				<label title="<?php echo $pS[w]."X".$pS[h]; ?>"><input type="radio" name="size" class="l_size" value="<?php echo $i."\"";if($i===$sel) echo " checked";echo " /> ".$pS[w]."X".$pS[h]." (".$pS[t];?>)</label><br />
-				<?php
+			foreach (array("169","43") as $f) {
+				foreach ($pSizeOrder[$f] as $i) {
+					$pS=$pSize[$i];
+					if ($pS[a]===true) {
+						?>
+						<label title="<?php echo $pS[w]."X".$pS[h]; ?>"><input type="radio" name="size" class="l_size" value="<?php echo $i."\"";if($i===$sel) echo " checked";echo " /> ".$pS[w]."X".$pS[h]." (".$pS[t];?>)</label><br />
+						<?php
+					}
 				}
-				$i++;
+				?><br /><?php
 			}
 		?>
                 </fieldset>
@@ -82,7 +84,7 @@ function lyte_settings_page() {
                 </td>
 		</tr>
 	 <tr valign="top">
-	 	<th scope="row"><?php _e("Bonus feature: ","wp-youtube-lyte") ?><a href="http://blog.futtta.be/tag/donottrack" target="_blank">DoNotTrack</a></th>
+	 	<th scope="row"><?php _e("Bonus feature: ","wp-youtube-lyte") ?><a href="http://blog.futtta.be/tag/donottrack" target="_blank">DoNotTrack (new version)</a></th>
 		<td>
 			<fieldset>
 				<legend class="screen-reader-text"><span>Activate DoNotTrack</span></legend>

@@ -1,9 +1,9 @@
 === WP YouTube Lyte ===
 Contributors: futtta
-Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5, widget, youtube audio, audio, playlist, youtube playlist, hd, performance, accessibility
+Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5, widget, youtube audio, audio, playlist, youtube playlist, hd, performance, accessibility, sidebar
 Requires at least: 2.9
-Tested up to: 3.2.1
-Stable tag: 0.8.0
+Tested up to: 3.3
+Stable tag: 0.9.0
 
 "Lite YouTube Embeds" look like normal YouTube embeds but don't use Flash, thus reducing download size & page rendering time.
 
@@ -11,9 +11,14 @@ Stable tag: 0.8.0
 
 WP YouTube Lyte inserts "Lite YouTube Embeds" in your blog. These look and feel like normal embedded YouTube, but only call the actual "fat" Flash or HTML5-player when clicked on, thereby [reducing download size & rendering time substantially](http://blog.futtta.be/2010/08/30/the-state-of-wp-youtube-lyte/) when embedding YouTube occasionally and improving page performance dramatically when you've got multiple YouTube video's on one and the same page.
 
-Just add a YouTube-link for a video or [an entire playlist](http://blog.futtta.be/?s=lyte+playlist) with "httpv" (or "httpa" to [embed YouTube's audio](http://blog.futtta.be/2011/04/19/audio-only-youtube-embedding-with-wp-youtube-lyte-0-7/) only) instead of "http" or add a Lyte widget to your sidebar and WP YouTube Lyte replaces that link with the correct performance-optimized code. When a visitor clicks the play-button, WP YouTube Lyte seamlessly initiates [YouTube's new embedded player](http://apiblog.youtube.com/2010/07/new-way-to-embed-youtube-videos.html).
+Just add a YouTube-link for a video or [an entire playlist](http://blog.futtta.be/2011/10/11/wp-youtube-lyte-support-for-playlists-almost-included/) with "httpv" (or "httpa" to [embed YouTube's audio](http://blog.futtta.be/2011/04/19/audio-only-youtube-embedding-with-wp-youtube-lyte-0-7/) only) instead of "http" or add a Lyte widget to your sidebar and WP YouTube Lyte replaces that link with the correct performance-optimized code. When a visitor clicks the play-button, WP YouTube Lyte seamlessly initiates [YouTube's new embedded player](http://apiblog.youtube.com/2010/07/new-way-to-embed-youtube-videos.html). Some examples:
+* httpv://www.youtube.com/watch?v=_SQkWbRublY (normal video embed)
+* httpv://youtu.be/_SQkWbRublY (video embed with youtube-shortlink)
+* httpa://www.youtube.com/watch?v=_SQkWbRublY (audio only embed)
+* httpv://www.youtube.com/playlist?list=PLA486E741B25F8E00 (playlist embed)
+* httpv://www.youtube.com/watch?v=_SQkWbRublY#stepSize=-1 (video player, one size smaller than what's configured as default)
 
-WP YouTube Lyte has been written with optimal performance as primary goal, but has been tested for maximum browser-compatibility (iPad included) while keeping an eye on accessibility. The plugin is fully multi-language, with support for Dutch, English, French, German, Spanish and Slovene.
+WP YouTube Lyte has been written with optimal performance as primary goal, but has been tested for maximum browser-compatibility (iPad included) while keeping an eye on accessibility. The plugin is fully multi-language, with support for Catalan, Dutch, English, French, German, Hebrew, Spanish and Slovene.
 
 Feedback is welcome; see [info in the faq](http://wordpress.org/extend/plugins/wp-youtube-lyte/faq/) for bug reports/ feature requests and feel free to [rate and/or report on compatibility on wordpress.org](http://wordpress.org/extend/plugins/wp-youtube-lyte/).
 
@@ -46,7 +51,7 @@ and you're good to go!
 * The playlist-player currently does not work on iPad or iPhone, this is a known limitation of Youtube's playlist player and [is on the todo-list to get fixed](http://groups.google.com/group/youtube-api-gdata/browse_frm/thread/adbec924f43688e5#)
 * The new YouTube embed-code doesn't look great when using WP YouTube Lyte widgets in your sidebar. This is because YouTube's embedded player doesn't scale well for small sizes, this is something that YouTube should (and hopefully will) fix at a later stage.
 * Having the same YouTube-video on one page can cause WP YouTube Lyte to malfunction (as the YouTube id is used as the div's id in the DOM, and DOM id's are supposed to be unique)
-* As youtube-nocookie.com does not serve the HTML5-player, WP YouTube Lyte uses the youtube.com domain (which provides less privacy), but as youtube-nocookie.com servers HTML5-video, this will become the default domain for WP YouTube Lyte again, 
+* As youtube-nocookie.com does not serve the HTML5-player, WP YouTube Lyte uses the youtube.com domain (which provides less privacy), but as soon as youtube-nocookie.com serves HTML5-video, this will become the default domain for WP YouTube Lyte again.
 
 = I found a bug/ I would like a feature to be added! =
 * Just tell me, I like the feedback! Use the [Contact-page on my blog](http://blog.futtta.be/contact/), [leave a comment in a post about wp-youtube-lyte](http://blog.futtta.be/tag/wp-youtube-lyte/) or [create a new topic on the wordpress.org forum](http://wordpress.org/tags/wp-youtube-lyte?forum_id=10#postform).
@@ -57,6 +62,15 @@ and you're good to go!
 * [Rate my plugin on wordpress.org](http://wordpress.org/extend/plugins/wp-youtube-lyte/), even if you think it stinks ;-)
 
 == Changelog ==
+= 0.9.0 =
+* you can now change player size from the default one (as proposed by [Edward Owen](http://www.edwardlowen.com/)); httpv://www.youtube.com/watch?v=_SQkWbRublY#size_step=-2 or httpv://youtu.be/_SQkWbRublY#size_step=+1 will change player size to one of the other available sizes in your choosen format (4:3 or 16:9)
+* added a smaller 16:9 size and re-arranged player sizes on the options-screen
+* Bugfix: changed lyte-div ID to force it to be xhtml-compliant (ID's can't start with a digit, hat tip: Ruben of [ytuquelees.net](http://ytuquelees.net)
+* Bugfix: added version in js-call to avoid caching issues (lyte-min.js?ver=0.8.1) as experienced by some users and reported by [Ryan of givemeshred.com](http://www.givemeshred.com)
+* Upgrade to the "bonus feature" to [fix things](http://blog.futtta.be/2011/11/07/wp-privacy-quantcast-sneaks-back-in/) (consider this beta)
+* Languages: added Hebrew (by [Sagive SEO](http://www.sagive.co.il/)) and Catalan (by Ruben of [ytuquelees.net](http://ytuquelees.net)) translations and added completed Spanish version (thanks to [Paulino Brener from Social Media Travelers](http://socialmediatravelers.com/ "Paulino Brener from Social Media Travelers, Your guide to your Social Media journey. We help businesses start or improve their Social Media presence."))
+* tested succesfully on WordPress 3.3 (beta 2)
+
 = 0.8.0 =
 * added support for playlists
 * added support for HD
@@ -67,7 +81,7 @@ and you're good to go!
 
 = 0.7.3 =
 * sdded support for youtu.be links
-* added sl_SI translation (thanks Mitja Miheli&#268; @arnes.si](http://www.arnes.si/))
+* added sl_SI translation (thanks [Mitja Miheli&#268; @arnes.si](http://www.arnes.si/))
 * load donottrack js in https if needed (thanks [Chris @campino2k.de](http://campino2k.de/))
 * tested & confirmed to work perfectly with wordpress 3.2.1
 
