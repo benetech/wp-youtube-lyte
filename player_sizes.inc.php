@@ -1,35 +1,66 @@
 <?php
+
+$plugin_dir = basename(dirname(__FILE__)).'/languages';
+load_plugin_textdomain( 'wp-youtube-lyte', false, $plugin_dir );
+
 $pDefault=2;
 
+$pSize[8]['a']=true;
+$pSize[8]['w']=420;
+$pSize[8]['h']=236;
+$pSize[8]['t']=__("Mini 16:9 player","wp-youtube-lyte");
+$pSize[8]['f']="169";
+
 $pSize[0]['a']=true;
-$pSize[0]['w']=425;
-$pSize[0]['h']=344;
-$pSize[0]['t']="Smaller 4:3 player";
+$pSize[0]['w']=420;
+$pSize[0]['h']=315;
+$pSize[0]['t']=__("Smaller 4:3 player","wp-youtube-lyte");
+$pSize[0]['f']="43";
 
 $pSize[1]['a']=true;
 $pSize[1]['w']=560;
-$pSize[1]['h']=340;
-$pSize[1]['t']="Smaller 16:9 player";
+$pSize[1]['h']=315;
+$pSize[1]['t']=__("Smaller 16:9 player","wp-youtube-lyte");
+$pSize[1]['f']="169";
 
 $pSize[2]['a']=true;
 $pSize[2]['w']=480;
-$pSize[2]['h']=385;
-$pSize[2]['t']="Standard value, YouTube default for 4:3-ratio video";
+$pSize[2]['h']=360;
+$pSize[2]['t']=__("Standard value, YouTube default for 4:3-ratio video","wp-youtube-lyte");
+$pSize[2]['f']="43";
 
 $pSize[3]['a']=true;
 $pSize[3]['w']=640;
-$pSize[3]['h']=385;
-$pSize[3]['t']="YouTube default for 16:9-ratio video";
+$pSize[3]['h']=360;
+$pSize[3]['t']=__("YouTube default for 16:9-ratio video","wp-youtube-lyte");
+$pSize[3]['f']="169";
 
 $pSize[4]['a']=true;
 $pSize[4]['w']=640;
-$pSize[4]['h']=505;
-$pSize[4]['t']="Larger 4:3 player";
+$pSize[4]['h']=480;
+$pSize[4]['t']=__("Larger 4:3 player","wp-youtube-lyte");
+$pSize[4]['f']="43";
 
 $pSize[5]['a']=true;
 $pSize[5]['w']=853;
-$pSize[5]['h']=505;
-$pSize[5]['t']="Larger 16:9 player";
+$pSize[5]['h']=480;
+$pSize[5]['t']=__("Larger 16:9 player","wp-youtube-lyte");
+$pSize[5]['f']="169";
+
+$pSize[6]['a']=true;
+$pSize[6]['w']=960;
+$pSize[6]['h']=720;
+$pSize[6]['t']=__("Maxi 4:3 player","wp-youtube-lyte");
+$pSize[6]['f']="43";
+
+$pSize[7]['a']=true;
+$pSize[7]['w']=1280;
+$pSize[7]['h']=720;
+$pSize[7]['t']=__("Maxi 16:9 player","wp-youtube-lyte");
+$pSize[7]['f']="169";
+
+$pSizeOrder['169']=array(8,1,3,5,7);
+$pSizeOrder['43']=array(0,2,4,6);
 
 // widget sizes
 $wDefault=2;
