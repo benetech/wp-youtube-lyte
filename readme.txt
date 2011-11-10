@@ -3,7 +3,7 @@ Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5, widget, youtube audio, audio, playlist, youtube playlist, hd, performance, accessibility, sidebar
 Requires at least: 2.9
 Tested up to: 3.3
-Stable tag: 0.9.0
+Stable tag: 0.9.1
 
 "Lite YouTube Embeds" look like normal YouTube embeds but don't use Flash, thus reducing download size & page rendering time.
 
@@ -12,6 +12,7 @@ Stable tag: 0.9.0
 WP YouTube Lyte inserts "Lite YouTube Embeds" in your blog. These look and feel like normal embedded YouTube, but only call the actual "fat" Flash or HTML5-player when clicked on, thereby [reducing download size & rendering time substantially](http://blog.futtta.be/2010/08/30/the-state-of-wp-youtube-lyte/) when embedding YouTube occasionally and improving page performance dramatically when you've got multiple YouTube video's on one and the same page.
 
 Just add a YouTube-link for a video or [an entire playlist](http://blog.futtta.be/2011/10/11/wp-youtube-lyte-support-for-playlists-almost-included/) with "httpv" (or "httpa" to [embed YouTube's audio](http://blog.futtta.be/2011/04/19/audio-only-youtube-embedding-with-wp-youtube-lyte-0-7/) only) instead of "http" or add a Lyte widget to your sidebar and WP YouTube Lyte replaces that link with the correct performance-optimized code. When a visitor clicks the play-button, WP YouTube Lyte seamlessly initiates [YouTube's new embedded player](http://apiblog.youtube.com/2010/07/new-way-to-embed-youtube-videos.html). Some examples:
+
 * httpv://www.youtube.com/watch?v=_SQkWbRublY (normal video embed)
 * httpv://youtu.be/_SQkWbRublY (video embed with youtube-shortlink)
 * httpa://www.youtube.com/watch?v=_SQkWbRublY (audio only embed)
@@ -62,8 +63,13 @@ and you're good to go!
 * [Rate my plugin on wordpress.org](http://wordpress.org/extend/plugins/wp-youtube-lyte/), even if you think it stinks ;-)
 
 == Changelog ==
+
+= 0.9.1 =
+* even better xhtml-compliancy
+* fixed readme.txt problems
+
 = 0.9.0 =
-* you can now change player size from the default one (as proposed by [Edward Owen](http://www.edwardlowen.com/)); httpv://www.youtube.com/watch?v=_SQkWbRublY#size_step=-2 or httpv://youtu.be/_SQkWbRublY#size_step=+1 will change player size to one of the other available sizes in your choosen format (4:3 or 16:9)
+* you can now change player size from the default one (as proposed by [Edward Owen](http://www.edwardlowen.com/)); httpv://www.youtube.com/watch?v=_SQkWbRublY#stepSize=-2 or httpv://youtu.be/_SQkWbRublY#stepSize=+1 will change player size to one of the other available sizes in your choosen format (4:3 or 16:9)
 * added a smaller 16:9 size and re-arranged player sizes on the options-screen
 * Bugfix: changed lyte-div ID to force it to be xhtml-compliant (ID's can't start with a digit, hat tip: Ruben of [ytuquelees.net](http://ytuquelees.net)
 * Bugfix: added version in js-call to avoid caching issues (lyte-min.js?ver=0.8.1) as experienced by some users and reported by [Ryan of givemeshred.com](http://www.givemeshred.com)
