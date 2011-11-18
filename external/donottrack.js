@@ -405,18 +405,30 @@ var spy=['quantserve.com','media6degrees.com'];
 
 })();
 
-head=document.getElementsByTagName('script')[0].parentNode;
-
-aop.around( {target: head, method: 'insertBefore'},
-	function(invocation) {
-                if ((typeof(invocation.arguments[0].src)==='string')&&(invocation.arguments[0].type==='text/javascript')) {
+scriptParent=document.getElementsByTagName('script')[0].parentNode;
+aop.around( {target: scriptParent, method: 'insertBefore' },
+        function(invocation) {
+                if ((typeof(invocation.arguments[0].src)==='string')&&((invocation.arguments[0].tagName.toLowerCase()==='script')||(invocation.arguments[0].tagName.toLowerCase()==='img'))) {
                         if (sanitizer(invocation.arguments[0].src)===true){
-                        	invocation.arguments[0].src='/wp-content/plugins/wp-youtube-lyte/external/false.js';
-			}
+                                invocation.arguments[0].src='javascript:void(0)';
+                        }
                 }
                 return invocation.proceed();
         }
 );
+
+aop.around( {target: document, method: 'write' },
+        function(invocation) {
+            invocation.arguments[0]=invocation.arguments[0].toLowerCase();
+            if ((invocation.arguments[0].indexOf('img')!==-1)||(invocation.arguments[0].indexOf('script')!==-1)) {
+                if (sanitizer(invocation.arguments[0])===true) {
+                        invocation.arguments[0]=invocation.arguments[0].replace(/</g,'<!-- ').replace(/>/g,' -->');
+                        }
+                return invocation.proceed();
+            }
+        }
+);
+
 
 function sanitizer(tS) {
 	tS=tS.toLowerCase();

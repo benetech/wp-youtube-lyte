@@ -4,13 +4,13 @@ Plugin Name: WP YouTube Lyte
 Plugin URI: http://blog.futtta.be/tag/lyte
 Description: Lite and accessible YouTube audio and video embedding.
 Author: Frank Goossens (futtta)
-Version: 0.9.1
+Version: 0.9.2
 Author URI: http://blog.futtta.be/
 Text Domain: wp-youtube-lyte
 Domain Path: /languages
 */
 
-$wyl_version="0.9.0";
+$wyl_version="0.9.2";
 
 $plugin_dir = basename(dirname(__FILE__)).'/languages';
 load_plugin_textdomain( 'wp-youtube-lyte', null, $plugin_dir );
@@ -112,7 +112,7 @@ function lyte_parse($the_content) {
 				$noscript="<noscript><a href=\"http://youtu.be/".$vid."\"><img src=\"http://img.youtube.com/vi/".$vid."/0.jpg\" alt=\"\" width=\"".$lyteSettings[2]."\" height=\"".$divHeight."\" />".$noscript_post."</a></noscript>";
 			}
 
-			$lytetemplate = "<div class=\"lyte".$audioClass.$hidefClass.$plClass."\" id=\"WYL_".$vid."\" style=\"width:".$lyteSettings[2]."px;height:".$divHeight."px;\">".$noscript."<script type=\"text/javascript\"><!-- \n var bU='".$lyteSettings['path']."';var d=document;if(d.addEventListener){d.addEventListener('DOMContentLoaded', insert, false)}else{window.onload=insert} function insert(){if(!d.getElementById('lytescr')){lytescr=d.createElement('script');lytescr.async=true;lytescr.id='lytescr';lytescr.src='".$lyteSettings['path']."lyte-min.js?".$lyteSettings['version']."';h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(lytescr, h)}}; \n --></script></div>".$lytelinks_txt;
+			$lytetemplate = "<div class=\"lyte".$audioClass.$hidefClass.$plClass."\" id=\"WYL_".$vid."\" style=\"width:".$lyteSettings[2]."px;height:".$divHeight."px;\">".$noscript."<script type=\"text/javascript\"><!-- \n var bU='".$lyteSettings['path']."';var d=document;if(d.addEventListener){d.addEventListener('DOMContentLoaded', insert, false)}else{window.onload=insert} function insert(){if(!d.getElementById('lytescr')){lytescr=d.createElement('script');lytescr.async=true;lytescr.id='lytescr';lytescr.src='".$lyteSettings['path']."lyte-min.js?wylver=".$lyteSettings['version']."';h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(lytescr, h)}}; \n --></script></div>".$lytelinks_txt;
 			$the_content = preg_replace("/(<p>)?http(v|a):\/\/([a-zA-Z0-9\-\_]+\.|)(youtube|youtu)(\.com|\.be)\/(((watch(\?v\=|\/v\/)|)([a-zA-Z0-9\-\_]{11}))|(playlist\?list\=PL([a-zA-Z0-9\-\_]{16})))([^\s<]*)(<\/p>)?/", $lytetemplate, $the_content, 1);
                 }
         }

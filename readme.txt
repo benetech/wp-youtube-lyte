@@ -3,7 +3,7 @@ Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5, widget, youtube audio, audio, playlist, youtube playlist, hd, performance, accessibility, sidebar
 Requires at least: 2.9
 Tested up to: 3.3
-Stable tag: 0.9.1
+Stable tag: 0.9.2
 
 "Lite YouTube Embeds" look like normal YouTube embeds but don't use Flash, thus reducing download size & page rendering time.
 
@@ -63,6 +63,10 @@ and you're good to go!
 * [Rate my plugin on wordpress.org](http://wordpress.org/extend/plugins/wp-youtube-lyte/), even if you think it stinks ;-)
 
 == Changelog ==
+
+= 0.9.2 =
+* solved bug with W3 Total Cache where the URL for lyte-min.js got broken (thanks to Serge of [blogaf.org](http://www.blogaf.org) for reporting and helping figure this out)
+* some [work on the bonus feature](http://blog.futtta.be/2011/11/16/applying-javascript-aop-magic-to-stop-3rd-party-tracking-in-wordpress/)
 
 = 0.9.1 =
 * even better xhtml-compliancy

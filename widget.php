@@ -37,7 +37,7 @@ class WYLWidget extends WP_Widget {
         <?php echo $before_widget; ?>
               <?php if ( $WYLtitle ) echo $before_title . $WYLtitle . $after_title; ?>
 	      <div class="lyte widget <?php echo $WYLaudio; ?>" id="<?php echo $WYLid; ?>" style="width:<?php echo $wSize[$WYLsize]['w']; ?>px;height:<?php if($WYLaudio==="audio") {echo "25";} else {echo $wSize[$WYLsize]['h'];} ?>px;"><noscript><a href="http://youtu.be/<?php echo $WYLid;?>"><img src="http://img.youtube.com/vi/<?php echo $WYLid; ?>/default.jpg" alt="" /></a></noscript><script type="text/javascript"><!-- 
-	      var bU='<?php echo $lyteSettings['path'];?>';var d=document;if(d.addEventListener){d.addEventListener('DOMContentLoaded', insert, false)}else{window.onload=insert} function insert(){if(!d.getElementById('lytescr')){lytescr=d.createElement('script');lytescr.async=true;lytescr.id='lytescr';lytescr.src='<?php echo $lyteSettings['path']."lyte-min.js?".$wyl_version;?>';h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(lytescr, h)}};
+	      var bU='<?php echo $lyteSettings['path'];?>';var d=document;if(d.addEventListener){d.addEventListener('DOMContentLoaded', insert, false)}else{window.onload=insert} function insert(){if(!d.getElementById('lytescr')){lytescr=d.createElement('script');lytescr.async=true;lytescr.id='lytescr';lytescr.src='<?php echo $lyteSettings['path']."lyte-min.js?wylver=".$wyl_version;?>';h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(lytescr, h)}};
 	      --></script></div>
 	      <div><?php echo $WYLtext ?></div>
               <?php echo $after_widget; ?>
