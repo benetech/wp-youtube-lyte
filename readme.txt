@@ -64,6 +64,10 @@ and you're good to go!
 
 == Changelog ==
 
+= trunk =
+* moved inline javascript into a function expression to protect values (d=document) from other javascript that might use global variables (thanks to Eric McNiece of [emc2innovation.com](http://emc2innovation.com) for reporting & investigating)
+* TODO: full french translation
+
 = 0.9.2 =
 * solved bug with W3 Total Cache where the URL for lyte-min.js got broken (thanks to Serge of [blogaf.org](http://www.blogaf.org) for reporting and helping figure this out)
 * some [work on the bonus feature](http://blog.futtta.be/2011/11/16/applying-javascript-aop-magic-to-stop-3rd-party-tracking-in-wordpress/)

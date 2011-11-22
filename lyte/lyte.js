@@ -1,6 +1,9 @@
 var doc = document;
 var cI = 'lytecss';
 
+var myUrl = doc.getElementById('lytescr').src;
+var bU = myUrl.substring(0,myUrl.lastIndexOf('/')+1);
+
 if (!doc.getElementById(cI)) {
     lk = doc.createElement('link');
     lk.id = cI;
@@ -75,7 +78,7 @@ function parsePL(r) {
    idu=r.feed.id.$t
    id="lyte_"+idu.substring(idu.length - 16)
    title="Playlist: "+r.feed.title.$t
-   pl=d.getElementById(id)
+   pl=doc.getElementById(id)
    pH=pl.style.height;
    pW=pl.style.width;
 
