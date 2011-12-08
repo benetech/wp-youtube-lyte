@@ -18,7 +18,7 @@ class WYLWidget extends WP_Widget {
 	$WYLaudio = apply_filters( 'widget_text', $instance['WYLaudio'], $instance );
 	if ($WYLaudio!=="audio") $WYLaudio="";
 
-	$WYLurl=esc_url($instance['WYLurl']);
+	$WYLurl=esc_url(str_replace("httpv://","http://",$instance['WYLurl']));
 
         if (strpos($WYLurl,'youtu.be')) {
                 $WYLid=substr(parse_url($WYLurl,PHP_URL_PATH),1,11);
@@ -28,7 +28,7 @@ class WYLWidget extends WP_Widget {
                 $WYLid=$WYLarr['v'];
         }
 
-	$WYLid="WYL_".$WYLid;
+	$WYLid="YLW_".$WYLid;
 
 	$wp_lyte_plugin_url = defined('WP_PLUGIN_URL') ? trailingslashit(WP_PLUGIN_URL . '/' . dirname(plugin_basename(__FILE__))) : trailingslashit(get_bloginfo('wpurl')) . PLUGINDIR . '/' . dirname(plugin_basename(__FILE__));
 	$lyteSettings['path']=$wp_lyte_plugin_url."lyte/";

@@ -3,7 +3,7 @@ Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5, widget, youtube audio, audio, playlist, youtube playlist, hd, performance, accessibility, sidebar
 Requires at least: 2.9
 Tested up to: 3.3
-Stable tag: 0.9.2
+Stable tag: 0.9.3
 
 "Lite YouTube Embeds" look like normal YouTube embeds but don't use Flash, thus reducing download size & page rendering time.
 
@@ -64,9 +64,12 @@ and you're good to go!
 
 == Changelog ==
 
-= trunk =
-* moved inline javascript into a function expression to protect values (d=document) from other javascript that might use global variables (thanks to Eric McNiece of [emc2innovation.com](http://emc2innovation.com) for reporting & investigating)
-* TODO: full french translation
+= 0.9.3 =
+* Bugfix: donottrack.js incorrectly handled document.write, causing javascript that depends on it to malfunction (reported by [S.K.](http://aimwa.in), thanks for helping out!)
+* Bugfix: moved inline javascript into a function expression to protect values (d=document) from other javascript that might use global variables (thanks to Eric McNiece of [emc2innovation.com](http://emc2innovation.com) for reporting & investigating)
+* Bugfix: made changes to widgets to allow a video to appear both in a blog post and in the widget bar and to allow httpv-links in there (although httpv is not needed in widgets) based on feedback from [Nick Tann](http://nicktann.co.uk/)
+* Bugfix: changed priority of add_filter to ensure wp-youtube-lyte can work alongside of the new Smart Youtube Pro v4 (although this might become a problem again if/when a new version of Smart Youtube arrives)
+* Languages: added a full French translation (thanks Serge of [blogaf.org](http://www.blogaf.org))
 
 = 0.9.2 =
 * solved bug with W3 Total Cache where the URL for lyte-min.js got broken (thanks to Serge of [blogaf.org](http://www.blogaf.org) for reporting and helping figure this out)
@@ -222,3 +225,8 @@ Accessibility enhancements (hat tip: Ricky Buchanan):
 
 = 0.1 =
 * Initial version
+
+== Upgrade Notice ==
+
+= 0.9.3 =
+Bugfix release, especially important if you've activated DoNotTrack or if you use widgets.

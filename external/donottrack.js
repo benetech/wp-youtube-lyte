@@ -406,6 +406,7 @@ var spy=['quantserve.com','media6degrees.com'];
 })();
 
 scriptParent=document.getElementsByTagName('script')[0].parentNode;
+
 aop.around( {target: scriptParent, method: 'insertBefore' },
         function(invocation) {
                 if ((typeof(invocation.arguments[0].src)==='string')&&((invocation.arguments[0].tagName.toLowerCase()==='script')||(invocation.arguments[0].tagName.toLowerCase()==='img'))) {
@@ -424,8 +425,8 @@ aop.around( {target: document, method: 'write' },
                 if (sanitizer(invocation.arguments[0])===true) {
                         invocation.arguments[0]=invocation.arguments[0].replace(/</g,'<!-- ').replace(/>/g,' -->');
                         }
-                return invocation.proceed();
             }
+	    return invocation.proceed();
         }
 );
 
