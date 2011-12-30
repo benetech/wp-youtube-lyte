@@ -3,7 +3,7 @@ Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5, widget, youtube audio, audio, playlist, youtube playlist, hd, performance, accessibility, sidebar
 Requires at least: 2.9
 Tested up to: 3.3
-Stable tag: 0.9.3
+Stable tag: 0.9.4
 
 "Lite YouTube Embeds" look like normal YouTube embeds but don't use Flash, thus reducing download size & page rendering time.
 
@@ -63,6 +63,13 @@ and you're good to go!
 * [Rate my plugin on wordpress.org](http://wordpress.org/extend/plugins/wp-youtube-lyte/), even if you think it stinks ;-)
 
 == Changelog ==
+
+= 0.9.4 =
+* security: WP YouTube Lyte now works entirely in https if your blog is running in https
+* performance (js/ page rendering): initiate the javascript a little later (at "load" instead of "DOMContentLoaded") to speed up page load (might need further optimizations)
+* performance (php): have the plugin [only include/ execute php when needed](http://w-shadow.com/blog/2009/02/22/make-your-plugin-faster-with-conditional-tags/)
+* updated donottrack.js to match the version used in my [WP DoNotTrack-plugin](http://wordpress.org/extend/plugins/wp-donottrack/). if want to tweak the way donottrack.js functions, you migth want to [check that plugin out](http://wordpress.org/extend/plugins/wp-donottrack/) (and disable the option in WP YouTube Lyte)
+* bugfix: small tweak in css to force transparency of play-button
 
 = 0.9.3 =
 * Bugfix: donottrack.js incorrectly handled document.write, causing javascript that depends on it to malfunction (reported by [S.K.](http://aimwa.in), thanks for helping out!)

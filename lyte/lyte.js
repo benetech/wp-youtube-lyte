@@ -4,6 +4,9 @@ var cI = 'lytecss';
 var myUrl = doc.getElementById('lytescr').src;
 var bU = myUrl.substring(0,myUrl.lastIndexOf('/')+1);
 
+scheme="http";
+if (myUrl.indexOf('https')!=-1) {scheme+="s";}
+
 if (!doc.getElementById(cI)) {
     lk = doc.createElement('link');
     lk.id = cI;
@@ -34,13 +37,13 @@ function lyte() {
 	} else if (p.className.indexOf('playlist') !== -1){
             setStyle(pl, 'height:' + pH + 'px;width:' + pW + 'px;');
 	    pl.innerHTML = "<img src=\"" + bU + "play.png\" alt=\"Click to play this playlist\" style=\"margin-top:" + ((pH / 2) - 30) + "px;opacity:0.7;\" onmouseover=\"this.style.opacity=1;\" onmouseout=\"this.style.opacity=0.8;\"/><img src=\"" + bU + "controls-" + pW + ".png\" width=\"100%\" id=\"ctrl\" alt=\"\" style=\"max-width:" + pW + "px;\"/>";
-	    jsonUrl = "http://gdata.youtube.com/feeds/api/playlists/"+ vid +"?v=2&alt=json-in-script&callback=parsePL&fields=id,title,entry"
+	    jsonUrl = scheme+"://gdata.youtube.com/feeds/api/playlists/"+ vid +"?v=2&alt=json-in-script&callback=parsePL&fields=id,title,entry"
 	    loadScript(jsonUrl)
 	} else {
-            setStyle(pl, 'height:' + pH + 'px;width:' + pW + 'px;background:url("http://img.youtube.com/vi/' + vid + '/0.jpg") no-repeat scroll center -10px rgb(0, 0, 0);background-size:contain;');
+            setStyle(pl, "height:" + pH + "px;width:" + pW + "px;background:url('" + scheme + "://img.youtube.com/vi/" + vid + "/0.jpg') no-repeat scroll center -10px rgb(0, 0, 0);background-size:contain;");
             pl.innerHTML = "<img src=\"" + bU + "play.png\" alt=\"Click to play this video\" style=\"margin-top:" + ((pH / 2) - 30) + "px;opacity:0.7;\" onmouseover=\"this.style.opacity=1;\" onmouseout=\"this.style.opacity=0.8;\"/><img src=\"" + bU + "controls-" + pW + ".png\" width=\"100%\" id=\"ctrl\" alt=\"\" style=\"max-width:" + pW + "px;\"/>";
 	    if (p.className.indexOf('widget') === -1) {
-	    	jsonUrl = "http://gdata.youtube.com/feeds/api/videos/" + vid + "?fields=id,title&alt=json-in-script&callback=parseV";
+	    	jsonUrl = scheme+"://gdata.youtube.com/feeds/api/videos/" + vid + "?fields=id,title&alt=json-in-script&callback=parseV";
 		loadScript(jsonUrl)
 	    }
 	}
@@ -58,9 +61,9 @@ function plaYT() {
     }
 
     if (this.className.indexOf("playlist") === -1) {
-    	eU="http://www.youtube.com/embed/" + vid
+    	eU=scheme+"://www.youtube.com/embed/" + vid
     } else {
-    	eU="http://www.youtube.com/embed/p/" + vid
+    	eU=scheme+"://www.youtube.com/embed/p/" + vid
     }
 
     this.innerHTML="<iframe class=\"youtube-player\" type=\"text/html\" width=\"" + this.clientWidth + "\" height=\"" + this.clientHeight + "\" src=\""+eU+"?autoplay=1&amp;rel=0&amp;egm=0&amp;iv_load_policy=3&amp;probably_logged_in=false&amp;hd="+hidef+"\" frameborder=\"0\"></iframe>"
@@ -82,7 +85,9 @@ function parsePL(r) {
    pH=pl.style.height;
    pW=pl.style.width;
 
-   setStyle(pl, 'height:' + pH + ';width:' + pW + ';background:url("'+thumb+'") no-repeat scroll center -10px rgb(0, 0, 0); background-size:contain;')
+   if ((scheme=="https")&&(thumb.indexOf('https'==-1))) {thumb=thumb.replace("http://","https://");}
+
+   setStyle(pl, "height:" + pH + ";width:" + pW + ";background:url('" + thumb + "') no-repeat scroll center -10px rgb(0, 0, 0); background-size:contain;")
    drawTitle(id,title)
    }
 

@@ -1,8 +1,6 @@
 <?php
-	$plugin_dir = basename(dirname(__FILE__)).'/languages';
-	load_plugin_textdomain( 'wp-youtube-lyte', false, $plugin_dir );
-
-        $wp_lyte_plugin_url = defined('WP_PLUGIN_URL') ? trailingslashit(WP_PLUGIN_URL . '/' . dirname(plugin_basename(__FILE__))) : trailingslashit(get_bloginfo('wpurl')) . PLUGINDIR . '/' . dirname(plugin_basename(__FILE__));
+$plugin_dir = basename(dirname(__FILE__)).'/languages';
+load_plugin_textdomain( 'wp-youtube-lyte', false, $plugin_dir );
 
 add_action('admin_menu', 'lyte_create_menu');
 
@@ -21,14 +19,12 @@ function register_lyte_settings() {
 }
 
 function lyte_admin_scripts() {
-	global $wp_lyte_plugin_url;
-	wp_enqueue_script('jqzrssfeed',$wp_lyte_plugin_url.'external/jquery.zrssfeed.min.js',array(jquery),null,true);
-	wp_enqueue_script('jqcookie',$wp_lyte_plugin_url.'external/jquery.cookie.min.js',array(jquery),null,true);
+	wp_enqueue_script('jqzrssfeed', plugins_url('/external/jquery.zrssfeed.min.js', __FILE__), array(jquery),null,true);
+	wp_enqueue_script('jqcookie', plugins_url('/external/jquery.cookie.min.js', __FILE__), array(jquery),null,true);
 }
 
 function lyte_admin_styles() {
-        global $wp_lyte_plugin_url;
-        wp_enqueue_style('zrssfeed',$wp_lyte_plugin_url.'external/jquery.zrssfeed.css');
+        wp_enqueue_style('zrssfeed', plugins_url('/external/jquery.zrssfeed.css', __FILE__));
 }
 
 function lyte_settings_page() {
@@ -84,13 +80,14 @@ function lyte_settings_page() {
                 </td>
 		</tr>
 	 <tr valign="top">
-	 	<th scope="row"><?php _e("Bonus feature: ","wp-youtube-lyte") ?><a href="http://blog.futtta.be/tag/donottrack" target="_blank">DoNotTrack (new version)</a></th>
+	 	<th scope="row"><?php _e("Bonus feature: ","wp-youtube-lyte") ?><a href="http://wordpress.org/extend/plugins/wp-donottrack/" target="_blank">DoNotTrack</a></th>
 		<td>
 			<fieldset>
 				<legend class="screen-reader-text"><span>Activate DoNotTrack</span></legend>
 				<label title="Enable DoNotTrack"><input type="radio" name="donottrack" value="1" <?php if (get_option('donottrack')==="1") echo "checked" ?> /><?php _e("Disable 3rd party tracking.","wp-youtube-lyte") ?></label><br />
 				<label title="Leave DoNotTrack disabled (default)"><input type="radio" name="donottrack" value="0" <?php if (get_option('donottrack')!=="1") echo "checked" ?> /><?php _e("I don't mind 3rd party tracking (default)","wp-youtube-lyte") ?></label>
 			</fieldset>
+			<span class="description"><?php _e( "This stops tracking by Quantcast as initiated by some <a href=\"http://profiles.wordpress.org/users/automattic/profile/public/\" target=\"_blank\">Automattic plugins</a>. You can also <a href=\"http://wordpress.org/extend/plugins/wp-donottrack/\" target=\"_blank\">try out WP DoNotTrack</a>, a new plugin that provides these features and more (custom black- or whitelist, conditional DoNotTrack, ...)", "wp-donottrack" )  ?></span>
 		</td>
 	 </tr>
     </table>

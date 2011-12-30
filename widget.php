@@ -8,7 +8,7 @@ class WYLWidget extends WP_Widget {
 
     function widget($args, $instance) {
         extract( $args );
-	global $wSize, $wyl_version;
+	global $wSize, $wyl_version, $wp_lyte_plugin_url;
         $WYLtitle = apply_filters('widget_title', $instance['WYLtitle']);
 	$WYLtext = apply_filters( 'widget_text', $instance['WYLtext'], $instance );
 
@@ -30,7 +30,6 @@ class WYLWidget extends WP_Widget {
 
 	$WYLid="YLW_".$WYLid;
 
-	$wp_lyte_plugin_url = defined('WP_PLUGIN_URL') ? trailingslashit(WP_PLUGIN_URL . '/' . dirname(plugin_basename(__FILE__))) : trailingslashit(get_bloginfo('wpurl')) . PLUGINDIR . '/' . dirname(plugin_basename(__FILE__));
 	$lyteSettings['path']=$wp_lyte_plugin_url."lyte/";
 	?>
 

@@ -1,5 +1,3 @@
-var spy=['quantserve.com','media6degrees.com'];
-
 /**
 * jQuery AOP - jQuery plugin to add features of aspect-oriented programming (AOP) to jQuery.
 * http://jquery-aop.googlecode.com/
@@ -159,7 +157,6 @@ var spy=['quantserve.com','media6degrees.com'];
 	 * Private weaver and pointcut parser.
 	 */
 	var weave = function(pointcut, advice) {
-
 		var source = typeof(pointcut.target.prototype) != _undef ? pointcut.target.prototype : pointcut.target;
 		var advices = [];
 
@@ -402,46 +399,74 @@ var spy=['quantserve.com','media6degrees.com'];
 			_regexEnabled = settings.regexMatch;
 		}
 	};
-
 })();
 
-scriptParent=document.getElementsByTagName('script')[0].parentNode;
-
-aop.around( {target: scriptParent, method: 'insertBefore' },
+function aop_around(myTarget, myMethod) {
+   aop.around( {target: myTarget, method: myMethod },
         function(invocation) {
-                if ((typeof(invocation.arguments[0].src)==='string')&&((invocation.arguments[0].tagName.toLowerCase()==='script')||(invocation.arguments[0].tagName.toLowerCase()==='img'))) {
-                        if (sanitizer(invocation.arguments[0].src)===true){
-                                invocation.arguments[0].src='javascript:void(0)';
+            if ((typeof(invocation.arguments[0].src)==='string')&&((invocation.arguments[0].tagName.toLowerCase()==='script')||(invocation.arguments[0].tagName.toLowerCase()==='img'))) {
+                if (sanitizer(invocation.arguments[0].src)===true) {
+			invocation.arguments[0].src='javascript:void(0)';
                         }
-                }
+		}
                 return invocation.proceed();
-        }
-);
-
-aop.around( {target: document, method: 'write' },
-        function(invocation) {
-            invocation.arguments[0]=invocation.arguments[0].toLowerCase();
-            if ((invocation.arguments[0].indexOf('img')!==-1)||(invocation.arguments[0].indexOf('script')!==-1)) {
-                if (sanitizer(invocation.arguments[0])===true) {
-                        invocation.arguments[0]=invocation.arguments[0].replace(/</g,'<!-- ').replace(/>/g,' -->');
-                        }
             }
-	    return invocation.proceed();
-        }
-);
-
+   );
+}
 
 function sanitizer(tS) {
 	tS=tS.toLowerCase();
-        for (x in spy) {
-		if (tS.indexOf(spy[x]) !== -1) {
-                	tS=true;
-                       	break;
-                }
-       }
-       return tS;
+	if (mode==='blacklist') {
+        	for (x in list['black']) {
+			if (tS.indexOf(list['black'][x].toLowerCase()) !== -1) {
+               	 		tS=true;
+                       		break;
+                	}
+       		}
+	} else {
+        	for (x in list['white']) {
+			if (tS.indexOf(list['white'][x].toLowerCase()) !== -1) {
+				tmpS=false;
+               	 		break;
+			} else {
+                       		tmpS=true;
+                	}
+       		}
+		if (tmpS===true) tS=tmpS;
+	}
+       	return tS;
 }
 
-var a2a_config = a2a_config || {};a2a_config.no_3p=1;
-var addthis_config = { data_use_cookies: false };
-var _gaq=_gaq || [];_gaq.push(['_gat._anonymizeIp']);
+if ((dnt_config.ifdnt!=="1")||(navigator.doNotTrack==="yes")) {
+	var mode=dnt_config.mode;
+	var list = [];
+	list['black']=dnt_config.black;
+	list['white']=dnt_config.white;
+
+	// for document.write, has to be sanitized differently from others
+	aop.around( {target: document, method: 'write' },
+        	function(invocation) {
+            		if (invocation.arguments[0].search(/img|script/i)!==-1) {
+                	if (sanitizer(invocation.arguments[0])===true) {
+                        	invocation.arguments[0]=invocation.arguments[0].replace(/</g,'<!-- ').replace(/>/g,' -->');
+                        }
+                }
+        	return invocation.proceed();
+        	}
+	);
+
+	// for dom-methods insertBefore and appendChild on parent of first script and/or head
+	scriptParent=document.getElementsByTagName('script')[0].parentNode;
+	if (scriptParent.tagName.toLowerCase!=="head") {
+	        head = document.getElementsByTagName('head')[0];
+	        aop_around ( head, "insertBefore" );
+	        aop_around ( head, "appendChild" );
+	        }
+	aop_around ( scriptParent, "insertBefore" );
+	aop_around ( scriptParent, "appendChild" );
+
+	// some specific configs to have 3rd parties behave
+	var a2a_config = a2a_config || {};a2a_config.no_3p=1;
+	var addthis_config = { data_use_cookies: false };
+	var _gaq=_gaq || [];_gaq.push(['_gat._anonymizeIp']);
+}

@@ -4,20 +4,19 @@ Plugin Name: WP YouTube Lyte
 Plugin URI: http://blog.futtta.be/tag/lyte
 Description: Lite and accessible YouTube audio and video embedding.
 Author: Frank Goossens (futtta)
-Version: 0.9.3
+Version: 0.9.4
 Author URI: http://blog.futtta.be/
 Text Domain: wp-youtube-lyte
 Domain Path: /languages
 */
 
-$wyl_version="0.9.2";
+$wyl_version="0.9.4";
 
 $plugin_dir = basename(dirname(__FILE__)).'/languages';
 load_plugin_textdomain( 'wp-youtube-lyte', null, $plugin_dir );
 
-$wp_lyte_plugin_url = defined('WP_PLUGIN_URL') ? trailingslashit(WP_PLUGIN_URL . '/' . dirname(plugin_basename(__FILE__))) : trailingslashit(get_bloginfo('wpurl')) . PLUGINDIR . '/' . dirname(plugin_basename(__FILE__));
+$wp_lyte_plugin_url = trailingslashit(get_bloginfo('wpurl')) . PLUGINDIR . '/' . dirname(plugin_basename(__FILE__)) . '/';
 
-require_once(dirname(__FILE__).'/options.php');
 require_once(dirname(__FILE__).'/player_sizes.inc.php');
 require_once(dirname(__FILE__).'/widget.php');
 
@@ -53,6 +52,12 @@ function lyte_parse($the_content) {
 			$hidefClass="";
 		}
 
+		if ($_SERVER['HTTPS']) {
+        		$scheme="https";
+ 		} else {
+			$scheme="http";
+		}
+
 		preg_match_all("/http(a|v):\/\/([a-zA-Z0-9\-\_]+\.|)(youtube|youtu)(\.com|\.be)\/(((watch(\?v\=|\/v\/)|)([a-zA-Z0-9\-\_]{11}))|(playlist\?list\=PL([a-zA-Z0-9\-\_]{16})))([^<\s]*)/", $the_content, $matches, PREG_SET_ORDER); 
 
 		foreach($matches as $match) {
@@ -86,12 +91,12 @@ function lyte_parse($the_content) {
 				switch ($lyteSettings['links']) {
                                 	case "0":
                                         	$noscript_post="<br />".__("Watch this playlist on YouTube","wp-youtube-lyte")."&lyte;.";
-						$noscript="<noscript><a href=\"http://youtube.com/playlist?list=PL".$vid."\">".$noscript_post."</a>.</noscript>";
+						$noscript="<noscript><a href=\"".$scheme."://youtube.com/playlist?list=PL".$vid."\">".$noscript_post."</a>.</noscript>";
 						$lytelinks_txt="";
                                                 break;
                                         default:
 						$noscript="";
-						$lytelinks_txt="<div class=\"lL\">".__("Watch this playlist","wp-youtube-lyte")." <a href=\"http://www.youtube.com/playlist?list=PL".$vid."\">".__("on YouTube","wp-youtube-lyte")."</a>.</div>";
+						$lytelinks_txt="<div class=\"lL\">".__("Watch this playlist","wp-youtube-lyte")." <a href=\"".$scheme."://www.youtube.com/playlist?list=PL".$vid."\">".__("on YouTube","wp-youtube-lyte")."</a>.</div>";
 				}
 			} else if ($match[9]!="") {
 				$plClass="";
@@ -103,37 +108,47 @@ function lyte_parse($the_content) {
 						break;
 					case "2":
 						$noscript_post="";
-						$lytelinks_txt="<div class=\"lL\">".__("Watch this video","wp-youtube-lyte")." <a href=\"http://youtu.be/".$vid."\">".__("on YouTube","wp-youtube-lyte")."</a> ".__("or on","wp-youtube-lyte")." <a href=\"http://icant.co.uk/easy-youtube/?http://www.youtube.com/watch?v=".$vid."\">Easy Youtube</a>.</div>";
+						$lytelinks_txt="<div class=\"lL\">".__("Watch this video","wp-youtube-lyte")." <a href=\"".$scheme."://youtu.be/".$vid."\">".__("on YouTube","wp-youtube-lyte")."</a> ".__("or on","wp-youtube-lyte")." <a href=\"http://icant.co.uk/easy-youtube/?http://www.youtube.com/watch?v=".$vid."\">Easy Youtube</a>.</div>";
 						break;
 					default:
 						$noscript_post="";
-						$lytelinks_txt="<div class=\"lL\">".__("Watch this video","wp-youtube-lyte")." <a href=\"http://youtu.be/".$vid."\">".__("on YouTube","wp-youtube-lyte")."</a>.</div>";
+						$lytelinks_txt="<div class=\"lL\">".__("Watch this video","wp-youtube-lyte")." <a href=\"".$scheme."://youtu.be/".$vid."\">".__("on YouTube","wp-youtube-lyte")."</a>.</div>";
 					}
-				$noscript="<noscript><a href=\"http://youtu.be/".$vid."\"><img src=\"http://img.youtube.com/vi/".$vid."/0.jpg\" alt=\"\" width=\"".$lyteSettings[2]."\" height=\"".$divHeight."\" />".$noscript_post."</a></noscript>";
+
+				$noscript="<noscript><a href=\"".$scheme."://youtu.be/".$vid."\"><img src=\"".$scheme."//img.youtube.com/vi/".$vid."/0.jpg\" alt=\"\" width=\"".$lyteSettings[2]."\" height=\"".$divHeight."\" />".$noscript_post."</a></noscript>";
 			}
 
-			$lytetemplate = "<div class=\"lyte".$audioClass.$hidefClass.$plClass."\" id=\"WYL_".$vid."\" style=\"width:".$lyteSettings[2]."px;height:".$divHeight."px;\">".$noscript."<script type=\"text/javascript\"><!-- \n (function(){var d=document;if(d.addEventListener){d.addEventListener('DOMContentLoaded', insert, false)}else{window.onload=insert} function insert(){if(!d.getElementById('lytescr')){lytescr=d.createElement('script');lytescr.async=true;lytescr.id='lytescr';lytescr.src='".$lyteSettings['path']."lyte-min.js?wylver=".$lyteSettings['version']."';h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(lytescr, h)}};}()) \n --></script></div>".$lytelinks_txt;
+			$lytetemplate = "<div class=\"lyte".$audioClass.$hidefClass.$plClass."\" id=\"WYL_".$vid."\" style=\"width:".$lyteSettings[2]."px;height:".$divHeight."px;\">".$noscript."<script type=\"text/javascript\"><!-- \n (function(){var d=document;var w=window;if(w.addEventListener){w.addEventListener('load', insert, false)}else{w.onload=insert} function insert(){if(!d.getElementById('lytescr')){lytescr=d.createElement('script');lytescr.async=true;lytescr.id='lytescr';lytescr.src='".$lyteSettings['path']."lyte-min.js?wylver=".$lyteSettings['version']."';h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(lytescr, h)}};}()) \n --></script></div>".$lytelinks_txt;
 			$the_content = preg_replace("/(<p>)?http(v|a):\/\/([a-zA-Z0-9\-\_]+\.|)(youtube|youtu)(\.com|\.be)\/(((watch(\?v\=|\/v\/)|)([a-zA-Z0-9\-\_]{11}))|(playlist\?list\=PL([a-zA-Z0-9\-\_]{16})))([^\s<]*)(<\/p>)?/", $lytetemplate, $the_content, 1);
                 }
         }
         return $the_content;
 }
 
-add_filter('the_content', 'lyte_parse', 4);
+if ( is_admin() ) {
+        require_once(dirname(__FILE__).'/options.php');
+} else {
+	add_filter('the_content', 'lyte_parse', 4);
+}
 
 /* donottrack */
 $donottrack_js=$wp_lyte_plugin_url."external/donottrack-min.js";
 
 if ($_SERVER['HTTPS']) {
-       $donottrack_js = str_replace( $donottrack_js, "http:","https:" );
-       }
+	$donottrack_js = str_replace( "http:","https:",$donottrack_js );
+	}
 
 function init_lyte_donottrack() {
         global $donottrack_js;
         wp_enqueue_script( 'donottrack',$donottrack_js );
         }
 
+function lyte_donottrack_config() {
+        echo "<script type=\"text/javascript\">var dnt_config={ifdnt:\"\",mode:\"blacklist\",black:[\"media6degrees.com\",\"quantserve.com\"],white:[]};</script>\n";
+}
+
 if (get_option('donottrack')==="1") {
+	add_action('wp_print_scripts', 'lyte_donottrack_config');
         add_action('init', 'init_lyte_donottrack');
         }
 ?>
