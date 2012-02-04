@@ -404,7 +404,7 @@
 function aop_around(myTarget, myMethod) {
    aop.around( {target: myTarget, method: myMethod },
         function(invocation) {
-            if ((typeof(invocation.arguments[0].src)==='string')&&((invocation.arguments[0].tagName.toLowerCase()==='script')||(invocation.arguments[0].tagName.toLowerCase()==='img'))) {
+            if ((typeof(invocation.arguments[0].src)==='string')&&((invocation.arguments[0].tagName.toLowerCase()==='script')||(invocation.arguments[0].tagName.toLowerCase()==='img')||(invocation.arguments[0].tagName.toLowerCase()==='iframe'))) {
                 if (sanitizer(invocation.arguments[0].src)===true) {
 			invocation.arguments[0].src='javascript:void(0)';
                         }
@@ -446,7 +446,7 @@ if ((dnt_config.ifdnt!=="1")||(navigator.doNotTrack==="yes")) {
 	// for document.write, has to be sanitized differently from others
 	aop.around( {target: document, method: 'write' },
         	function(invocation) {
-            		if (invocation.arguments[0].search(/img|script/i)!==-1) {
+            		if (invocation.arguments[0].search(/img|script|iframe/i)!==-1) {
                 	if (sanitizer(invocation.arguments[0])===true) {
                         	invocation.arguments[0]=invocation.arguments[0].replace(/</g,'<!-- ').replace(/>/g,' -->');
                         }

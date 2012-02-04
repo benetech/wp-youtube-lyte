@@ -1,15 +1,15 @@
 === WP YouTube Lyte ===
 Contributors: futtta
-Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5, widget, youtube audio, audio, playlist, youtube playlist, hd, performance, accessibility, sidebar
+Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5, widget, youtube audio, audio, playlist, youtube playlist, hd, performance, accessibility, sidebar, lazy load
 Requires at least: 2.9
 Tested up to: 3.3
-Stable tag: 0.9.4
+Stable tag: 1.0.0
 
 "Lite YouTube Embeds" look like normal YouTube embeds but don't use Flash, thus reducing download size & page rendering time.
 
 == Description ==
 
-WP YouTube Lyte inserts "Lite YouTube Embeds" in your blog. These look and feel like normal embedded YouTube, but only call the actual "fat" Flash or HTML5-player when clicked on, thereby [reducing download size & rendering time substantially](http://blog.futtta.be/2010/08/30/the-state-of-wp-youtube-lyte/) when embedding YouTube occasionally and improving page performance dramatically when you've got multiple YouTube video's on one and the same page.
+WP YouTube Lyte allows you to "lazy load" your video's, by inserting "Lite YouTube Embeds". These look and feel like normal embedded YouTube, but only call the actual "fat" Flash or HTML5-player when clicked on, thereby [reducing download size & rendering time substantially](http://blog.futtta.be/2010/08/30/the-state-of-wp-youtube-lyte/) when embedding YouTube occasionally and improving page performance dramatically when you've got multiple YouTube video's on one and the same page.
 
 Just add a YouTube-link for a video or [an entire playlist](http://blog.futtta.be/2011/10/11/wp-youtube-lyte-support-for-playlists-almost-included/) with "httpv" (or "httpa" to [embed YouTube's audio](http://blog.futtta.be/2011/04/19/audio-only-youtube-embedding-with-wp-youtube-lyte-0-7/) only) instead of "http" or add a Lyte widget to your sidebar and WP YouTube Lyte replaces that link with the correct performance-optimized code. When a visitor clicks the play-button, WP YouTube Lyte seamlessly initiates [YouTube's new embedded player](http://apiblog.youtube.com/2010/07/new-way-to-embed-youtube-videos.html). Some examples:
 
@@ -43,6 +43,12 @@ When playing, HTML5 video will not be visible for everyone (see requirements). I
 = Does WP YouTube Lyte protect my visitor's privacy? =
 As opposed to some of the [most important](http://blog.futtta.be/2010/12/15/wordpress-com-stats-trojan-horse-for-quantcast-tracking/) [plugins](http://blog.futtta.be/2010/01/22/add-to-any-removed-from-here/) there is no 3rd party tracking code in WP YouTube Lyte, but YouTube off course does see visitor requests coming in (see also the youtube-nocookie.com remark in Bugs/Issues below).
 
+= How can I center the player? =
+Centering the player is pretty easy; open up wp-content/plugins/wp-youtube-lyte/lyte/lyte.css and change
+`.lP {background-color:#fff;}`
+into
+`.lP {background-color:#fff;margin:0 auto;}`
+
 = Can I use WP YouTube Lyte for a custom field? =
 As tested and confirmed by [rumultik.ru's Dimitri](http://rumultik.ru) (thanks for that man!), this indeed does work. Just pass the httpv url of such a field to lyte_parse like this: 
 `if(function_exists('lyte_parse')) { echo lyte_parse($video); }`
@@ -62,7 +68,19 @@ and you're good to go!
 * Ask me for a feature you would like to see added
 * [Rate my plugin on wordpress.org](http://wordpress.org/extend/plugins/wp-youtube-lyte/), even if you think it stinks ;-)
 
+== Screenshots ==
+
+1. This is the administration-page of WP YouTube Lyte.
+
 == Changelog ==
+
+= 1.0.0 =
+* new: also works on (manual) excerpts; just add a httpv link to the "excerpt" field on the post/page admin (based on feedback from [Ruben@tuttingegneri](http://www.tuttingegneri.com))
+* new: if youtube-url contains "start" or "showinfo" parameters, these are used when playing the actual video. This means that you can now jump to a specific time in the YouTube video or stop the title/ author from being displayed (based on feedback from a.o. Miguel and Josh D)
+* update: javascript now initiates either after full page load or after 1 second (whatever comes first), thus avoiding video not showing due to other requests taking too long
+* update: bonus feature stops lockerz.com tracking by addtoany (you'll still want to [hide the "earn pointz" tab though](http://share.lockerz.com/buttons/customize/hide_lockerz_earn_ptz_tab))
+* bugfix: prevent the playing video to be in front of e.g. a dropdown-menu or lightbox (thanks to Matt Whittingham)
+* bugfix: solve overlap between player and text when option was set not to show links (reported by Josh D)
 
 = 0.9.4 =
 * security: WP YouTube Lyte now works entirely in https if your blog is running in https

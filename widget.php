@@ -9,6 +9,8 @@ class WYLWidget extends WP_Widget {
     function widget($args, $instance) {
         extract( $args );
 	global $wSize, $wyl_version, $wp_lyte_plugin_url;
+	$qsa="";
+
         $WYLtitle = apply_filters('widget_title', $instance['WYLtitle']);
 	$WYLtext = apply_filters( 'widget_text', $instance['WYLtext'], $instance );
 
@@ -18,15 +20,25 @@ class WYLWidget extends WP_Widget {
 	$WYLaudio = apply_filters( 'widget_text', $instance['WYLaudio'], $instance );
 	if ($WYLaudio!=="audio") $WYLaudio="";
 
-	$WYLurl=esc_url(str_replace("httpv://","http://",$instance['WYLurl']));
+	$WYLurl=str_replace("httpv://","http://",$instance['WYLurl']);
+
+        $WYLqs=substr(strstr($WYLurl,'?'),1);
+        parse_str($WYLqs,$WYLarr);
 
         if (strpos($WYLurl,'youtu.be')) {
                 $WYLid=substr(parse_url($WYLurl,PHP_URL_PATH),1,11);
         } else {
-                $WYLqs=substr(strstr($WYLurl,'?'),1);
-                parse_str($WYLqs,$WYLarr);
                 $WYLid=$WYLarr['v'];
         }
+
+	if (isset($WYLarr['showinfo'])) $qsa="&amp;showinfo=".$WYLarr['showinfo'];
+	if (isset($WYLarr['start'])) $qsa.="&amp;start=".$WYLarr['start'];
+
+	if (!empty($qsa)) {
+		$qsa_init="w.lst=w.lst||{};w.lst[\"".$WYLid."\"]=\"".$qsa."\"";
+	} else {
+		$qsa_init="";
+	}
 
 	$WYLid="YLW_".$WYLid;
 
@@ -36,7 +48,7 @@ class WYLWidget extends WP_Widget {
         <?php echo $before_widget; ?>
               <?php if ( $WYLtitle ) echo $before_title . $WYLtitle . $after_title; ?>
 	      <div class="lyte widget <?php echo $WYLaudio; ?>" id="<?php echo $WYLid; ?>" style="width:<?php echo $wSize[$WYLsize]['w']; ?>px;height:<?php if($WYLaudio==="audio") {echo "25";} else {echo $wSize[$WYLsize]['h'];} ?>px;"><noscript><a href="http://youtu.be/<?php echo $WYLid;?>"><img src="http://img.youtube.com/vi/<?php echo $WYLid; ?>/default.jpg" alt="" /></a></noscript><script type="text/javascript"><!-- 
-	      (function(){ var d=document;if(d.addEventListener){d.addEventListener('DOMContentLoaded', insert, false)}else{window.onload=insert} function insert(){if(!d.getElementById('lytescr')){lytescr=d.createElement('script');lytescr.async=true;lytescr.id='lytescr';lytescr.src='<?php echo $lyteSettings['path']."lyte-min.js?wylver=".$wyl_version;?>';h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(lytescr, h)}}; }())
+	      (function(){ var w=window;d=document;if(d.addEventListener){d.addEventListener('DOMContentLoaded', insert, false)}else{w.onload=insert} function insert(){if(!d.getElementById('lytescr')){lytescr=d.createElement('script');lytescr.async=true;lytescr.id='lytescr';lytescr.src='<?php echo $lyteSettings['path']."lyte-min.js?wylver=".$wyl_version;?>';h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(lytescr, h)}<?php echo $qsa_init; ?>}; }())
 	      --></script></div>
 	      <div><?php echo $WYLtext ?></div>
               <?php echo $after_widget; ?>
