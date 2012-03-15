@@ -4,13 +4,13 @@ Plugin Name: WP YouTube Lyte
 Plugin URI: http://blog.futtta.be/wp-youtube-lyte/
 Description: Lite and accessible YouTube audio and video embedding.
 Author: Frank Goossens (futtta)
-Version: 1.0.0
+Version: 1.1.0
 Author URI: http://blog.futtta.be/
 Text Domain: wp-youtube-lyte
 Domain Path: /languages
 */
 
-$wyl_version="1.0.0";
+$wyl_version="1.1.0";
 
 $plugin_dir = basename(dirname(__FILE__)).'/languages';
 load_plugin_textdomain( 'wp-youtube-lyte', null, $plugin_dir );
@@ -41,6 +41,9 @@ $lyteSettings['version']=$wyl_version;
 function lyte_parse($the_content) {
 	global $lyteSettings;
 
+	$urlArr=parse_url($lyteSettings['path']);
+	$origin=$urlArr[scheme]."://".$urlArr[host]."/";
+
 	if((strpos($the_content, "httpv")!==FALSE)||(strpos($the_content, "httpa")!==FALSE)) {
 		$char_codes = array('&#215;','&#8211;');
 		$replacements = array("x", "--");
@@ -64,9 +67,19 @@ function lyte_parse($the_content) {
 			preg_match("/stepSize\=([\+\-0-9]{2})/",$match[12],$sMatch);
 			preg_match("/showinfo\=([0-1]{1})/",$match[12],$showinfo);
 			preg_match("/start\=([0-9]*)/",$match[12],$start);
+			preg_match("/enablejsapi\=([0-1]{1})/",$match[12],$jsapi);
 
+			$qsa="";
 			if ($showinfo[0]) $qsa="&amp;".$showinfo[0];
 			if ($start[0]) $qsa.="&amp;".$start[0];
+			if ($jsapi[0]) $qsa.="&amp;".$jsapi[0]."&amp;origin=".$origin;
+
+			if (!empty($qsa)) {
+				$esc_arr=array("&" => "\&", "?" => "\?", "=" => "\=");
+				$qsaClass=" qsa_".strtr($qsa,$esc_arr);
+			} else {
+				$qsaClass="";
+			}
 
 			if (!empty($sMatch)) {
 				$newSize=(int) $sMatch[1];
@@ -88,7 +101,7 @@ function lyte_parse($the_content) {
                                 $audioClass="";
 			} else {
 				$audioClass=" audio";
-				$divHeight=34;
+				$divHeight=38;
 			}
 
 			$NSimgHeight=$divHeight-20;
@@ -127,17 +140,26 @@ function lyte_parse($the_content) {
 				$noscript="<noscript><a href=\"".$scheme."://youtu.be/".$vid."\"><img src=\"".$scheme."://img.youtube.com/vi/".$vid."/0.jpg\" alt=\"\" width=\"".$lyteSettings[2]."\" height=\"".$NSimgHeight."\" />".$noscript_post."</a> ".$NSbanner."</noscript>";
 			}
 
-			if (!empty($qsa)) {
-				$qsa_init="w.lst=w.lst||{};w.lst[\"".$vid."\"]=\"".$qsa."\"";
-				} else {
-				$qsa_init="";
-				}
-
-			$lytetemplate = "<div class=\"lyte".$audioClass.$hidefClass.$plClass."\" id=\"WYL_".$vid."\" style=\"width:".$lyteSettings[2]."px;height:".$divHeight."px;\">".$noscript."<script type=\"text/javascript\"><!-- \n (function(){var d=document;var w=window;if(w.addEventListener){w.addEventListener('load', insert, false)}else{w.onload=insert};setTimeout(insert, 1000);function insert(){if(!d.getElementById('lytescr')){lytescr=d.createElement('script');lytescr.async=true;lytescr.id='lytescr';lytescr.src='".$lyteSettings['path']."lyte-min.js?wylver=".$lyteSettings['version']."';h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(lytescr, h)}};".$qsa_init."}()) \n --></script></div>".$lytelinks_txt;
+			$lytetemplate = "<div class=\"lyte".$audioClass.$hidefClass.$plClass.$qsaClass."\" id=\"WYL_".$vid."\" style=\"width:".$lyteSettings[2]."px;height:".$divHeight."px;\">".$noscript."</div>".$lytelinks_txt;
 			$the_content = preg_replace("/(<p>)?http(v|a):\/\/([a-zA-Z0-9\-\_]+\.|)(youtube|youtu)(\.com|\.be)\/(((watch(\?v\=|\/v\/)|)([a-zA-Z0-9\-\_]{11}))|(playlist\?list\=PL([a-zA-Z0-9\-\_]{16})))([^\s<]*)(<\/p>)?/", $lytetemplate, $the_content, 1);
                 }
-        }
+		lyte_initer();
+	}
         return $the_content;
+}
+
+function lyte_initer() {
+	if (!$lynited) {
+		$lynited=true;
+		add_action('wp_footer', 'lyte_init');
+	}
+}
+
+function lyte_init() {
+	global $lyteSettings;
+	echo "<link rel=\"stylesheet\" href=\"".$lyteSettings['path']."lyte.css?wylver=".$lyteSettings['version']."\" type=\"text/css\" />";
+	echo "<script type=\"text/javascript\">var bU='".$lyteSettings['path']."';</script>";
+	echo "<script type=\"text/javascript\" src=\"".$lyteSettings['path']."lyte-min.js?wylver=".$lyteSettings['version']."\"></script>";
 }
 
 if ( is_admin() ) {

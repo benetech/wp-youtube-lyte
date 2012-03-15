@@ -3,9 +3,9 @@ Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5, widget, youtube audio, audio, playlist, youtube playlist, hd, performance, accessibility, sidebar, lazy load
 Requires at least: 2.9
 Tested up to: 3.3
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 
-"Lite YouTube Embeds" look like normal YouTube embeds but don't use Flash, thus reducing download size & page rendering time.
+High performance YouTube video, playlist and audio-only embeds which don't slow down your blog and offer optimal accessibility.
 
 == Description ==
 
@@ -18,8 +18,9 @@ Just add a YouTube-link for a video or [an entire playlist](http://blog.futtta.b
 * httpa://www.youtube.com/watch?v=_SQkWbRublY (audio only embed)
 * httpv://www.youtube.com/playlist?list=PLA486E741B25F8E00 (playlist embed)
 * httpv://www.youtube.com/watch?v=_SQkWbRublY#stepSize=-1 (video player, one size smaller than what's configured as default)
+* httpv://www.youtube.com/watch?v=_SQkWbRublY?start=20&showinfo=0 (video player, start playing at 20 seconds and don't show title)
 
-WP YouTube Lyte has been written with optimal performance as primary goal, but has been tested for maximum browser-compatibility (iPad included) while keeping an eye on accessibility. The plugin is fully multi-language, with support for Catalan, Dutch, English, French, German, Hebrew, Spanish and Slovene.
+WP YouTube Lyte has been written with optimal performance as primary goal, but has been tested for maximum browser-compatibility (iPad included) while keeping an eye on accessibility. The plugin is fully multi-language, with support for Catalan, Dutch, English, French, German, Hebrew, Romanian, Spanish and Slovene.
 
 Feedback is welcome; see [info in the faq](http://wordpress.org/extend/plugins/wp-youtube-lyte/faq/) for bug reports/ feature requests and feel free to [rate and/or report on compatibility on wordpress.org](http://wordpress.org/extend/plugins/wp-youtube-lyte/).
 
@@ -54,25 +55,40 @@ As tested and confirmed by [rumultik.ru's Dimitri](http://rumultik.ru) (thanks f
 `if(function_exists('lyte_parse')) { echo lyte_parse($video); }`
 and you're good to go!
 
+= Does WP YouTube Lyte work with Infinite Scroll? =
+Starting from version 1.1.0 it does; in [Infinite Scroll](http://wordpress.org/extend/plugins/infinite-scroll/)'s configuration you just have to add "lyte()" in the  "Javascript to be called after the next posts are fetched"-box.
+
+= Can I still integrate with YouTube's JS API? =
+This was added as a beta feature in version 1.1.0; add ?enablejsapi=1 to the httpv URL. WP YouTube Lyte will pick this up, and add ?enablejsapi=1&origin=<hostname-of-blog> to the URL of the iFrame with the iFrame id being set to iF_<youtube-video-id>. As soon as your visitors plays the video, you should be able to hook up with the video.
+
 = Any bugs/ issues should I know about? =
 * The playlist-player currently does not work on iPad or iPhone, this is a known limitation of Youtube's playlist player and [is on the todo-list to get fixed](http://groups.google.com/group/youtube-api-gdata/browse_frm/thread/adbec924f43688e5#)
 * The new YouTube embed-code doesn't look great when using WP YouTube Lyte widgets in your sidebar. This is because YouTube's embedded player doesn't scale well for small sizes, this is something that YouTube should (and hopefully will) fix at a later stage.
 * Having the same YouTube-video on one page can cause WP YouTube Lyte to malfunction (as the YouTube id is used as the div's id in the DOM, and DOM id's are supposed to be unique)
 * As youtube-nocookie.com does not serve the HTML5-player, WP YouTube Lyte uses the youtube.com domain (which provides less privacy), but as soon as youtube-nocookie.com serves HTML5-video, this will become the default domain for WP YouTube Lyte again.
+* When using the Firefox plugin Karma Blocker, the [video isn't visible when clicking "play", with a warning message being shown instead](http://blog.futtta.be/?p=7584). This is expected behavior and should be solved by tweaking Karma Blocker's configuration.
 
 = I found a bug/ I would like a feature to be added! =
-* Just tell me, I like the feedback! Use the [Contact-page on my blog](http://blog.futtta.be/contact/), [leave a comment in a post about wp-youtube-lyte](http://blog.futtta.be/tag/wp-youtube-lyte/) or [create a new topic on the wordpress.org forum](http://wordpress.org/tags/wp-youtube-lyte?forum_id=10#postform).
+Just tell me, I like the feedback! Use the [Contact-page on my blog](http://blog.futtta.be/contact/), [leave a comment in a post about wp-youtube-lyte](http://blog.futtta.be/tag/wp-youtube-lyte/) or [create a new topic on the wordpress.org forum](http://wordpress.org/tags/wp-youtube-lyte?forum_id=10#postform).
 
 = How you can help =
 * Tell me about bugs you think you've found and if you can't find any, [confirm it works with your version of WP on wordpress.org](http://wordpress.org/extend/plugins/wp-youtube-lyte/)
 * Ask me for a feature you would like to see added
 * [Rate my plugin on wordpress.org](http://wordpress.org/extend/plugins/wp-youtube-lyte/), even if you think it stinks ;-)
 
-== Screenshots ==
-
-1. This is the administration-page of WP YouTube Lyte.
-
 == Changelog ==
+
+= 1.1.0 =
+* updated LYTE-player UI: larger display of preview image, changed look of title placeholder, updated controls image
+* new: added support for "Infinite Scroll" as proposed by ["der Tuxman"](http://tuxproject.de/blog) and [Olivier](http://www.wwebsolution.com/hemisphere)
+* new: added beta-support for YouTube's JS API as requested by Yun
+* performance: remove double DOM-lookups in javascript, hat tip Yun
+* annoyance-avoidance: check for "Karma Blocker" addon and warn, based on feedback from [Leona](http://www.tinuum.net/)
+* translation: added Romanian, thanks to Alexander and [Web Hosting Geeks](http://webhostinggeeks.com/)
+* bugfix: 2nd video with start or showinfo parameters inherited the ones from the 1st one as well as reported by Josh D
+* bugfix: marked lyte img border css as !important
+* bugfix: moved inline javascript (for each lyte-div) to the footer of the page to solve conflict with some jQuery plugins in MSIE as reported by Yun
+* bugfix: set autohide to false for audio-only embeds
 
 = 1.0.0 =
 * new: also works on (manual) excerpts; just add a httpv link to the "excerpt" field on the post/page admin (based on feedback from [Ruben@tuttingegneri](http://www.tuttingegneri.com))
@@ -173,7 +189,7 @@ and you're good to go!
 
 = 0.6.0 =
 * There now is a WP-YouTube-Lyte widget which you can add to your sidebar (see under "Appearance"->"Widgets"), as requested by the fabulous [fruityoaty](http://fruityoaty.com/)
-* The thumbnail is now stretched to use as much of the player as possible (thanks to css3's background-size:contain directive, which works in [all bleeding edge browsers](http://www.quirksmode.org/css/background.html#t012))
+* The thumbnail is now stretched to use as much of the player as possible (thanks to css3's background-size:contain directive, which works in [all bleeding edge browsers](https://developer.mozilla.org/en/CSS/background-size#Browser_compatibility))
 * Updated the "play"-button to fit the new YouTube style
 
 = 0.5.3 =
@@ -250,8 +266,3 @@ Accessibility enhancements (hat tip: Ricky Buchanan):
 
 = 0.1 =
 * Initial version
-
-== Upgrade Notice ==
-
-= 0.9.3 =
-Bugfix release, especially important if you've activated DoNotTrack or if you use widgets.
