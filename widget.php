@@ -52,7 +52,7 @@ class WYLWidget extends WP_Widget {
 
         <?php echo $before_widget; ?>
               <?php if ( $WYLtitle ) echo $before_title . $WYLtitle . $after_title; ?>
-	      <div class="lyte widget <?php echo $WYLaudio; ?> <?php echo $qsaClass; ?>" id="<?php echo $WYLid; ?>" style="width:<?php echo $wSize[$WYLsize]['w']; ?>px;height:<?php if($WYLaudio==="audio") {echo "25";} else {echo $wSize[$WYLsize]['h'];} ?>px;"><noscript><a href="http://youtu.be/<?php echo $WYLid;?>"><img src="http://img.youtube.com/vi/<?php echo $WYLid; ?>/default.jpg" alt="" /></a></noscript></div>
+	      <div class="lyMe widget <?php echo $WYLaudio; ?> <?php echo $qsaClass; ?>" id="<?php echo $WYLid; ?>" style="width:<?php echo $wSize[$WYLsize]['w']; ?>px;height:<?php if($WYLaudio==="audio") {echo "25";} else {echo $wSize[$WYLsize]['h'];} ?>px;"><noscript><a href="http://youtu.be/<?php echo $WYLid;?>"><img src="http://img.youtube.com/vi/<?php echo $WYLid; ?>/default.jpg" alt="" /></a></noscript></div>
 	      <div><?php echo $WYLtext ?></div>
               <?php echo $after_widget; ?>
         <?php
