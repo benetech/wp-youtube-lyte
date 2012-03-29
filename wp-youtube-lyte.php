@@ -4,13 +4,13 @@ Plugin Name: WP YouTube Lyte
 Plugin URI: http://blog.futtta.be/wp-youtube-lyte/
 Description: Lite and accessible YouTube audio and video embedding.
 Author: Frank Goossens (futtta)
-Version: 1.1.1
+Version: 1.1.2
 Author URI: http://blog.futtta.be/
 Text Domain: wp-youtube-lyte
 Domain Path: /languages
 */
 
-$wyl_version="1.1.1";
+$wyl_version="1.1.2";
 
 $plugin_dir = basename(dirname(__FILE__)).'/languages';
 load_plugin_textdomain( 'wp-youtube-lyte', null, $plugin_dir );
@@ -157,9 +157,8 @@ function lyte_initer() {
 
 function lyte_init() {
 	global $lyteSettings;
-	echo "<link rel=\"stylesheet\" href=\"".$lyteSettings['path']."lyte.css?wylver=".$lyteSettings['version']."\" type=\"text/css\" />";
-	echo "<script type=\"text/javascript\">var bU='".$lyteSettings['path']."';</script>";
-	echo "<script type=\"text/javascript\" src=\"".$lyteSettings['path']."lyte-min.js?wylver=".$lyteSettings['version']."\"></script>";
+	echo "<script type=\"text/javascript\">var bU='".$lyteSettings['path']."';style = document.createElement('style');style.type = 'text/css';rules = document.createTextNode('.lyte img {border:0px !important;padding:0px;spacing:0px;margin:0px;display:inline;background-color:transparent;} .lL {margin:0px 0px 10px 0px;} .lyte {margin:5px 0px;} .lP {background-color:#fff;} .pL {cursor:pointer;text-align:center;overflow:hidden;position:relative;margin:0px;} .tC {left:0;top:0;position:absolute;width:100%;background-color:rgba(0,0,0,0.6);} .tT {padding:5px 10px;font-size:16px;color:#ffffff;font-family:sans-serif;text-align:left;} .ctrl {position:absolute;left:0px;bottom:0px;}');if(style.styleSheet) { style.styleSheet.cssText = rules.nodeValue;} else {style.appendChild(rules);}document.getElementsByTagName('head')[0].appendChild(style);</script>";
+	echo "<script type=\"text/javascript\" async=true src=\"".$lyteSettings['path']."lyte-min.js?wylver=".$lyteSettings['version']."\"></script>";
 }
 
 if ( is_admin() ) {

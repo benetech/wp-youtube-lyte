@@ -1,4 +1,5 @@
 var d = document;
+var w = window;
 
 sch="http";
 if (bU.indexOf('https')!=-1) {sch+="s"}
@@ -190,4 +191,10 @@ var getElementsByClassName = function (className, tag, elm) {
     return getElementsByClassName(className, tag, elm)
 };
 
-lyte();
+if(w.addEventListener) {
+	w.addEventListener('load', lyte, false);
+	d.addEventListener('DomContentLoaded', function(){setTimeout("lyte()",750)}, false);
+} else {
+	w.onload=lyte;
+	setTimeout("lyte()",1000);
+}

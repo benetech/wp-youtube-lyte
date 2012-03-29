@@ -3,7 +3,7 @@ Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5, widget, youtube audio, audio, playlist, youtube playlist, hd, performance, accessibility, sidebar, lazy load
 Requires at least: 2.9
 Tested up to: 3.3
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 
 High performance YouTube video, playlist and audio-only embeds which don't slow down your blog and offer optimal accessibility.
 
@@ -77,6 +77,10 @@ Just tell me, I like the feedback! Use the [Contact-page on my blog](http://blog
 * [Rate my plugin on wordpress.org](http://wordpress.org/extend/plugins/wp-youtube-lyte/), even if you think it stinks ;-)
 
 == Changelog ==
+
+= 1.1.2 =
+* bugfix: during development of 1.1.0 the javascript to lazy load the lyte player got lost somehow, readded (now in lyte(-min).js)
+* performance: replaced the external stylesheet (lyte.css) with inline javascript that adds an internal stylesheet to the head of the document (thanks for pushing me [Collin](http://www.realsceptic.com/)!
 
 = 1.1.1 =
 * bugfix: lyte css wasn't applied as class was already removed (regression caused by "Infinite Scroll" support), lyMe now is the name of the unprocessed div and becomes lyte after processing
