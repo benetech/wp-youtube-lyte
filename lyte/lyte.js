@@ -1,10 +1,10 @@
-var d = document;
-var w = window;
+(function( ly ) {
+d = document;
 
-sch="http";
+var sch="http";
 if (bU.indexOf('https')!=-1) {sch+="s"}
 
-function lyte() {
+ly.te = function() {
     if (!rn) {
 	var rn=1;
 	lts = getElementsByClassName("lyMe", "div");
@@ -13,7 +13,7 @@ function lyte() {
 		vid = p.id.substring(4);
 		cN = p.className.replace(/lyMe/, "lyte")+ " lP";
 		p.className=cN;
-		p.onclick = plaYT;
+		p.onclick = ly.play;
 	        pW = p.style.width.match(/\d+/g)[0];
 	        pH = p.style.height.match(/\d+/g)[0];
 		pl = d.createElement('div');
@@ -31,13 +31,13 @@ function lyte() {
 	        } else if (cN.indexOf('playlist') !== -1) {
 			setST(pl, 'height:' + pH + 'px;width:' + pW + 'px;');
 			pl.innerHTML = "<img src=\"" + bU + "play.png\" alt=\"Click to play this playlist\" style=\"margin-top:" + ((pH / 2) - 30) + "px;opacity:0.7;\" onmouseover=\"this.style.opacity=1;\" onmouseout=\"this.style.opacity=0.8;\"/><img src=\"" + bU + "controls-" + pW + ".png\" width=\"100%\" class=\"ctrl\" alt=\"\" style=\"max-width:" + pW + "px;\"/>";
-			joU = sch+"://gdata.youtube.com/feeds/api/playlists/"+ vid +"?v=2&alt=json-in-script&callback=parsePL&fields=id,title,entry";
+			joU = sch+"://gdata.youtube.com/feeds/api/playlists/"+ vid +"?v=2&alt=json-in-script&callback=ly.prsPL&fields=id,title,entry";
 			loadSC(joU);
 	        } else {
 			setST(pl, "height:" + pH + "px;width:" + pW + "px;background:url('" + sch + "://img.youtube.com/vi/" + vid + "/0.jpg') no-repeat scroll center " + bgA + " rgb(0, 0, 0);background-size:cover;");
                 	pl.innerHTML = "<img src=\"" + bU + "play.png\" alt=\"Click to play this video\" style=\"margin-top:" + ((pH / 2) - 30) + "px;opacity:0.7;\" onmouseover=\"this.style.opacity=1;\" onmouseout=\"this.style.opacity=0.8;\"/><img src=\"" + bU + "controls-" + pW + ".png\" width=\"100%\" class=\"ctrl\" alt=\"\" style=\"max-width:" + pW + "px;\"/>";
 	            	if ((cN.indexOf('widget') === -1) && (qsa.indexOf('showinfo=0') === -1)) {
-	                	joU = sch+"://gdata.youtube.com/feeds/api/videos/" + vid + "?fields=id,title&alt=json-in-script&callback=parseV";
+	                	joU = sch+"://gdata.youtube.com/feeds/api/videos/" + vid + "?fields=id,title&alt=json-in-script&callback=ly.prsV";
 		        	loadSC(joU)
 	            	}
 	        }
@@ -53,7 +53,7 @@ function getQ(nD) {
 	return qsa;
 }
 
-function plaYT() {
+ly.play = function() {
     tH=this;
     tH.onclick = "";
     vid=tH.id.substring(4);
@@ -76,14 +76,14 @@ function plaYT() {
     if(typeof tH.firstChild.getAttribute('kabl')=="string") tH.innerHTML="Please check Karma Blocker's config.";
 }
 
-function parseV(r) {
+ly.prsV = function(r) {
     tI = r.entry.title.$t;
     idu = r.entry.id.$t;
     id = "lyte_" + idu.substring(idu.length - 11);
     drawT(id,tI);
 }
 
-function parsePL(r) {
+ly.prsPL = function(r) {
    thumb=r.feed.entry[0].media$group.media$thumbnail[1].url
    idu=r.feed.id.$t
    id="lyte_"+idu.substring(idu.length - 16)
@@ -97,7 +97,6 @@ function parsePL(r) {
    setST(pl, "height:" + pH + ";width:" + pW + ";background:url('" + thumb + "') no-repeat scroll center -50px rgb(0, 0, 0); background-size:cover;")
    drawT(id,title)
    }
-
 
 function drawT(id,tI) {
     p = d.getElementById(id);
@@ -121,7 +120,8 @@ function loadSC(url) {
     scr.type = 'text/javascript';
     d.getElementsByTagName('head')[0].appendChild(scr)
 }
-var getElementsByClassName = function (className, tag, elm) {
+
+function getElementsByClassName (className, tag, elm) {
     if (d.getElementsByClassName) {
         getElementsByClassName = function (className, tag, elm) {
             elm = elm || d;
@@ -191,10 +191,16 @@ var getElementsByClassName = function (className, tag, elm) {
     return getElementsByClassName(className, tag, elm)
 };
 
+}( window.ly = window.ly || {} ));
+
+(function(){
+var w = window;
+var d = document;
+
 if(w.addEventListener) {
-	w.addEventListener('load', lyte, false);
-	d.addEventListener('DomContentLoaded', function(){setTimeout("lyte()",750)}, false);
+	w.addEventListener('load', ly.te, false);
+	d.addEventListener('DomContentLoaded', function(){setTimeout("ly.te()",750)}, false);
 } else {
-	w.onload=lyte;
-	setTimeout("lyte()",1000);
-}
+	w.onload=ly.te;
+	setTimeout("ly.te()",1000);
+}}())

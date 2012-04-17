@@ -99,7 +99,9 @@ class WYLWidget extends WP_Widget {
 						} else {
 						$selected="";
 						}
-					echo "<option value=\"".$x."\"".$selected.">".$wSize[$x]['w']."X".$wSize[$x]['h']."</option>";
+					unset($deprecated);
+					if ($wSize[$x]['depr']===true) $deprecated=" (deprecated!)";
+					echo "<option value=\"".$x."\"".$selected.">".$wSize[$x]['w']."X".$wSize[$x]['h'].$deprecated."</option>";
 					$x++;
 				}
 			?>

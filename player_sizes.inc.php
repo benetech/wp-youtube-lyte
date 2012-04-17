@@ -63,11 +63,17 @@ $pSizeOrder['169']=array(8,1,3,5,7);
 $pSizeOrder['43']=array(0,2,4,6);
 
 // widget sizes
-$wDefault=2;
+$wDefault=4;
 $wSize[1]['h']=125;
 $wSize[1]['w']=150;
+$wSize[1]['depr']=true;
 $wSize[2]['h']=133;
 $wSize[2]['w']=160;
+$wSize[2]['depr']=true;
 $wSize[3]['h']=150;
 $wSize[3]['w']=180;
+$wSize[3]['depr']=true;
+$wSize[4]['h']=200;
+$wSize[4]['w']=200;
+$wSize[4]['depr']=false;
 ?>
