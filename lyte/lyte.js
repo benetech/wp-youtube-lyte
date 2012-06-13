@@ -7,41 +7,51 @@ if (bU.indexOf('https')!=-1) {sch+="s"}
 ly.te = function() {
     if (!rn) {
 	var rn=1;
+	var iOs=navigator.userAgent.match(/(iphone|ipad|ipod)/i);
 	lts = getElementsByClassName("lyMe", "div");
 	for (var i = 0, lln = lts.length; i < lln; i += 1) {
-		p = lts[i];
-		vid = p.id.substring(4);
-		cN = p.className.replace(/lyMe/, "lyte")+ " lP";
-		p.className=cN;
-		p.onclick = ly.play;
-	        pW = p.style.width.match(/\d+/g)[0];
-	        pH = p.style.height.match(/\d+/g)[0];
-		pl = d.createElement('div');
-	        pl.id = "lyte_" + vid;
-	        pl.className = "pL";
+	    p = lts[i];
+	    vid = p.id.substring(4);
+	    cN = p.className.replace(/lyMe/, "lyte")+ " lP";
+	    p.className = cN;
+	    pl = d.createElement('div');
+	    pl.id = "lyte_" + vid;
+	    pl.className = "pL";
+
+            if (iOs === null) {
+                p.onclick = ly.play;
+                pW = p.style.width.match(/\d+/g)[0];
+                pH = p.style.height.match(/\d+/g)[0];
 
 		bgA="-60px";
 		if ((cN.indexOf('widget') !== -1)||(pW/pH<1.7)) bgA="-10px";
 
 		qsa=getQ(p);
 
+		cImg="<img src=\"" + bU + "controls-" + pW + ".png\" height=\"40px\" width=\""+pW+"px\" class=\"ctrl\" alt=\"\"/>";
+		pImg="<img src=\"" + bU + "play.png\" width=\"83px\" height=\"55px\" alt=\"Click to play\" style=\"margin-top:" + ((pH / 2) - 30) + "px;opacity:0.7;\" onmouseover=\"this.style.opacity=1;\" onmouseout=\"this.style.opacity=0.8;\"/>";
+		ytA="://gdata.youtube.com/feeds/api/";
+
         	if (cN.indexOf('audio') !== -1) {
 	        	setST(pl, 'height:' + pH + 'px;width:' + pW + 'px;');
-			pl.innerHTML = "<img src=\"" + bU + "controls-" + pW + ".png\" class=\"ctrl\" alt=\"\" style=\"max-width:" + pW + "px;\"/>";
+			pl.innerHTML = cImg;
 	        } else if (cN.indexOf('playlist') !== -1) {
 			setST(pl, 'height:' + pH + 'px;width:' + pW + 'px;');
-			pl.innerHTML = "<img src=\"" + bU + "play.png\" alt=\"Click to play this playlist\" style=\"margin-top:" + ((pH / 2) - 30) + "px;opacity:0.7;\" onmouseover=\"this.style.opacity=1;\" onmouseout=\"this.style.opacity=0.8;\"/><img src=\"" + bU + "controls-" + pW + ".png\" width=\"100%\" class=\"ctrl\" alt=\"\" style=\"max-width:" + pW + "px;\"/>";
-			joU = sch+"://gdata.youtube.com/feeds/api/playlists/"+ vid +"?v=2&alt=json-in-script&callback=ly.prsPL&fields=id,title,entry";
+			pl.innerHTML = pImg+cImg;
+			joU = sch+ytA+"playlists/"+ vid +"?v=2&alt=json-in-script&callback=ly.prsPL&fields=id,title,entry";
 			loadSC(joU);
 	        } else {
 			setST(pl, "height:" + pH + "px;width:" + pW + "px;background:url('" + sch + "://img.youtube.com/vi/" + vid + "/0.jpg') no-repeat scroll center " + bgA + " rgb(0, 0, 0);background-size:cover;");
-                	pl.innerHTML = "<img src=\"" + bU + "play.png\" alt=\"Click to play this video\" style=\"margin-top:" + ((pH / 2) - 30) + "px;opacity:0.7;\" onmouseover=\"this.style.opacity=1;\" onmouseout=\"this.style.opacity=0.8;\"/><img src=\"" + bU + "controls-" + pW + ".png\" width=\"100%\" class=\"ctrl\" alt=\"\" style=\"max-width:" + pW + "px;\"/>";
+                	pl.innerHTML = pImg+cImg;
 	            	if ((cN.indexOf('widget') === -1) && (qsa.indexOf('showinfo=0') === -1)) {
-	                	joU = sch+"://gdata.youtube.com/feeds/api/videos/" + vid + "?fields=id,title&alt=json-in-script&callback=ly.prsV";
+	                	joU = sch+ytA+"videos/" + vid + "?fields=id,title&alt=json-in-script&callback=ly.prsV";
 		        	loadSC(joU)
 	            	}
 	        }
 		p.appendChild(pl);
+	    } else {
+	    	ly.play(p.id);
+	    }
         }
     }
     var rn="";
@@ -53,9 +63,15 @@ function getQ(nD) {
 	return qsa;
 }
 
-ly.play = function() {
-    tH=this;
-    tH.onclick = "";
+ly.play = function(id) {
+    if (typeof id === 'string') {
+    	tH=d.getElementById(id);
+	aP=0;
+    } else {
+    	tH=this;
+	tH.onclick="";
+	aP=1;
+    }
     vid=tH.id.substring(4);
 
     hidef=0;
@@ -71,7 +87,7 @@ ly.play = function() {
 
     if (tH.className.indexOf("audio") !== -1) { qsa+="&autohide=0";aHgh="438";aSt="position:relative;top:-400px;" } else { aHgh=tH.clientHeight;aSt=""; }
 
-    tH.innerHTML="<iframe id=\"iF_" + vid + "\" width=\"" + tH.clientWidth + "px\" height=\"" + aHgh + "px\" src=\""+eU+"autoplay=1&amp;wmode=opaque&amp;rel=0&amp;egm=0&amp;iv_load_policy=3&amp;hd="+hidef+qsa+"\" frameborder=\"0\" style=\"" + aSt + "\"></iframe>"
+    tH.innerHTML="<iframe id=\"iF_" + vid + "\" width=\"" + tH.clientWidth + "px\" height=\"" + aHgh + "px\" src=\""+eU+"autoplay="+aP+"&amp;wmode=opaque&amp;rel=0&amp;egm=0&amp;iv_load_policy=3&amp;hd="+hidef+qsa+"\" frameborder=\"0\" style=\"" + aSt + "\"></iframe>"
 
     if(typeof tH.firstChild.getAttribute('kabl')=="string") tH.innerHTML="Please check Karma Blocker's config.";
 }

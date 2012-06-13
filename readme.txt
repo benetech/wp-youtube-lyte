@@ -3,7 +3,7 @@ Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5, widget, youtube audio, audio, playlist, youtube playlist, hd, performance, accessibility, sidebar, lazy load
 Requires at least: 2.9
 Tested up to: 3.4
-Stable tag: 1.1.4
+Stable tag: 1.1.5
 
 High performance YouTube video, playlist and audio-only embeds which don't slow down your blog and offer optimal accessibility.
 
@@ -19,6 +19,12 @@ Just add a YouTube-link for a video or [an entire playlist](http://blog.futtta.b
 * httpv://www.youtube.com/playlist?list=PLA486E741B25F8E00 (playlist embed)
 * httpv://www.youtube.com/watch?v=_SQkWbRublY#stepSize=-1 (video player, one size smaller than what's configured as default)
 * httpv://www.youtube.com/watch?v=_SQkWbRublY?start=20&showinfo=0 (video player, start playing at 20 seconds and don't show title)
+
+Or using shortcodes (beta):
+`[lyte id="_SQkWbRublY" /]`
+`[lyte id="_SQkWbRublY" audio="true" /]`
+`[lyte id="A486E741B25F8E00" playlist="true" /]
+
 
 WP YouTube Lyte has been written with optimal performance as primary goal, but has been tested for maximum browser-compatibility (iPad included) while keeping an eye on accessibility. The plugin is fully multi-language, with support for Catalan, Dutch, English, French, German, Hebrew, Romanian, Spanish and Slovene.
 
@@ -70,6 +76,13 @@ Just tell me, I like the feedback! Use the [Contact-page on my blog](http://blog
 * [Rate my plugin on wordpress.org](http://wordpress.org/extend/plugins/wp-youtube-lyte/), even if you think it stinks ;-)
 
 == Changelog ==
+
+= 1.1.5 =
+* bugfix: added missing lyte/controls-400.png, which was needed for the new widget-size in 1.1.4
+* bugfix: force margin for widget to 0 for themes that think they know better (as reported by long-time user [FruityOaty](http://fruityoaty.com/))
+* bugfix: workaround for iOS quirk that caused the video to only start after 2nd click (as reported by Robert of [audio-times.com](http://audio-times.com) and [Collin Maessen](http://www.realsceptic.com/))
+* bugfix: add sizes to images as [suggested by elmll on the wordpress.org forum](http://wordpress.org/support/topic/plugin-wp-youtube-lyte-specify-img-dimensions)
+* beta: shortcode (see [Description](http://wordpress.org/extend/plugins/wp-youtube-lyte/) for examples) as [suggested by ben4d85 on the wordpress.org forum](http://wordpress.org/support/topic/plugin-wp-youtube-lyte-shortcode-custom-class)
 
 = 1.1.4 =
 * bugfix: audio-only youtube was broken due to changes at YouTube (thanks for reporting [Adrian](http://www.yeahlabs.ca/)!)
