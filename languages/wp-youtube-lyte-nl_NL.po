@@ -1,0 +1,203 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WP YouTube Lyte\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/wp-youtube-lyte\n"
+"POT-Creation-Date: 2011-10-12 13:51:40+00:00\n"
+"PO-Revision-Date: 2011-10-17 14:31+0100\n"
+"Last-Translator: frank goossens <futtta@gmail.com>\n"
+"Language-Team: frank goossens ('futtta') <futtta@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Dutch\n"
+
+#: widget.php:74
+msgid "Title:"
+msgstr "Titel:"
+
+#: widget.php:75
+msgid "Size:"
+msgstr "Afmetingen:"
+
+#: widget.php:91
+msgid "Type:"
+msgstr "Type:"
+
+#: widget.php:99
+msgid "audio"
+msgstr "audio"
+
+#: widget.php:100
+msgid "video"
+msgstr "video"
+
+#: widget.php:104
+msgid "Youtube-URL:"
+msgstr "Youtube-URL:"
+
+#: widget.php:105
+msgid "Text:"
+msgstr "Tekst:"
+
+#: player_sizes.inc.php:11
+msgid "Smaller 4:3 player"
+msgstr "Kleiner 4:3 player"
+
+#: player_sizes.inc.php:16
+msgid "Smaller 16:9 player"
+msgstr "Kleinere 16:9 player"
+
+#: player_sizes.inc.php:21
+msgid "Standard value, YouTube default for 4:3-ratio video"
+msgstr "Standaard 4:3-ratio video"
+
+#: player_sizes.inc.php:26
+msgid "YouTube default for 16:9-ratio video"
+msgstr "Standaard 16:9-ratio video"
+
+#: player_sizes.inc.php:31
+msgid "Larger 4:3 player"
+msgstr "Grotere 4:3 player"
+
+#: player_sizes.inc.php:36
+msgid "Larger 16:9 player"
+msgstr "Grotere 16:9 player"
+
+#: player_sizes.inc.php:41
+msgid "Maxi 4:3 player"
+msgstr "Maxi 4:3 player"
+
+#: player_sizes.inc.php:46
+msgid "Maxi 16:9 player"
+msgstr "Maxi 16:9 player"
+
+#: wp-youtube-lyte.php:60
+#: wp-youtube-lyte.php:64
+msgid "Watch this playlist on YouTube"
+msgstr "Bekijk deze playlist op YouTube"
+
+#: wp-youtube-lyte.php:65
+msgid "Watch this playlist"
+msgstr "Bekijk deze playlist"
+
+#: wp-youtube-lyte.php:65
+#: wp-youtube-lyte.php:78
+#: wp-youtube-lyte.php:82
+msgid "on YouTube"
+msgstr "op YouTube"
+
+#: wp-youtube-lyte.php:73
+msgid "Watch this video on YouTube"
+msgstr "Bekijk deze video op YouTube"
+
+#: wp-youtube-lyte.php:78
+#: wp-youtube-lyte.php:82
+msgid "Watch this video"
+msgstr "Bekijk deze video"
+
+#: wp-youtube-lyte.php:78
+msgid "or on"
+msgstr "of op"
+
+#: options.php:37
+msgid "WP YouTube Lyte Settings"
+msgstr "WP YouTube Lyte instellingen"
+
+#: options.php:39
+msgid "WP YouTube Lyte inserts \"Lite YouTube Embeds\" in your blog. These look and feel like normal embedded YouTube, but don't use Flash unless clicked on, thereby <a href=\"http://blog.futtta.be/2010/08/30/the-state-of-wp-youtube-lyte/\" target=\"_blank\">reducing download size & rendering time substantially</a>. When a video is played, WP-YouTube-Lyte can either activate <a href=\"http://apiblog.youtube.com/2010/07/new-way-to-embed-youtube-videos.html\" target=\"_blank\">YouTube's embedded html5-player</a> or the older Flash-version, depending on the settings below."
+msgstr "WP YouTube Lyte voegt  \"Lite YouTube Embeds\" toe aan je blog. Die zien er uit als normale ingebedde YouTube video's, maar laden geen Flash of HTML5 voordat de bezoeker de video wilt bekijken, waardoor <a href=\"http://blog.futtta.be/2010/08/30/the-state-of-wp-youtube-lyte/\" target=\"_blank\">de hoeveelheid te downloaden informatie verminderd en de pagina sneller te zien is</a>."
+
+#: options.php:40
+msgid "You can place video and audio in your posts and pages by adding one or more http<strong>v</strong> or http<strong>a</strong> YouTube-links to your post. These will automatically be replaced by WP YouTube Lyte with the correct (flash-less) code. To add a video for example, you type a URL like <em>http<strong>v</strong>://www.youtube.com/watch?v=QQPSMRQnNlU</em> or <em>http<strong>v</strong>://www.youtube.com/playlist?list=PLA486E741B25F8E00</em> for a playlist. If you want an audio-only player, you enter <em>http<strong>a</strong>://www.youtube.com/watch?v=BIQIGR-kWtc</em>. There's more info on the <a href=\"http://wordpress.org/extend/plugins/wp-youtube-lyte/faq/\" target=\"_blank\">wordpress.org WP YouTube Lyte FAQ page</a>."
+msgstr "Je kunt video an audio in je blogposts opnemen door http<strong>v</strong> of http<strong>a</strong>-links in je post te plaatsen. WP YouTube Lyte zal die automatisch vervangen met de correcte (Flash-loze) code. Om bijvoorbeeld een nieuwe video toe te voegen, gebruik je iets als <em>http<strong>v</strong>://www.youtube.com/watch?v=QQPSMRQnNlU</em> of <em>http<strong>v</strong>://www.youtube.com/playlist?list=PLA486E741B25F8E00</em> voor een playlist. Wil je enkel audio, dan vervang je de http\"v\" in http\"a\", bv. <em>http<strong>a</strong>://www.youtube.com/watch?v=BIQIGR-kWtc</em>. Meer info vind je op de <a href=\"http://wordpress.org/extend/plugins/wp-youtube-lyte/faq/\" target=\"_blank\">wordpress.org WP YouTube Lyte FAQ pagina</a>."
+
+#: options.php:41
+msgid "You can modify WP-YouTube-Lyte's behaviour by changing the following settings:"
+msgstr "Je kunt WP YouTube Lyte wijzigen met onderstaande instellingen:"
+
+#: options.php:48
+msgid "Player size"
+msgstr "Afmetingen van de player"
+
+#: options.php:65
+msgid "Add links below the embedded videos?"
+msgstr "Voeg links to onder de video?"
+
+#: options.php:67
+msgid "Show links?"
+msgstr "Toon links?"
+
+#: options.php:68
+msgid " Add YouTube-link."
+msgstr "Voeg YouTube-link toe"
+
+#: options.php:69
+msgid " Add both a YouTube and an <a href=\"http://icant.co.uk/easy-youtube/docs/index.html\" target=\"_blank\">Easy YouTube</a>-link."
+msgstr "Voeg zowel een YouTube als een <a href=\"http://icant.co.uk/easy-youtube/docs/index.html\" target=\"_blank\">Easy YouTube</a>-link toe."
+
+#: options.php:70
+msgid " Don't add any links."
+msgstr "Voeg geen links toe"
+
+#: options.php:75
+msgid "Play video in HD if possible?"
+msgstr "Speel indien mogelijk in HD af?"
+
+#: options.php:79
+msgid "Enable HD"
+msgstr "Ja, HD graag!"
+
+#: options.php:80
+msgid "No HD, we're smallband!"
+msgstr "Geen HD, graag licht en luchtig"
+
+#: options.php:85
+msgid "Bonus feature: "
+msgstr "Bonus:"
+
+#: options.php:89
+msgid "Disable 3rd party tracking."
+msgstr "Tracking door derden stoppen"
+
+#: options.php:90
+msgid "I don't mind 3rd party tracking (default)"
+msgstr "Laat die derden maar meekijken"
+
+#: options.php:97
+msgid "Save Changes"
+msgstr "Bewaar"
+
+#: options.php:105
+msgid "futtta about"
+msgstr "futtta over"
+
+#. #-#-#-#-#  plugin.pot (WP YouTube Lyte 0.8.0)  #-#-#-#-#
+#. Plugin Name of the plugin/theme
+#: options.php:107
+msgid "WP YouTube Lyte"
+msgstr "WP YouTube Lyte"
+
+#: options.php:108
+msgid "WordPress"
+msgstr "WordPress"
+
+#: options.php:109
+msgid "Web Technology"
+msgstr "Web Technologie"
+
+#. Plugin URI of the plugin/theme
+msgid "http://blog.futtta.be/tag/lyte"
+msgstr "http://blog.futtta.be/tag/lyte"
+
+#. Description of the plugin/theme
+msgid "Lite and accessible YouTube audio and video embedding."
+msgstr "YouTube audio en video embedding \"light\"."
+
+#. Author of the plugin/theme
+msgid "Frank Goossens (futtta)"
+msgstr "Frank Goossens (futtta)"
+
+#. Author URI of the plugin/theme
+msgid "http://blog.futtta.be/"
+msgstr "http://blog.futtta.be/"
+
