@@ -3,7 +3,7 @@ Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5, widget, youtube audio, audio, playlist, youtube playlist, hd, performance, accessibility, sidebar, lazy load
 Requires at least: 2.9
 Tested up to: 3.4
-Stable tag: 1.1.6
+Stable tag: 1.1.7
 
 High performance YouTube video, playlist and audio-only embeds which don't slow down your blog and offer optimal accessibility.
 
@@ -75,6 +75,9 @@ Just tell me, I like the feedback! Use the [Contact-page on my blog](http://blog
 * [Rate my plugin on wordpress.org](http://wordpress.org/extend/plugins/wp-youtube-lyte/), even if you think it stinks ;-)
 
 == Changelog ==
+
+= 1.1.7 =
+* bugfix: 1.1.6 broke excerpts, as reported by Franz of [noobtech.at](http://www.noobtech.at)
 
 = 1.1.6 =
 * bugfix: remove noscript-stuff from the_excerpt [as requested by wordpressvoxbox13](http://wordpress.org/support/topic/plugin-wp-youtube-lyte-wp-youtube-lyte-adds-text-to-my-posts?replies=8#post-2977006)
