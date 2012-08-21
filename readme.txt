@@ -3,7 +3,7 @@ Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5, widget, youtube audio, audio, playlist, youtube playlist, hd, performance, accessibility, sidebar, lazy load
 Requires at least: 2.9
 Tested up to: 3.4
-Stable tag: 1.1.5
+Stable tag: 1.1.6
 
 High performance YouTube video, playlist and audio-only embeds which don't slow down your blog and offer optimal accessibility.
 
@@ -23,8 +23,7 @@ Just add a YouTube-link for a video or [an entire playlist](http://blog.futtta.b
 Or using shortcodes (beta):
 `[lyte id="_SQkWbRublY" /]`
 `[lyte id="_SQkWbRublY" audio="true" /]`
-`[lyte id="A486E741B25F8E00" playlist="true" /]
-
+`[lyte id="A486E741B25F8E00" playlist="true" /]`
 
 WP YouTube Lyte has been written with optimal performance as primary goal, but has been tested for maximum browser-compatibility (iPad included) while keeping an eye on accessibility. The plugin is fully multi-language, with support for Catalan, Dutch, English, French, German, Hebrew, Romanian, Spanish and Slovene.
 
@@ -76,6 +75,11 @@ Just tell me, I like the feedback! Use the [Contact-page on my blog](http://blog
 * [Rate my plugin on wordpress.org](http://wordpress.org/extend/plugins/wp-youtube-lyte/), even if you think it stinks ;-)
 
 == Changelog ==
+
+= 1.1.6 =
+* bugfix: remove noscript-stuff from the_excerpt [as requested by wordpressvoxbox13](http://wordpress.org/support/topic/plugin-wp-youtube-lyte-wp-youtube-lyte-adds-text-to-my-posts?replies=8#post-2977006)
+* bugfix: switch HTTPS detection to is_ssl() WordPress function to avoid breakage on MS IIS
+* removed the "DoNotTrack" bonus feature due to added complexity, [at least one bug](http://wordpress.org/support/topic/wp-youtube-lyte-conflicts-with-wysija-newsletter) and the fact that [WP DoNotTrack](http://wordpress.org/extend/plugins/wp-donottrack/) does a better job at this
 
 = 1.1.5 =
 * bugfix: added missing lyte/controls-400.png, which was needed for the new widget-size in 1.1.4

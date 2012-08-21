@@ -16,7 +16,6 @@ function register_lyte_settings() {
 	register_setting( 'lyte-settings-group', 'size' );
 	register_setting( 'lyte-settings-group', 'hidef' );
 	register_setting( 'lyte-settings-group', 'position' );
-	register_setting( 'lyte-settings-group', 'donottrack' );
 	register_setting( 'lyte-settings-group', 'notification' );
 }
 
@@ -30,12 +29,12 @@ function lyte_admin_styles() {
 }
 
 function lyte_admin_notice(){
-    echo '<div class="updated"><p><strong>Hi there WP YouTube Lyte user!</strong></p><p>Just to let you know that, if you use Lyte Widgets, <a href="http://apiblog.youtube.com/2012/03/minimum-embeds-200px-x-200px.html">from the end of April 2012 onwards YouTube requires the <strong>the minimum size for an embedded player to be 200X200px</strong></a>. If YouTube enforces this, the <strong>smaller widget sizes will not work any more</strong> and for that reason should be considered deprecated from now on. A new widget with size 200X200 is now available to allow you to continue to use WP YouTube Lyte widgets.</p><p>Have a swell day!<br /><a href="http://blog.futtta.be/">frank</a>.</div>';
+    echo '<div class="updated"><p>Hello WP YouTube Lyte user!<br />Just to let you know that <strong>the bonus feature, DoNotTrack, was removed</strong> from WP YouTube Lyte. If you would like to keep blocking third party tracking on your blog, you might want to <strong>install <a href="http://wordpress.org/extend/plugins/wp-donottrack/" title="WP DoNotTrack">WP DoNotTrack</a></strong>, which is a more powerful and flexible solution.</p><p>Have a great day!<br /><a href="http://blog.futtta.be/">frank</a>.</div>';
     }
 
-if (get_option('notification','0')!=="1") {
+if (get_option('notification','0')!=="2") {
 	add_action('admin_notices', 'lyte_admin_notice');
-	update_option('notification','1');
+	update_option('notification','2');
 	}
 
 function lyte_settings_page() {
@@ -106,14 +105,10 @@ function lyte_settings_page() {
 	 <tr valign="top">
 	 	<th scope="row"><?php _e("Bonus feature: ","wp-youtube-lyte") ?><a href="http://wordpress.org/extend/plugins/wp-donottrack/" target="_blank">DoNotTrack</a></th>
 		<td>
-			<fieldset>
-				<legend class="screen-reader-text"><span>Activate DoNotTrack</span></legend>
-				<label title="Enable DoNotTrack"><input type="radio" name="donottrack" value="1" <?php if (get_option('donottrack')==="1") echo "checked" ?> /><?php _e("Disable 3rd party tracking.","wp-youtube-lyte") ?></label><br />
-				<label title="Leave DoNotTrack disabled (default)"><input type="radio" name="donottrack" value="0" <?php if (get_option('donottrack')!=="1") echo "checked" ?> /><?php _e("I don't mind 3rd party tracking (default)","wp-youtube-lyte") ?></label>
-			</fieldset>
-			<span class="description"><?php _e( "This stops tracking by Quantcast as initiated by some <a href=\"http://profiles.wordpress.org/users/automattic/profile/public/\" target=\"_blank\">Automattic plugins</a>. You can also <a href=\"http://wordpress.org/extend/plugins/wp-donottrack/\" target=\"_blank\">try out WP DoNotTrack</a>, a new plugin that provides these features and more (custom black- or whitelist, conditional DoNotTrack, ...)", "wp-donottrack" )  ?></span>
-		</td>
-	 </tr>
+			<?php _e("The DoNotTrack bonus feature has been removed from WP YouTube Lyte. If you need this functionality you might want to install <a href=\"http://wordpress.org/extend/plugins/wp-donottrack/\">WP DoNotTrack</a>, which offers a more flexible and powerful solution","wp-youtube-lyte") ?>
+
+               </td>
+        </tr>
     </table>
     
     <p class="submit">
@@ -154,7 +149,7 @@ function lyte_settings_page() {
 
 	function show_feed(id) {
   		jQuery('#futtta_feed').rssfeed(feed[id], {
-			<?php if ($_SERVER['HTTPS']) echo "ssl: true,"; ?>
+			<?php if ( is_ssl() ) echo "ssl: true,"; ?>
     			limit: 4,
 			date: true,
 			header: false

@@ -4,14 +4,21 @@ Plugin Name: WP YouTube Lyte
 Plugin URI: http://blog.futtta.be/wp-youtube-lyte/
 Description: Lite and accessible YouTube audio and video embedding.
 Author: Frank Goossens (futtta)
-Version: 1.1.5
+Version: 1.1.6
 Author URI: http://blog.futtta.be/
 Text Domain: wp-youtube-lyte
 Domain Path: /languages
 */
 
-$wyl_version="1.1.5";
-#$wyl_version=rand()/1000;
+$debug=false;
+
+if (!$debug) {
+	$wyl_version="1.1.6";
+	$wyl_file="lyte-min.js";
+} else {
+	$wyl_version=rand()/1000;
+	$wyl_file="lyte.js";
+} 
 
 $plugin_dir = basename(dirname(__FILE__)).'/languages';
 load_plugin_textdomain( 'wp-youtube-lyte', null, $plugin_dir );
@@ -37,10 +44,10 @@ $lyteSettings['sizeArray']=$sArray;
 $lyteSettings['selSize']=$selSize;
 $lyteSettings['path']=$wp_lyte_plugin_url.'lyte/';
 $lyteSettings['links']=get_option('show_links');
-$lyteSettings['version']=$wyl_version;
+$lyteSettings['file']=$wyl_file."?wyl_version=".$wyl_version;
 $lyteSettings['position']=get_option('position','0');
 
-function lyte_parse($the_content) {
+function lyte_parse($the_content,$doExcerpt="false") {
 	global $lyteSettings;
 
 	$urlArr=parse_url($lyteSettings['path']);
@@ -57,7 +64,7 @@ function lyte_parse($the_content) {
 			$hidefClass="";
 		}
 
-		if ($_SERVER['HTTPS']) {
+		if ( is_ssl() ) {
         		$scheme="https";
  		} else {
 			$scheme="http";
@@ -143,6 +150,8 @@ function lyte_parse($the_content) {
 				$noscript="<noscript><a href=\"".$scheme."://youtu.be/".$vid."\"><img src=\"".$scheme."://img.youtube.com/vi/".$vid."/0.jpg\" alt=\"\" width=\"".$lyteSettings[2]."\" height=\"".$NSimgHeight."\" />".$noscript_post."</a> ".$NSbanner."</noscript>";
 			}
 
+			if ($doExcerpt) {$noscript="";}
+
 			$lytetemplate = "<div class=\"lyMe".$audioClass.$hidefClass.$plClass.$qsaClass."\" id=\"WYL_".$vid."\" style=\"width:".$lyteSettings[2]."px;height:".$divHeight."px;overflow:hidden;\">".$noscript."</div>".$lytelinks_txt;
 			$the_content = preg_replace("/(<p>)?http(v|a):\/\/([a-zA-Z0-9\-\_]+\.|)(youtube|youtu)(\.com|\.be)\/(((watch(\?v\=|\/v\/)|.+?v\=|)([a-zA-Z0-9\-\_]{11}))|(playlist\?list\=PL([a-zA-Z0-9\-\_]{16})))([^\s<]*)(<\/p>)?/", $lytetemplate, $the_content, 1);
                 }
@@ -164,8 +173,12 @@ function lyte_init() {
 		$pos="auto";
 		}
 	echo "<script type=\"text/javascript\">var bU='".$lyteSettings['path']."';style = document.createElement('style');style.type = 'text/css';rules = document.createTextNode('.lyte img {border:0px !important;padding:0px;spacing:0px;margin:0px;display:inline;background-color:transparent;max-width:100%} .lL {margin:5px ".$pos.";} .lP {background-color:#fff;margin:5px ".$pos.";} .pL {cursor:pointer;text-align:center;overflow:hidden;position:relative;margin:0px !important;} .tC {left:0;top:0;position:absolute;width:100%;background-color:rgba(0,0,0,0.6);} .tT {padding:5px 10px;font-size:16px;color:#ffffff;font-family:sans-serif;text-align:left;} .ctrl {position:absolute;left:0px;bottom:0px;}');if(style.styleSheet) { style.styleSheet.cssText = rules.nodeValue;} else {style.appendChild(rules);}document.getElementsByTagName('head')[0].appendChild(style);</script>";
-	echo "<script type=\"text/javascript\" async=true src=\"".$lyteSettings['path']."lyte-min.js?wylver=".$lyteSettings['version']."\"></script>";
+	echo "<script type=\"text/javascript\" async=true src=\"".$lyteSettings['path'].$lyteSettings['file']."\"></script>";
 }
+
+function lyte_parse_excerpt($the_content){
+	lyte_parse($the_content,$doExcerpt="true");
+	}
 
 /** YouTube shortcode */
 function shortcode_lyte($atts) {
@@ -185,33 +198,7 @@ if ( is_admin() ) {
         require_once(dirname(__FILE__).'/options.php');
 } else {
 	add_filter('the_content', 'lyte_parse', 4);
-	add_filter('the_excerpt', 'lyte_parse', 4);
+	add_filter('the_excerpt', 'lyte_parse_excerpt', 4);
 	add_shortcode("lyte", "shortcode_lyte");
 }
-
-/* donottrack */
-$donottrack_js=$wp_lyte_plugin_url."external/donottrack-min.js";
-
-if ($_SERVER['HTTPS']) {
-	$donottrack_js = str_replace( "http:","https:",$donottrack_js );
-	}
-
-function lyte_donottrack_init() {
-        global $donottrack_js;
-        wp_enqueue_script( 'donottrack',$donottrack_js );
-        }
-
-function lyte_donottrack_config() {
-        echo "<script type=\"text/javascript\">var dnt_config={ifdnt:\"\",mode:\"blacklist\",black:[\"media6degrees.com\",\"quantserve.com\",\"lockerz.com\"],white:[]};</script>\n";
-}
-
-function lyte_donottrack_footer() {
-	echo "<script type=\"text/javascript\">aop_around(document.body, 'appendChild'); aop_around(document.body, 'insertBefore');</script>";
-}
-
-if (get_option('donottrack')==="1") {
-	add_action('wp_print_scripts', 'lyte_donottrack_config');
-        add_action('init', 'lyte_donottrack_init');
-	add_action('wp_footer', 'lyte_donottrack_footer');
-        }
 ?>
