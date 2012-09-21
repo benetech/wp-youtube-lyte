@@ -80,7 +80,7 @@ ly.play = function(id) {
     if (tH.className.indexOf("playlist") === -1) {
     	eU=sch+"://www.youtube.com/embed/" + vid + "?"
     } else {
-    	eU=sch+"://www.youtube.com/embed/videoseries?list=PL" + vid + "&"
+    	eU=sch+"://www.youtube.com/embed/videoseries?list=" + vid + "&"
     }
 
     qsa=getQ(tH);
@@ -102,7 +102,7 @@ ly.prsV = function(r) {
 ly.prsPL = function(r) {
    thumb=r.feed.entry[0].media$group.media$thumbnail[1].url
    idu=r.feed.id.$t
-   id="lyte_"+idu.substring(idu.length - 16)
+   id="lyte_"+idu.match(/PL[a-zA-Z0-9\-\_]*/)[0]
    title="Playlist: "+r.feed.title.$t
    pl=d.getElementById(id)
    pH=pl.style.height;

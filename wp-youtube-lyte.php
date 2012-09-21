@@ -4,7 +4,7 @@ Plugin Name: WP YouTube Lyte
 Plugin URI: http://blog.futtta.be/wp-youtube-lyte/
 Description: Lite and accessible YouTube audio and video embedding.
 Author: Frank Goossens (futtta)
-Version: 1.1.7
+Version: 1.1.8
 Author URI: http://blog.futtta.be/
 Text Domain: wp-youtube-lyte
 Domain Path: /languages
@@ -13,7 +13,7 @@ Domain Path: /languages
 $debug=false;
 
 if (!$debug) {
-	$wyl_version="1.1.7";
+	$wyl_version="1.1.8";
 	$wyl_file="lyte-min.js";
 } else {
 	$wyl_version=rand()/1000;
@@ -70,8 +70,9 @@ function lyte_parse($the_content,$doExcerpt="false") {
 			$scheme="http";
 		}
 
-		preg_match_all("/http(a|v):\/\/([a-zA-Z0-9\-\_]+\.|)(youtube|youtu)(\.com|\.be)\/(((watch(\?v\=|\/v\/)|.+?v\=|)([a-zA-Z0-9\-\_]{11}))|(playlist\?list\=PL([a-zA-Z0-9\-\_]{16})))([^<\s]*)/", $the_content, $matches, PREG_SET_ORDER); 
+		$lytes_regexp="/(?:<p>)?http(v|a):\/\/([a-zA-Z0-9\-\_]+\.|)(youtube|youtu)(\.com|\.be)\/(((watch(\?v\=|\/v\/)|.+?v\=|)([a-zA-Z0-9\-\_]{11}))|(playlist\?list\=(PL[a-zA-Z0-9\-\_]*)))([^\s<]*)(<?:\/p>)?/";
 
+		preg_match_all($lytes_regexp, $the_content, $matches, PREG_SET_ORDER); 
 
 		foreach($matches as $match) {
 			preg_match("/stepSize\=([\+\-0-9]{2})/",$match[12],$sMatch);
@@ -153,7 +154,7 @@ function lyte_parse($the_content,$doExcerpt="false") {
 			if ($doExcerpt) {$noscript="";}
 
 			$lytetemplate = "<div class=\"lyMe".$audioClass.$hidefClass.$plClass.$qsaClass."\" id=\"WYL_".$vid."\" style=\"width:".$lyteSettings[2]."px;height:".$divHeight."px;overflow:hidden;\">".$noscript."</div>".$lytelinks_txt;
-			$the_content = preg_replace("/(<p>)?http(v|a):\/\/([a-zA-Z0-9\-\_]+\.|)(youtube|youtu)(\.com|\.be)\/(((watch(\?v\=|\/v\/)|.+?v\=|)([a-zA-Z0-9\-\_]{11}))|(playlist\?list\=PL([a-zA-Z0-9\-\_]{16})))([^\s<]*)(<\/p>)?/", $lytetemplate, $the_content, 1);
+			$the_content = preg_replace($lytes_regexp, $lytetemplate, $the_content, 1);
                 }
 		lyte_initer();
 	}
@@ -176,9 +177,9 @@ function lyte_init() {
 	echo "<script type=\"text/javascript\" async=true src=\"".$lyteSettings['path'].$lyteSettings['file']."\"></script>";
 }
 
-function lyte_parse_excerpt($the_content){
-	lyte_parse($the_content,$doExcerpt="true");
-	return $the_content;
+function lyte_parse_excerpt($excerpt){
+	$excerpt=lyte_parse($excerpt,$doExcerpt="true");
+	return $excerpt;
 	}
 
 /** YouTube shortcode */
