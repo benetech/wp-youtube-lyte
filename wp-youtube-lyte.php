@@ -4,7 +4,7 @@ Plugin Name: WP YouTube Lyte
 Plugin URI: http://blog.futtta.be/wp-youtube-lyte/
 Description: Lite and accessible YouTube audio and video embedding.
 Author: Frank Goossens (futtta)
-Version: 1.1.8
+Version: 1.1.9
 Author URI: http://blog.futtta.be/
 Text Domain: wp-youtube-lyte
 Domain Path: /languages
@@ -47,7 +47,7 @@ $lyteSettings['links']=get_option('show_links');
 $lyteSettings['file']=$wyl_file."?wyl_version=".$wyl_version;
 $lyteSettings['position']=get_option('position','0');
 
-function lyte_parse($the_content,$doExcerpt="false") {
+function lyte_parse($the_content,$doExcerpt=false) {
 	global $lyteSettings;
 
 	$urlArr=parse_url($lyteSettings['path']);
@@ -148,7 +148,7 @@ function lyte_parse($the_content,$doExcerpt="false") {
 						$lytelinks_txt="<div class=\"lL\" style=\"width:".$lyteSettings[2]."px;\">".__("Watch this video","wp-youtube-lyte")." <a href=\"".$scheme."://youtu.be/".$vid."\">".__("on YouTube","wp-youtube-lyte")."</a>.</div>";
 					}
 
-				$noscript="<noscript><a href=\"".$scheme."://youtu.be/".$vid."\"><img src=\"".$scheme."://img.youtube.com/vi/".$vid."/0.jpg\" alt=\"\" width=\"".$lyteSettings[2]."\" height=\"".$NSimgHeight."\" />".$noscript_post."</a> ".$NSbanner."</noscript>";
+				$noscript="<noscript><a href=\"".$scheme."://youtu.be/".$vid."\"><img src=\"".$scheme."://i.ytimg.com/vi/".$vid."/0.jpg\" alt=\"\" width=\"".$lyteSettings[2]."\" height=\"".$NSimgHeight."\" />".$noscript_post."</a> ".$NSbanner."</noscript>";
 			}
 
 			if ($doExcerpt) {$noscript="";}
@@ -178,7 +178,7 @@ function lyte_init() {
 }
 
 function lyte_parse_excerpt($excerpt){
-	$excerpt=lyte_parse($excerpt,$doExcerpt="true");
+	$excerpt=lyte_parse($excerpt,$doExcerpt=true);
 	return $excerpt;
 	}
 

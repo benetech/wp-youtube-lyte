@@ -3,7 +3,7 @@ Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5, widget, youtube audio, audio, playlist, youtube playlist, hd, performance, accessibility, sidebar, lazy load
 Requires at least: 2.9
 Tested up to: 3.4.2
-Stable tag: 1.1.8
+Stable tag: 1.1.9
 
 High performance YouTube video, playlist and audio-only embeds which don't slow down your blog and offer optimal accessibility.
 
@@ -49,6 +49,8 @@ When playing, HTML5 video will not be visible for everyone (see requirements). I
 = Does WP YouTube Lyte protect my visitor's privacy? =
 As opposed to some of the [most important](http://blog.futtta.be/2010/12/15/wordpress-com-stats-trojan-horse-for-quantcast-tracking/) [plugins](http://blog.futtta.be/2010/01/22/add-to-any-removed-from-here/) there is no 3rd party tracking code in WP YouTube Lyte, but YouTube off course does see visitor requests coming in (see also the youtube-nocookie.com remark in Bugs/Issues below).
 
+If you want to stop YouTube from setting cookies, add the "&showinfo=0" parameter to your httpv-url. This will prevent the call to the Youtube API, which is used to fetch the title of the video, and stop YouTube-cookies from being set when the LYTE-player is loaded. This however does not work for playlists (the API-call is needed to be able to present something meaningful). You should also take into account that any user actually playing the video, will always receive YouTube-cookies ([as is the case with youtube-nocokie embeds as well](http://support.google.com/youtube/bin/answer.py?hl=en&answer=171780&expand=PrivacyEnhancedMode#privacy)).
+
 = Can I use WP YouTube Lyte for a custom field? =
 As tested and confirmed by [rumultik.ru's Dimitri](http://rumultik.ru) (thanks for that man!), this indeed does work. Just pass the httpv url of such a field to lyte_parse like this: 
 `if(function_exists('lyte_parse')) { echo lyte_parse($video); }`
@@ -75,6 +77,11 @@ Just tell me, I like the feedback! Use the [Contact-page on my blog](http://blog
 * [Rate my plugin on wordpress.org](http://wordpress.org/extend/plugins/wp-youtube-lyte/), even if you think it stinks ;-)
 
 == Changelog ==
+
+= 1.1.9 =
+* privacy enhancement: load thumbnails from the cookie-less i.ytimg.com instead of from the cookie-riddled youtube.com (but there are some caveats, [see FAQ](http://wordpress.org/extend/plugins/wp-youtube-lyte/faq/))
+* bugfix: the fullscreen-button did not always appear when playing a video, added the "allowfullscreen" attribute to the iframe (as in the most recent youtube embed code)
+* still [waiting for the big leap forwards (responsive LYTE and custom sizes) I'm afraid](http://blog.futtta.be/2012/10/16/wp-youtube-lyte-waiting-for-the-big-leap-forwards/)
 
 = 1.1.8 =
 * bugfix: [playlists API changed: playlists can now have ID's of more than 16 chars and always should be prepended with PL](http://apiblog.youtube.com/2012/08/playlists-now-with-more-pl.html), which broke playlist rendering. Hat tip for the guys over at [dubtechnoblog.com](http://www.dubtechnoblog.com) for reporting!

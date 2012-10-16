@@ -41,7 +41,7 @@ ly.te = function() {
 			joU = sch+ytA+"playlists/"+ vid +"?v=2&alt=json-in-script&callback=ly.prsPL&fields=id,title,entry";
 			loadSC(joU);
 	        } else {
-			setST(pl, "height:" + pH + "px;width:" + pW + "px;background:url('" + sch + "://img.youtube.com/vi/" + vid + "/0.jpg') no-repeat scroll center " + bgA + " rgb(0, 0, 0);background-size:cover;");
+			setST(pl, "height:" + pH + "px;width:" + pW + "px;background:url('" + sch + "://i.ytimg.com/vi/" + vid + "/0.jpg') no-repeat scroll center " + bgA + " rgb(0, 0, 0);background-size:cover;");
                 	pl.innerHTML = pImg+cImg;
 	            	if ((cN.indexOf('widget') === -1) && (qsa.indexOf('showinfo=0') === -1)) {
 	                	joU = sch+ytA+"videos/" + vid + "?fields=id,title&alt=json-in-script&callback=ly.prsV";
@@ -87,7 +87,7 @@ ly.play = function(id) {
 
     if (tH.className.indexOf("audio") !== -1) { qsa+="&autohide=0";aHgh="438";aSt="position:relative;top:-400px;" } else { aHgh=tH.clientHeight;aSt=""; }
 
-    tH.innerHTML="<iframe id=\"iF_" + vid + "\" width=\"" + tH.clientWidth + "px\" height=\"" + aHgh + "px\" src=\""+eU+"autoplay="+aP+"&amp;wmode=opaque&amp;rel=0&amp;egm=0&amp;iv_load_policy=3&amp;hd="+hidef+qsa+"\" frameborder=\"0\" style=\"" + aSt + "\"></iframe>"
+    tH.innerHTML="<iframe id=\"iF_" + vid + "\" width=\"" + tH.clientWidth + "px\" height=\"" + aHgh + "px\" src=\""+eU+"autoplay="+aP+"&amp;wmode=opaque&amp;rel=0&amp;egm=0&amp;iv_load_policy=3&amp;hd="+hidef+qsa+"\" frameborder=\"0\" style=\"" + aSt + "\" allowfullscreen></iframe>"
 
     if(typeof tH.firstChild.getAttribute('kabl')=="string") tH.innerHTML="Please check Karma Blocker's config.";
 }
