@@ -1,6 +1,6 @@
 === WP YouTube Lyte ===
 Contributors: futtta
-Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5, widget, youtube audio, audio, playlist, youtube playlist, hd, performance, accessibility, sidebar, lazy load
+Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5, widget, youtube audio, audio, playlist, youtube playlist, hd, performance, accessibility, sidebar, lazy load, responsive, microdata
 Requires at least: 2.9
 Tested up to: 3.4.2
 Stable tag: 1.1.9
@@ -77,6 +77,13 @@ Just tell me, I like the feedback! Use the [Contact-page on my blog](http://blog
 * [Rate my plugin on wordpress.org](http://wordpress.org/extend/plugins/wp-youtube-lyte/), even if you think it stinks ;-)
 
 == Changelog ==
+
+= 1.2.0 (beta, please report issues to futtta@gmail.com) ==
+* LYTE embeds are now fully responsive
+* automatic inclusion of microdata
+* updated to current YouTube look & feel
+* less in JavaScript, more in CSS
+* performance: even less requests (from 5 to 3)
 
 = 1.1.9 =
 * privacy enhancement: load thumbnails from the cookie-less i.ytimg.com instead of from the cookie-riddled youtube.com (but there are some caveats, [see FAQ](http://wordpress.org/extend/plugins/wp-youtube-lyte/faq/))

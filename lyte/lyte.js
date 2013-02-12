@@ -14,41 +14,18 @@ ly.te = function() {
 	    vid = p.id.substring(4);
 	    cN = p.className.replace(/lyMe/, "lyte")+ " lP";
 	    p.className = cN;
-	    pl = d.createElement('div');
-	    pl.id = "lyte_" + vid;
-	    pl.className = "pL";
+	    sprite=(bU+"lytesprite.png");
+	    addCss(".lyte .ctrl, .lyte .Rctrl, .lyte .Lctrl, .lyte .play { background-image: url("+sprite+"); }");
+
+	    if (cN.indexOf('audio') === -1) {
+		bgId="lyte_"+vid;
+		thumb=document.getElementById(bgId).getAttribute("data-src");
+		bgCss="#"+bgId+" { background-image: url("+thumb+"); }";
+		addCss(bgCss);
+	    }
 
             if (iOs === null) {
                 p.onclick = ly.play;
-                pW = p.style.width.match(/\d+/g)[0];
-                pH = p.style.height.match(/\d+/g)[0];
-
-		bgA="-60px";
-		if ((cN.indexOf('widget') !== -1)||(pW/pH<1.7)) bgA="-10px";
-
-		qsa=getQ(p);
-
-		cImg="<img src=\"" + bU + "controls-" + pW + ".png\" height=\"40px\" width=\""+pW+"px\" class=\"ctrl\" alt=\"\"/>";
-		pImg="<img src=\"" + bU + "play.png\" width=\"83px\" height=\"55px\" alt=\"Click to play\" style=\"margin-top:" + ((pH / 2) - 30) + "px;opacity:0.7;\" onmouseover=\"this.style.opacity=1;\" onmouseout=\"this.style.opacity=0.8;\"/>";
-		ytA="://gdata.youtube.com/feeds/api/";
-
-        	if (cN.indexOf('audio') !== -1) {
-	        	setST(pl, 'height:' + pH + 'px;width:' + pW + 'px;');
-			pl.innerHTML = cImg;
-	        } else if (cN.indexOf('playlist') !== -1) {
-			setST(pl, 'height:' + pH + 'px;width:' + pW + 'px;');
-			pl.innerHTML = pImg+cImg;
-			joU = sch+ytA+"playlists/"+ vid +"?v=2&alt=json-in-script&callback=ly.prsPL&fields=id,title,entry";
-			loadSC(joU);
-	        } else {
-			setST(pl, "height:" + pH + "px;width:" + pW + "px;background:url('" + sch + "://i.ytimg.com/vi/" + vid + "/0.jpg') no-repeat scroll center " + bgA + " rgb(0, 0, 0);background-size:cover;");
-                	pl.innerHTML = pImg+cImg;
-	            	if ((cN.indexOf('widget') === -1) && (qsa.indexOf('showinfo=0') === -1)) {
-	                	joU = sch+ytA+"videos/" + vid + "?fields=id,title&alt=json-in-script&callback=ly.prsV";
-		        	loadSC(joU)
-	            	}
-	        }
-		p.appendChild(pl);
 	    } else {
 	    	ly.play(p.id);
 	    }
@@ -66,11 +43,11 @@ function getQ(nD) {
 ly.play = function(id) {
     if (typeof id === 'string') {
     	tH=d.getElementById(id);
-	aP=0;
+		aP=0;
     } else {
     	tH=this;
-	tH.onclick="";
-	aP=1;
+		tH.onclick="";
+		aP=1;
     }
     vid=tH.id.substring(4);
 
@@ -85,56 +62,11 @@ ly.play = function(id) {
 
     qsa=getQ(tH);
 
-    if (tH.className.indexOf("audio") !== -1) { qsa+="&autohide=0";aHgh="438";aSt="position:relative;top:-400px;" } else { aHgh=tH.clientHeight;aSt=""; }
-
-    tH.innerHTML="<iframe id=\"iF_" + vid + "\" width=\"" + tH.clientWidth + "px\" height=\"" + aHgh + "px\" src=\""+eU+"autoplay="+aP+"&amp;wmode=opaque&amp;rel=0&amp;egm=0&amp;iv_load_policy=3&amp;hd="+hidef+qsa+"\" frameborder=\"0\" style=\"" + aSt + "\" allowfullscreen></iframe>"
+    if (tH.className.indexOf("audio") !== -1) { qsa+="&amp;autohide=0";aHgh="438";aSt="position:relative;top:-400px;" } else { aHgh=tH.clientHeight;aSt=""; }
+    
+	tH.innerHTML="<iframe id=\"iF_" + vid + "\" width=\"" + tH.clientWidth + "px\" height=\"" + aHgh + "px\" src=\""+eU+"autoplay="+aP+"&amp;wmode=opaque&amp;rel=0&amp;egm=0&amp;iv_load_policy=3&amp;hd="+hidef+qsa+"\" frameborder=\"0\" style=\"" + aSt + "\" allowfullscreen></iframe>"
 
     if(typeof tH.firstChild.getAttribute('kabl')=="string") tH.innerHTML="Please check Karma Blocker's config.";
-}
-
-ly.prsV = function(r) {
-    tI = r.entry.title.$t;
-    idu = r.entry.id.$t;
-    id = "lyte_" + idu.substring(idu.length - 11);
-    drawT(id,tI);
-}
-
-ly.prsPL = function(r) {
-   thumb=r.feed.entry[0].media$group.media$thumbnail[1].url
-   idu=r.feed.id.$t
-   id="lyte_"+idu.match(/PL[a-zA-Z0-9\-\_]*/)[0]
-   title="Playlist: "+r.feed.title.$t
-   pl=d.getElementById(id)
-   pH=pl.style.height;
-   pW=pl.style.width;
-
-   if ((sch=="https")&&(thumb.indexOf('https'==-1))) {thumb=thumb.replace("http://","https://");}
-
-   setST(pl, "height:" + pH + ";width:" + pW + ";background:url('" + thumb + "') no-repeat scroll center -50px rgb(0, 0, 0); background-size:cover;")
-   drawT(id,title)
-   }
-
-function drawT(id,tI) {
-    p = d.getElementById(id);
-    c = d.createElement('div');
-    c.className = "tC";
-    t = d.createElement('div');
-    t.className = "tT";
-    c.appendChild(t);
-    t.innerHTML = tI;
-    p.appendChild(c);
-}
-
-function setST(e, s) {
-    if (typeof e.setAttribute === "function") e.setAttribute('style', s);
-    else if (typeof e.style.setAttribute === "object") e.style.setAttribute('cssText', s)
-}
-
-function loadSC(url) {
-    scr = d.createElement('script');
-    scr.src = url;
-    scr.type = 'text/javascript';
-    d.getElementsByTagName('head')[0].appendChild(scr)
 }
 
 function getElementsByClassName (className, tag, elm) {
@@ -206,8 +138,18 @@ function getElementsByClassName (className, tag, elm) {
     }
     return getElementsByClassName(className, tag, elm)
 };
-
-}( window.ly = window.ly || {} ));
+function addCss(cssCode) {
+	var stEl = document.createElement("style");
+	  stEl.type = "text/css";
+	  if (stEl.styleSheet) {
+		stEl.styleSheet.cssText = cssCode;
+	  } else {
+		stEl.appendChild(document.createTextNode(cssCode));
+	  }
+	  document.getElementsByTagName("head")[0].appendChild(stEl);
+	}
+}
+( window.ly = window.ly || {} ));
 
 (function(){
 var w = window;
