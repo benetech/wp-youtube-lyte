@@ -18,7 +18,13 @@ class WYLWidget extends WP_Widget {
 	if ($WYLsize=="") $WYLsize=$wDefault;
 
 	$WYLaudio = apply_filters( 'widget_text', $instance['WYLaudio'], $instance );
-	$wrapperClass = ($WYLaudio!=="audio") ? " widget" : "-audio";
+	if ($WYLaudio!=="audio") {
+		$wrapperClass = " lidget";
+		$wHeight = $wSize[$WYLsize]['h'];
+	} else {
+		$wrapperClass = "-audio lidget";
+		$wHeight = "38";
+	}
 
 	$WYLurl=str_replace("httpv://","http://",$instance['WYLurl']);
 
@@ -52,7 +58,7 @@ class WYLWidget extends WP_Widget {
 	?>
 	<?php echo $before_widget; ?>
         <?php if ( $WYLtitle ) echo $before_title . $WYLtitle . $after_title; ?>
-	<div class="lyte-wrapper<?php echo $wrapperClass; ?>" style="width:<?php echo $wSize[$WYLsize]['w']; ?>px; min-width:200px; max-width:100%;"><div class="lyMe <?php echo $WYLaudio; echo $qsaClass; ?>" id="<?php echo $WYL_dom_id; ?>"><div id="lyte_<?php echo $WYLid; ?>" data-src="<?php echo $WYLthumb;?>" class="pL"><div class="play"></div><div class="ctrl"><div class="Lctrl"></div></div></div></div><noscript><a href="http://youtu.be/<?php echo $WYLid;?>"><img src="<?php echo $WYLthumb; ?>" alt="" /></a></noscript></div>
+	<div class="lyte-wrapper<?php echo $wrapperClass; ?>" style="width:<?php echo $wSize[$WYLsize]['w']; ?>px; height:<?php echo $wHeight; ?>px; min-width:200px; max-width:100%;"><div class="lyMe <?php echo $WYLaudio; echo $qsaClass; ?>" id="<?php echo $WYL_dom_id; ?>"><div id="lyte_<?php echo $WYLid; ?>" data-src="<?php echo $WYLthumb;?>" class="pL"><div class="play"></div><div class="ctrl"><div class="Lctrl"></div></div></div></div><noscript><a href="http://youtu.be/<?php echo $WYLid;?>"><img src="<?php echo $WYLthumb; ?>" alt="" /></a></noscript></div>
 	<div><?php echo $WYLtext ?></div>
         <?php echo $after_widget; ?>
         <?php
@@ -90,7 +96,7 @@ class WYLWidget extends WP_Widget {
 
         ?>
             <p><label for="<?php echo $this->get_field_id('WYLtitle'); ?>"><?php _e("Title:","wp-youtube-lyte") ?> <input class="widefat" id="<?php echo $this->get_field_id('WYLtitle'); ?>" name="<?php echo $this->get_field_name('WYLtitle'); ?>" type="text" value="<?php echo $WYLtitle; ?>" /></label></p>
-            <p><label for="<?php echo $this->get_field_id('WYLsize'); ?>"><?php _e("Width (height is auto):","wp-youtube-lyte") ?>
+            <p><label for="<?php echo $this->get_field_id('WYLsize'); ?>"><?php _e("Size:","wp-youtube-lyte") ?>
 		<select class="widefat" id="<?php echo $this->get_field_id('WYLsize'); ?>" name="<?php echo $this->get_field_name('WYLsize'); ?>">
 			<?php
 				$x=1;
@@ -101,8 +107,9 @@ class WYLWidget extends WP_Widget {
 						$selected="";
 						}
 					unset($deprecated);
-					if ($wSize[$x]['depr']===true) $deprecated=" (deprecated!)";
-					echo "<option value=\"".$x."\"".$selected.">".$wSize[$x]['w'].$deprecated."</option>";
+					if ($wSize[$x]['depr']!==true) {
+						echo "<option value=\"".$x."\"".$selected.">".$wSize[$x]['w']."X".$wSize[$x]['h']."</option>";
+					}
 					$x++;
 				}
 			?>
