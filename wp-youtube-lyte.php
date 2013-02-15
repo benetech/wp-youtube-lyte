@@ -161,7 +161,7 @@ function lyte_parse($the_content,$doExcerpt=false) {
 				$noscript="<noscript><a href=\"".$scheme."://youtu.be/".$vid."\"><img src=\"".$scheme."://i.ytimg.com/vi/".$vid."/0.jpg\" alt=\"\" width=\"".$lyteSettings[2]."\" height=\"".$NSimgHeight."\" />".$noscript_post."</a> ".$NSbanner."</noscript>";
 			}
 
-			if ($doExcerpt) {$noscript="";}
+			if ($doExcerpt) {$noscript="";$lytelinks_txt="";}
 
 			// get, set and cache info from youtube
 	                if ( $postID ) {
@@ -234,6 +234,7 @@ function lyte_parse($the_content,$doExcerpt=false) {
 			}
 
 			$lytetemplate = $wrapper."<div class=\"lyMe".$audioClass.$hidefClass.$plClass.$qsaClass."\" id=\"WYL_".$vid."\" itemprop=\"video\" itemscope itemtype=\"http://schema.org/VideoObject\"><meta itemprop=\"duration\" content=\"T1M33S\" /><meta itemprop=\"thumbnailUrl\" content=\"".$thumbUrl."\" /><meta itemprop=\"embedURL\" content=\"http://www.example.com/videoplayer.swf?video=123\" /><meta itemprop=\"uploadDate\" content=\"2011-07-05T08:00:00+08:00\" /><div id=\"lyte_".$vid."\" data-src=\"".$thumbUrl."\" class=\"pL\"><div class=\"tC".$titleClass."\"><div class=\"tT\" itemprop=\"name\">".$yt_title."</div></div><div class=\"play\"></div><div class=\"ctrl\"><div class=\"Lctrl\"></div><div class=\"Rctrl\"></div></div></div>".$noscript."<span itemprop=\"description\">This will ultimately contain the description straight from YouTube.</span></div></div>".$lytelinks_txt;
+			if ($doExcerpt) {$lytetemplate="";}
 			$the_content = preg_replace($lytes_regexp, $lytetemplate, $the_content, 1);
                 }
 
@@ -267,6 +268,22 @@ function lyte_parse_excerpt($excerpt){
 	return $excerpt;
 	}
 
+// need to override default wp_trim_excerpt to have lyte_parse remove the httpv-links
+function lyte_trim_excerpt($text) {
+	global $post;
+	if ( '' == $text ) {
+		$text = get_the_content('');
+		$text = lyte_parse($text, true);
+                $text = strip_shortcodes( $text );
+                $text = apply_filters('the_content', $text);
+                $text = str_replace(']]>', ']]&gt;', $text);
+                $excerpt_length = apply_filters('excerpt_length', 55);
+                $excerpt_more = apply_filters('excerpt_more', ' ' . '[...]');
+                $text = wp_trim_words( $text, $excerpt_length, $excerpt_more );
+        }
+        return apply_filters('wp_trim_excerpt', $text, $raw_excerpt);
+}
+
 /** Lyte shortcode */
 function shortcode_lyte($atts) {
         extract(shortcode_atts(array(
@@ -281,16 +298,13 @@ function shortcode_lyte($atts) {
         return lyte_parse($proto.'://www.youtube.com/'.$action.$id);
     }
 
-function yt_func($atts, $content="") {
-     return lyte_parse("httpv://www.youtube.com/watch?v=".$content);
-     }
-add_shortcode('youtube', 'yt_func');
-
 if ( is_admin() ) {
         require_once(dirname(__FILE__).'/options.php');
 } else {
 	add_filter('the_content', 'lyte_parse', 4);
-	add_filter('the_excerpt', 'lyte_parse_excerpt', 4);
+	// add_filter('the_excerpt', 'lyte_parse_excerpt', 4);
 	add_shortcode("lyte", "shortcode_lyte");
+	remove_filter('get_the_excerpt', 'wp_trim_excerpt');
+	add_filter('get_the_excerpt', 'lyte_trim_excerpt');
 }
 ?>
