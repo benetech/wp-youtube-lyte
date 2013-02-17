@@ -52,7 +52,7 @@ function lyte_parse($the_content,$doExcerpt=false) {
 	global $lyteSettings;
 
 	$urlArr=parse_url($lyteSettings['path']);
-	$origin=$urlArr[scheme]."://".$urlArr[host]."/";
+	$origin=$urlArr['scheme']."://".$urlArr['host']."/";
 
 	if((strpos($the_content, "httpv")!==FALSE)||(strpos($the_content, "httpa")!==FALSE)) {
 		$char_codes = array('&#215;','&#8211;');
@@ -72,6 +72,7 @@ function lyte_parse($the_content,$doExcerpt=false) {
 		}
 
 		$postID = get_the_ID();
+		$toCache_index=array();
 
 		$lytes_regexp="/(?:<p>)?http(v|a):\/\/([a-zA-Z0-9\-\_]+\.|)(youtube|youtu)(\.com|\.be)\/(((watch(\?v\=|\/v\/)|.+?v\=|)([a-zA-Z0-9\-\_]{11}))|(playlist\?list\=(PL[a-zA-Z0-9\-\_]*)))([^\s<]*)(<?:\/p>)?/";
 
@@ -84,14 +85,14 @@ function lyte_parse($the_content,$doExcerpt=false) {
 			preg_match("/enablejsapi\=([0-1]{1})/",$match[12],$jsapi);
 
 			$qsa="";
-			if ($showinfo[0]) {
+			if (!empty($showinfo[0])) {
 				$qsa="&amp;".$showinfo[0];
 				$titleClass=" hidden";
 			} else {
 				$titleClass="";
 			}
-			if ($start[0]) $qsa.="&amp;".$start[0];
-			if ($jsapi[0]) $qsa.="&amp;".$jsapi[0]."&amp;origin=".$origin;
+			if (!empty($start[0])) $qsa.="&amp;".$start[0];
+			if (!empty($jsapi[0])) $qsa.="&amp;".$jsapi[0]."&amp;origin=".$origin;
 
 			if (!empty($qsa)) {
 				$esc_arr=array("&" => "\&", "?" => "\?", "=" => "\=");
@@ -239,8 +240,8 @@ function lyte_parse($the_content,$doExcerpt=false) {
                 }
 
 		// update lyte_cache_index
-		if (is_array($toCache_index)) {
-			// would we want to gzcompress & base64_encode this?
+		if ((is_array($toCache_index))&&(!empty($toCache_index))) {
+			// would we want to gzcompress & base64_encode this as well?
 			$lyte_cache=json_decode(get_option('lyte_cache_index'),true);
                         $lyte_cache[$postID]=$toCache_index;
                         update_option('lyte_cache_index',json_encode($lyte_cache));
@@ -251,6 +252,7 @@ function lyte_parse($the_content,$doExcerpt=false) {
 }
 
 function lyte_initer() {
+	global $lynited;
 	if (!$lynited) {
 		$lynited=true;
 		add_action('wp_footer', 'lyte_init');
@@ -263,12 +265,8 @@ function lyte_init() {
 	echo "<script type=\"text/javascript\" async=true src=\"".$lyteSettings['path'].$lyteSettings['file']."\"></script>";
 }
 
-function lyte_parse_excerpt($excerpt){
-	$excerpt=lyte_parse($excerpt,$doExcerpt=true);
-	return $excerpt;
-	}
 
-// need to override default wp_trim_excerpt to have lyte_parse remove the httpv-links
+// override default wp_trim_excerpt to have lyte_parse remove the httpv-links
 function lyte_trim_excerpt($text) {
 	global $post;
 	if ( '' == $text ) {
@@ -302,7 +300,6 @@ if ( is_admin() ) {
         require_once(dirname(__FILE__).'/options.php');
 } else {
 	add_filter('the_content', 'lyte_parse', 4);
-	// add_filter('the_excerpt', 'lyte_parse_excerpt', 4);
 	add_shortcode("lyte", "shortcode_lyte");
 	remove_filter('get_the_excerpt', 'wp_trim_excerpt');
 	add_filter('get_the_excerpt', 'lyte_trim_excerpt');
