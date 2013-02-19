@@ -7,24 +7,23 @@ if (bU.indexOf('https')!=-1) {sch+="s"}
 ly.te = function() {
     if (!rn) {
 	var rn=1;
-	var iOs=navigator.userAgent.match(/(iphone|ipad|ipod)/i);
-	lts = getElementsByClassName("lyMe", "div");
+	var mOs=navigator.userAgent.match(/(iphone|ipad|ipod|android)/i);
+	lts = ly.getElementsByClassName("lyMe", "div");
+	
 	for (var i = 0, lln = lts.length; i < lln; i += 1) {
 	    p = lts[i];
 	    vid = p.id.substring(4);
-	    cN = p.className.replace(/lyMe/, "lyte")+ " lP";
-	    p.className = cN;
-	    sprite=(bU+"lytesprite.png");
-	    addCss(".lyte .ctrl, .lyte .Rctrl, .lyte .Lctrl, .lyte .play { background-image: url("+sprite+"); }");
-
-	    if (cN.indexOf('audio') === -1) {
-		bgId="lyte_"+vid;
-		thumb=document.getElementById(bgId).getAttribute("data-src");
-		bgCss="#"+bgId+" { background-image: url("+thumb+"); }";
-		addCss(bgCss);
-	    }
-
-            if (iOs === null) {
+	    if (mOs === null) {
+	    	cN = p.className.replace(/lyMe/, "lyte")+ " lP";
+	    	p.className = cN;
+	   	sprite=(bU+"lytesprite.png");
+	    	ly.addCss(".lyte .ctrl, .lyte .Rctrl, .lyte .Lctrl, .lyte .play { background-image: url("+sprite+"); }");
+	    	if (cN.indexOf('audio') === -1) {
+			bgId="lyte_"+vid;
+			thumb=document.getElementById(bgId).getAttribute("data-src");
+			bgCss="#"+bgId+" { background-image: url("+thumb+"); }";
+			ly.addCss(bgCss);
+	    	}
                 p.onclick = ly.play;
 	    } else {
 	    	ly.play(p.id);
@@ -34,7 +33,7 @@ ly.te = function() {
     var rn="";
 }
 
-function getQ(nD) {
+ly.getQ = function(nD) {
 	qsa="";
 	if (rqs=nD.className.match(/qsa_(.*)\s/,"$1")) qsa=rqs[1].replace(/\\([\&\=\?])/g, "$1");
 	return qsa;
@@ -43,12 +42,13 @@ function getQ(nD) {
 ly.play = function(id) {
     if (typeof id === 'string') {
     	tH=d.getElementById(id);
-		aP=0;
+	aP=0;
     } else {
     	tH=this;
-		tH.onclick="";
-		aP=1;
+	tH.onclick="";
+	aP=1;
     }
+
     vid=tH.id.substring(4);
 
     hidef=0;
@@ -60,16 +60,16 @@ ly.play = function(id) {
     	eU=sch+"://www.youtube.com/embed/videoseries?list=" + vid + "&"
     }
 
-    qsa=getQ(tH);
+    qsa=ly.getQ(tH);
 
     if (tH.className.indexOf("audio") !== -1) { qsa+="&amp;autohide=0";aHgh="438";aSt="position:relative;top:-400px;" } else { aHgh=tH.clientHeight;aSt=""; }
     
-	tH.innerHTML="<iframe id=\"iF_" + vid + "\" width=\"" + tH.clientWidth + "px\" height=\"" + aHgh + "px\" src=\""+eU+"autoplay="+aP+"&amp;wmode=opaque&amp;rel=0&amp;egm=0&amp;iv_load_policy=3&amp;hd="+hidef+qsa+"\" frameborder=\"0\" style=\"" + aSt + "\" allowfullscreen></iframe>"
+    tH.innerHTML="<iframe id=\"iF_" + vid + "\" width=\"" + tH.clientWidth + "px\" height=\"" + aHgh + "px\" src=\""+eU+"autoplay="+aP+"&amp;wmode=opaque&amp;rel=0&amp;egm=0&amp;iv_load_policy=3&amp;hd="+hidef+qsa+"\" frameborder=\"0\" style=\"" + aSt + "\" allowfullscreen></iframe>"
 
     if(typeof tH.firstChild.getAttribute('kabl')=="string") tH.innerHTML="Please check Karma Blocker's config.";
 }
 
-function getElementsByClassName (className, tag, elm) {
+ly.getElementsByClassName = function(className, tag, elm) {
     if (d.getElementsByClassName) {
         getElementsByClassName = function (className, tag, elm) {
             elm = elm || d;
@@ -138,16 +138,17 @@ function getElementsByClassName (className, tag, elm) {
     }
     return getElementsByClassName(className, tag, elm)
 };
-function addCss(cssCode) {
+
+ly.addCss = function(cssCode) {
 	var stEl = document.createElement("style");
-	  stEl.type = "text/css";
-	  if (stEl.styleSheet) {
+	stEl.type = "text/css";
+	if (stEl.styleSheet) {
 		stEl.styleSheet.cssText = cssCode;
-	  } else {
+	} else {
 		stEl.appendChild(document.createTextNode(cssCode));
-	  }
-	  document.getElementsByTagName("head")[0].appendChild(stEl);
 	}
+	document.getElementsByTagName("head")[0].appendChild(stEl);
+}
 }
 ( window.ly = window.ly || {} ));
 
