@@ -52,7 +52,7 @@ ly.play = function(id) {
     vid=tH.id.substring(4);
 
     hidef=0;
-    if (tH.className.indexOf("hidef") !== -1) { hidef=1; }
+    if (tH.className.indexOf("hidef") !== -1) { hidef="1&amp;vq=hd720" }
 
     if (tH.className.indexOf("playlist") === -1) {
     	eU=sch+"://www.youtube.com/embed/" + vid + "?"

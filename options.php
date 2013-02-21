@@ -93,7 +93,7 @@ function lyte_settings_page() {
                 </td>
          </tr>
          <tr valign="top">
-                <th scope="row"><?php _e("Play video in HD if possible?","wp-youtube-lyte") ?></th>
+                <th scope="row"><?php _e("Try to force HD (experimental)?","wp-youtube-lyte") ?></th>
                 <td>
                         <fieldset>
                                 <legend class="screen-reader-text"><span>HD or not?</span></legend>

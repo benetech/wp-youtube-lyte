@@ -52,7 +52,7 @@ class WYLWidget extends WP_Widget {
 	}
 
 	$WYL_dom_id="YLW_".$WYLid;
-	$WYLthumb="http://img.youtube.com/vi/".$WYLid."/default.jpg";
+	$WYLthumb="http://img.youtube.com/vi/".$WYLid."/mqdefault.jpg";
 
 	$lyteSettings['path']=$wp_lyte_plugin_url."lyte/";
 	?>
