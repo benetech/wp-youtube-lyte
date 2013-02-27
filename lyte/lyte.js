@@ -1,5 +1,5 @@
 (function( ly ) {
-d = document;
+var d = document;
 
 var sch="http";
 if (bU.indexOf('https')!=-1) {sch+="s"}
@@ -20,7 +20,7 @@ ly.te = function() {
 	    	ly.addCss(".lyte .ctrl, .lyte .Rctrl, .lyte .Lctrl, .lyte .play { background-image: url("+sprite+"); }");
 	    	if (cN.indexOf('audio') === -1) {
 			bgId="lyte_"+vid;
-			thumb=document.getElementById(bgId).getAttribute("data-src");
+			thumb=d.getElementById(bgId).getAttribute("data-src");
 			bgCss="#"+bgId+" { background-image: url("+thumb+"); }";
 			ly.addCss(bgCss);
 	    	}
@@ -140,14 +140,14 @@ ly.getElementsByClassName = function(className, tag, elm) {
 };
 
 ly.addCss = function(cssCode) {
-	var stEl = document.createElement("style");
+	var stEl = d.createElement("style");
 	stEl.type = "text/css";
 	if (stEl.styleSheet) {
 		stEl.styleSheet.cssText = cssCode;
 	} else {
 		stEl.appendChild(document.createTextNode(cssCode));
 	}
-	document.getElementsByTagName("head")[0].appendChild(stEl);
+	d.getElementsByTagName("head")[0].appendChild(stEl);
 }
 }
 ( window.ly = window.ly || {} ));

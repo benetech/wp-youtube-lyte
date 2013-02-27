@@ -11,14 +11,26 @@ Domain Path: /languages
 */
 
 $debug=true;
+$lyte_version="1.2.0";
+$lyte_db_version=get_option('lyte_version','none');
+
+if ($lyte_db_version !== $lyte_version) {
+	switch($lyte_db_version) {
+		case "none":
+			lyte_options_update();
+	}
+	update_option('lyte_version',$lyte_version);
+	$lyte_db_version=$lyte_version;
+}
 
 if (!$debug) {
-	$wyl_version="1.2.0";
+	$wyl_version=$lyte_version;
 	$wyl_file="lyte-min.js";
 } else {
 	$wyl_version=rand()/1000;
 	$wyl_file="lyte.js";
-} 
+	lyte_rm_cache();
+}
 
 $plugin_dir = basename(dirname(__FILE__)).'/languages';
 load_plugin_textdomain( 'wp-youtube-lyte', null, $plugin_dir );
@@ -28,7 +40,31 @@ $wp_lyte_plugin_url = trailingslashit(get_bloginfo('wpurl')) . PLUGINDIR . '/' .
 require_once(dirname(__FILE__).'/player_sizes.inc.php');
 require_once(dirname(__FILE__).'/widget.php');
 
-$oSize = (int) get_option('size');
+function lyte_options_update() {
+	// part of upgrade of 1.1.x to 1.2.x
+	if (get_option('size')!==false) {
+        	foreach (array('size','show_links','position','hidef','notification') as $oldOptionName) {
+                	$oldOptionValue=get_option($oldOptionName);
+                	$newOptionName="lyte_".$oldOptionName;
+                	update_option($newOptionName,$oldOptionValue);
+                	delete_option($oldOptionName);
+                }
+        }
+}
+
+function lyte_rm_cache() {
+	$lyte_posts=json_decode(get_option('lyte_cache_index'),true);
+	if (is_array($lyte_posts)){
+		foreach ($lyte_posts as $postID => $lyte_post) {
+			foreach ($lyte_post as $cachekey) {
+				delete_post_meta($postID, $cachekey);
+			}
+		}
+		delete_option('lyte_cache_index');
+	}
+}
+
+$oSize = (int) get_option('lyte_size');
 if ((is_bool($oSize)) || ($pSize[$oSize]['a']===false)) { $sel = (int) $pDefault; } else { $sel=$oSize; }
 
 $pSizeFormat=$pSize[$sel]['f'];
@@ -43,10 +79,10 @@ foreach ($pSizeOrder[$pSizeFormat] as $sizeId) {
 $lyteSettings['sizeArray']=$sArray;
 $lyteSettings['selSize']=$selSize;
 $lyteSettings['path']=$wp_lyte_plugin_url.'lyte/';
-$lyteSettings['links']=get_option('show_links');
+$lyteSettings['links']=get_option('lyte_show_links');
 $lyteSettings['file']=$wyl_file."?wyl_version=".$wyl_version;
 $lyteSettings['ratioClass']= ( $pSizeFormat==="43" ) ? " fourthree" : "";
-$lyteSettings['pos']= ( get_option('position','0')==="1" ) ? $pos="margin:5px auto;" : $pos="margin:5px;";
+$lyteSettings['pos']= ( get_option('lyte_position','0')==="1" ) ? $pos="margin:5px auto;" : $pos="margin:5px;";
 
 function lyte_parse($the_content,$doExcerpt=false) {
 	global $lyteSettings;
@@ -59,7 +95,7 @@ function lyte_parse($the_content,$doExcerpt=false) {
 		$replacements = array("x", "--");
 		$the_content=str_replace($char_codes, $replacements, $the_content);
 
-		if (get_option('hidef')==="1") {
+		if (get_option('lyte_hidef')==="1") {
        			$hidefClass=" hidef";
 		} else {
 			$hidefClass="";
@@ -181,9 +217,9 @@ function lyte_parse($the_content,$doExcerpt=false) {
 				$yt_api_base = "http://gdata.youtube.com/feeds/api/";
 				
 				if ($plClass===" playlist") {
-					$yt_api_target = "playlists/".$vid."?v=2&alt=json&fields=id,title,entry";
+					$yt_api_target = "playlists/".$vid."?v=2&alt=json&fields=id,title,author,updated,media:group(media:thumbnail)";
 				} else {
-					$yt_api_target = "videos/".$vid."?fields=id,title&alt=json";
+					$yt_api_target = "videos/".$vid."?v=2&alt=json&fields=id,title,published,content,media:group(media:description,yt:duration,yt:aspectRatio),author(name)";
 				}
 
 				$yt_api_url = $yt_api_base.$yt_api_target;
@@ -220,11 +256,17 @@ function lyte_parse($the_content,$doExcerpt=false) {
                         if ( $yt_resp ) {
 				$yt_resp_array=json_decode($yt_resp,true);
 				if ($plClass===" playlist") {
-					$yt_title="Playlist: ".$yt_resp_array['feed']['title']['$t'];
-					$thumbUrl=$yt_resp_array['feed']['entry'][0]['media$group']['media$thumbnail'][2]['url'];
+					$yt_title="Playlist: ".sanitize_text_field($yt_resp_array['feed']['title']['$t']);
+					$thumbUrl=esc_url($yt_resp_array['feed']['media$group']['media$thumbnail'][2]['url']);
+					$dateField=sanitize_text_field($yt_resp_array['feed']['updated']['$t']);
+					$duration="";
+					$description=$yt_title;
 				} else {
-					$yt_title=$yt_resp_array['entry']['title']['$t'];
-					$thumbUrl=$scheme."://i.ytimg.com/vi/".$vid."/0.jpg";
+					$yt_title=sanitize_text_field($yt_resp_array['entry']['title']['$t']);
+					$thumbUrl=esc_url($scheme."://i.ytimg.com/vi/".$vid."/0.jpg");
+					$dateField=sanitize_text_field($yt_resp_array['entry']['published']['$t']);
+					$duration="T".sanitize_text_field($yt_resp_array['entry']['media$group']['yt$duration']['seconds'])."S";
+					$description=sanitize_text_field($yt_resp_array['entry']['media$group']['media$description']['$t']);
 				}
 			}
 		
@@ -234,8 +276,13 @@ function lyte_parse($the_content,$doExcerpt=false) {
 				$wrapper="<div class=\"lyte-wrapper".$lyteSettings['ratioClass']."\" style=\"width:".$lyteSettings[2]."px;max-width: 100%;".$lyteSettings['pos']."\">";
 			}
 
-			$lytetemplate = $wrapper."<div class=\"lyMe".$audioClass.$hidefClass.$plClass.$qsaClass."\" id=\"WYL_".$vid."\" itemprop=\"video\" itemscope itemtype=\"http://schema.org/VideoObject\"><meta itemprop=\"duration\" content=\"T1M33S\" /><meta itemprop=\"thumbnailUrl\" content=\"".$thumbUrl."\" /><meta itemprop=\"embedURL\" content=\"http://www.example.com/videoplayer.swf?video=123\" /><meta itemprop=\"uploadDate\" content=\"2011-07-05T08:00:00+08:00\" /><div id=\"lyte_".$vid."\" data-src=\"".$thumbUrl."\" class=\"pL\"><div class=\"tC".$titleClass."\"><div class=\"tT\" itemprop=\"name\">".$yt_title."</div></div><div class=\"play\"></div><div class=\"ctrl\"><div class=\"Lctrl\"></div><div class=\"Rctrl\"></div></div></div>".$noscript."<span itemprop=\"description\">This will ultimately contain the description straight from YouTube.</span></div></div>".$lytelinks_txt;
-			if ($doExcerpt) {$lytetemplate="";}
+			if ($doExcerpt) {
+				$lytetemplate="";
+			} elseif (($audio!==true)&&($plClass!==" playlist")&&(get_option('lyte_microdata','1')==="1")) {
+				$lytetemplate = $wrapper."<div class=\"lyMe".$audioClass.$hidefClass.$plClass.$qsaClass."\" id=\"WYL_".$vid."\" itemprop=\"video\" itemscope itemtype=\"http://schema.org/VideoObject\"><meta itemprop=\"duration\" content=\"".$duration."\" /><meta itemprop=\"thumbnailUrl\" content=\"".$thumbUrl."\" /><meta itemprop=\"embedURL\" content=\"http://www.youtube.com/embed/".$vid."\" /><meta itemprop=\"uploadDate\" content=\"".$dateField."\" /><div id=\"lyte_".$vid."\" data-src=\"".$thumbUrl."\" class=\"pL\"><div class=\"tC".$titleClass."\"><div class=\"tT\" itemprop=\"name\">".$yt_title."</div></div><div class=\"play\"></div><div class=\"ctrl\"><div class=\"Lctrl\"></div><div class=\"Rctrl\"></div></div></div>".$noscript."<meta itemprop=\"description\" content=\"".$description."\"></div></div>".$lytelinks_txt;
+			} else {
+				$lytetemplate = $wrapper."<div class=\"lyMe".$audioClass.$hidefClass.$plClass.$qsaClass."\" id=\"WYL_".$vid."\"><div id=\"lyte_".$vid."\" data-src=\"".$thumbUrl."\" class=\"pL\"><div class=\"tC".$titleClass."\"><div class=\"tT\">".$yt_title."</div></div><div class=\"play\"></div><div class=\"ctrl\"><div class=\"Lctrl\"></div><div class=\"Rctrl\"></div></div></div>".$noscript."</div></div>".$lytelinks_txt;
+			}
 			$the_content = preg_replace($lytes_regexp, $lytetemplate, $the_content, 1);
                 }
 
@@ -261,7 +308,7 @@ function lyte_initer() {
 
 function lyte_init() {
 	global $lyteSettings;
-	echo "<script type=\"text/javascript\">var bU='".$lyteSettings['path']."';style = document.createElement('style');style.type = 'text/css';rules = document.createTextNode(\".lyte,.lyMe{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;background-color:#777;} .fourthree .lyMe, .fourthree .lyte {padding-bottom:75%;} .lidget{margin-bottom:5px;} .lidget .lyte, .widget .lyMe {padding-bottom:0!important;height:100%!important;} .lyte-wrapper-audio .lyte{height:38px!important;overflow:hidden;padding:0!important} .lyte iframe,.lyte .pL{position:absolute;top:0;left:0;width:100%;height:100%;background:no-repeat scroll center #000;background-size:cover;cursor:pointer} .tC{background-color:rgba(0,0,0,0.5);left:0;position:absolute;top:0;width:100%} .tT{color:#FFF;font-family:sans-serif;font-size:16px;height:auto;text-align:left;padding:5px 10px} .tT:hover{text-decoration:underline} .play{background:no-repeat scroll 0 0 transparent;width:90px;height:62px;position:absolute;left:43%;left:calc(50% - 45px);left:-webkit-calc(50% - 45px);top:38%;top:calc(50% - 31px);top:-webkit-calc(50% - 31px);} .widget .play {top:30%;top:calc(45% - 31px);top:-webkit-calc(45% - 31px);transform:scale(0.6);-webkit-transform:scale(0.6);-ms-transform:scale(0.6);} .lyte:hover .play{background-position:0 -65px} .audio .pL{max-height:38px!important} .audio iframe{height:438px!important} .ctrl{background:repeat scroll 0 -215px transparent;width:100%;height:40px;bottom:0;left:0;position:absolute} .Lctrl{background:no-repeat scroll 0 -132px transparent;width:158px;height:40px;bottom:0;left:0;position:absolute} .Rctrl{background:no-repeat scroll -42px -174px transparent;width:117px;height:40px;bottom:0;right:0;position:absolute} .audio .play,.audio .tC{display:none} .hidden{display:none}\" );if(style.styleSheet) { style.styleSheet.cssText = rules.nodeValue;} else {style.appendChild(rules);}document.getElementsByTagName('head')[0].appendChild(style);</script>";
+	echo "<script type=\"text/javascript\">var bU='".$lyteSettings['path']."';style = document.createElement('style');style.type = 'text/css';rules = document.createTextNode(\".lyte,.lyMe{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;background-color:#777;} .fourthree .lyMe, .fourthree .lyte {padding-bottom:75%;} .lidget{margin-bottom:5px;} .lidget .lyte, .widget .lyMe {padding-bottom:0!important;height:100%!important;} .lyte-wrapper-audio .lyte{height:38px!important;overflow:hidden;padding:0!important} .lyte iframe,.lyte .pL{position:absolute;top:0;left:0;width:100%;height:100%;background:no-repeat scroll center #000;background-size:cover;cursor:pointer} .tC{background-color:rgba(0,0,0,0.5);left:0;position:absolute;top:0;width:100%} .tT{color:#FFF;font-family:sans-serif;font-size:12px;height:auto;text-align:left;padding:5px 10px} .tT:hover{text-decoration:underline} .play{background:no-repeat scroll 0 0 transparent;width:90px;height:62px;position:absolute;left:43%;left:calc(50% - 45px);left:-webkit-calc(50% - 45px);top:38%;top:calc(50% - 31px);top:-webkit-calc(50% - 31px);} .widget .play {top:30%;top:calc(45% - 31px);top:-webkit-calc(45% - 31px);transform:scale(0.6);-webkit-transform:scale(0.6);-ms-transform:scale(0.6);} .lyte:hover .play{background-position:0 -65px} .audio .pL{max-height:38px!important} .audio iframe{height:438px!important} .ctrl{background:repeat scroll 0 -215px transparent;width:100%;height:40px;bottom:0;left:0;position:absolute} .Lctrl{background:no-repeat scroll 0 -132px transparent;width:158px;height:40px;bottom:0;left:0;position:absolute} .Rctrl{background:no-repeat scroll -42px -174px transparent;width:117px;height:40px;bottom:0;right:0;position:absolute} .audio .play,.audio .tC{display:none} .hidden{display:none}\" );if(style.styleSheet) { style.styleSheet.cssText = rules.nodeValue;} else {style.appendChild(rules);}document.getElementsByTagName('head')[0].appendChild(style);</script>";
 	echo "<script type=\"text/javascript\" async=true src=\"".$lyteSettings['path'].$lyteSettings['file']."\"></script>";
 }
 
