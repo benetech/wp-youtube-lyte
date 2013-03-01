@@ -21,8 +21,8 @@ function register_lyte_settings() {
 }
 
 function lyte_admin_scripts() {
-	wp_enqueue_script('jqzrssfeed', plugins_url('/external/jquery.zrssfeed.min.js', __FILE__), array(jquery),null,true);
-	wp_enqueue_script('jqcookie', plugins_url('/external/jquery.cookie.min.js', __FILE__), array(jquery),null,true);
+	wp_enqueue_script('jqzrssfeed', plugins_url('/external/jquery.zrssfeed.min.js', __FILE__), array('jquery'),null,true);
+	wp_enqueue_script('jqcookie', plugins_url('/external/jquery.cookie.min.js', __FILE__), array('jquery'),null,true);
 }
 
 function lyte_admin_styles() {
@@ -39,6 +39,7 @@ if (get_option('lyte_notification','0')!=="2") {
 	}
 
 function lyte_settings_page() {
+	global $pSize, $pSizeOrder;
 ?>
 <div class="wrap">
 <h2><?php _e("WP YouTube Lyte Settings","wp-youtube-lyte") ?></h2>
@@ -55,7 +56,7 @@ function lyte_settings_page() {
             <th scope="row">Player size:</th>
             <td>
                 <fieldset><legend class="screen-reader-text"><span><?php _e("Player size","wp-youtube-lyte") ?></span></legend>
-		<?php require 'player_sizes.inc.php';
+		<?php
 			if (is_bool(get_option('lyte_size'))) { $sel = (int) $pDefault; } else { $sel= (int) get_option('lyte_size'); }
 			foreach (array("169","43") as $f) {
 				foreach ($pSizeOrder[$f] as $i) {
@@ -107,7 +108,7 @@ function lyte_settings_page() {
                 <th scope="row"><?php _e("Add microdata?","wp-youtube-lyte") ?></th>
                 <td>
                         <fieldset>
-                                <legend class="screen-reader-text"><span>Please Google with video microdata?</span></legend>
+                                <legend class="screen-reader-text"><span>Add video microdata to the HTML?</span></legend>
                                 <label title="Sure, add microdata!"><input type="radio" name="lyte_microdata" value="1" <?php if (get_option('lyte_microdata','1')==="1") echo "checked" ?> /><?php _e("Yes (default)","wp-youtube-lyte") ?></label><br />
                                 <label title="No microdata in my HTML please."><input type="radio" name="lyte_microdata" value="0" <?php if (get_option('lyte_microdata','1')!=="1") echo "checked" ?> /><?php _e("No microdata, thanks.","wp-youtube-lyte") ?></label>
                         </fieldset>

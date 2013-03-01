@@ -1,6 +1,4 @@
 <?php
-require_once(dirname(__FILE__).'/player_sizes.inc.php');
-
 class WYLWidget extends WP_Widget {
     function WYLWidget() {
 		parent::WP_Widget(false, $name = 'WP YouTube Lyte');
