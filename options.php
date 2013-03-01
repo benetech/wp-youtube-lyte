@@ -12,16 +12,17 @@ function lyte_create_menu() {
 }
 
 function register_lyte_settings() {
-	register_setting( 'lyte-settings-group', 'show_links' );
-	register_setting( 'lyte-settings-group', 'size' );
-	register_setting( 'lyte-settings-group', 'hidef' );
-	register_setting( 'lyte-settings-group', 'position' );
-	register_setting( 'lyte-settings-group', 'notification' );
+	register_setting( 'lyte-settings-group', 'lyte_show_links' );
+	register_setting( 'lyte-settings-group', 'lyte_size' );
+	register_setting( 'lyte-settings-group', 'lyte_hidef' );
+	register_setting( 'lyte-settings-group', 'lyte_position' );
+	register_setting( 'lyte-settings-group', 'lyte_notification' );
+	register_setting( 'lyte-settings-group', 'lyte_microdata' );
 }
 
 function lyte_admin_scripts() {
-	wp_enqueue_script('jqzrssfeed', plugins_url('/external/jquery.zrssfeed.min.js', __FILE__), array(jquery),null,true);
-	wp_enqueue_script('jqcookie', plugins_url('/external/jquery.cookie.min.js', __FILE__), array(jquery),null,true);
+	wp_enqueue_script('jqzrssfeed', plugins_url('/external/jquery.zrssfeed.min.js', __FILE__), array('jquery'),null,true);
+	wp_enqueue_script('jqcookie', plugins_url('/external/jquery.cookie.min.js', __FILE__), array('jquery'),null,true);
 }
 
 function lyte_admin_styles() {
@@ -32,12 +33,13 @@ function lyte_admin_notice(){
     echo '<div class="updated"><p>Hello WP YouTube Lyte user!<br />Just to let you know that <strong>the bonus feature, DoNotTrack, was removed</strong> from WP YouTube Lyte. If you would like to keep blocking third party tracking on your blog, you might want to <strong>install <a href="http://wordpress.org/extend/plugins/wp-donottrack/" title="WP DoNotTrack">WP DoNotTrack</a></strong>, which is a more powerful and flexible solution.</p><p>Have a great day!<br /><a href="http://blog.futtta.be/">frank</a>.</div>';
     }
 
-if (get_option('notification','0')!=="2") {
+if (get_option('lyte_notification','0')!=="2") {
 	add_action('admin_notices', 'lyte_admin_notice');
-	update_option('notification','2');
+	update_option('lyte_notification','2');
 	}
 
 function lyte_settings_page() {
+	global $pSize, $pSizeOrder;
 ?>
 <div class="wrap">
 <h2><?php _e("WP YouTube Lyte Settings","wp-youtube-lyte") ?></h2>
@@ -48,20 +50,20 @@ function lyte_settings_page() {
 <form method="post" action="options.php">
     <?php settings_fields( 'lyte-settings-group' ); ?>
     <table class="form-table">
-	<input type="hidden" name="notification" value="<?php echo get_option('notification','0'); ?>" />
+	<input type="hidden" name="lyte_notification" value="<?php echo get_option('lyte_notification','0'); ?>" />
 
         <tr valign="top">
             <th scope="row">Player size:</th>
             <td>
                 <fieldset><legend class="screen-reader-text"><span><?php _e("Player size","wp-youtube-lyte") ?></span></legend>
-		<?php require 'player_sizes.inc.php';
-			if (is_bool(get_option('size'))) { $sel = (int) $pDefault; } else { $sel= (int) get_option('size'); }
+		<?php
+			if (is_bool(get_option('lyte_size'))) { $sel = (int) $pDefault; } else { $sel= (int) get_option('lyte_size'); }
 			foreach (array("169","43") as $f) {
 				foreach ($pSizeOrder[$f] as $i) {
 					$pS=$pSize[$i];
 					if ($pS[a]===true) {
 						?>
-						<label title="<?php echo $pS[w]."X".$pS[h]; ?>"><input type="radio" name="size" class="l_size" value="<?php echo $i."\"";if($i===$sel) echo " checked";echo " /> ".$pS[w]."X".$pS[h]." (".$pS[t];?>)</label><br />
+						<label title="<?php echo $pS[w]."X".$pS[h]; ?>"><input type="radio" name="lyte_size" class="l_size" value="<?php echo $i."\"";if($i===$sel) echo " checked";echo " /> ".$pS[w]."X".$pS[h]." (".$pS[t];?>)</label><br />
 						<?php
 					}
 				}
@@ -76,9 +78,9 @@ function lyte_settings_page() {
 			<td>
 				<fieldset>
 					<legend class="screen-reader-text"><span><?php _e("Show links?","wp-youtube-lyte") ?></span></legend>
-					<label title="Show YouTube-link"><input type="radio" name="show_links" value="1" <?php if (get_option('show_links')==="1") echo "checked" ?> /><?php _e(" Add YouTube-link.","wp-youtube-lyte") ?></label><br />
-					<label title="Show YouTube and Ease YouTube link"><input type="radio" name="show_links" value="2" <?php if (get_option('show_links')==="2") echo "checked" ?> /><?php _e(" Add both a YouTube and an <a href=\"http://icant.co.uk/easy-youtube/docs/index.html\" target=\"_blank\">Easy YouTube</a>-link.","wp-youtube-lyte") ?></label><br />
-					<label title="Don't include links."><input type="radio" name="show_links" value="0" <?php if ((get_option('show_links')!=="1") && (get_option('show_links')!=="2")) echo "checked" ?> /><?php _e(" Don't add any links.","wp-youtube-lyte") ?></label>
+					<label title="Show YouTube-link"><input type="radio" name="lyte_show_links" value="1" <?php if (get_option('lyte_show_links')==="1") echo "checked" ?> /><?php _e(" Add YouTube-link.","wp-youtube-lyte") ?></label><br />
+					<label title="Show YouTube and Ease YouTube link"><input type="radio" name="lyte_show_links" value="2" <?php if (get_option('lyte_show_links')==="2") echo "checked" ?> /><?php _e(" Add both a YouTube and an <a href=\"http://icant.co.uk/easy-youtube/docs/index.html\" target=\"_blank\">Easy YouTube</a>-link.","wp-youtube-lyte") ?></label><br />
+					<label title="Don't include links."><input type="radio" name="lyte_show_links" value="0" <?php if ((get_option('lyte_show_links')!=="1") && (get_option('lyte_show_links')!=="2")) echo "checked" ?> /><?php _e(" Don't add any links.","wp-youtube-lyte") ?></label>
 				</fieldset>
 			</td>
          </tr>
@@ -87,27 +89,30 @@ function lyte_settings_page() {
                 <td>
                         <fieldset>
                                 <legend class="screen-reader-text"><span>Left, center or right?</span></legend>
-                                <label title="Left"><input type="radio" name="position" value="0" <?php if (get_option('position','0')==="0") echo "checked" ?> /><?php _e("Left","wp-youtube-lyte") ?></label><br />
-				<label title="Center"><input type="radio" name="position" value="1" <?php if (get_option('position','0')==="1") echo "checked" ?> /><?php _e("Center","wp-youtube-lyte") ?></label>
+                                <label title="Left"><input type="radio" name="lyte_position" value="0" <?php if (get_option('lyte_position','0')==="0") echo "checked" ?> /><?php _e("Left","wp-youtube-lyte") ?></label><br />
+				<label title="Center"><input type="radio" name="lyte_position" value="1" <?php if (get_option('lyte_position','0')==="1") echo "checked" ?> /><?php _e("Center","wp-youtube-lyte") ?></label>
                         </fieldset>
                 </td>
          </tr>
          <tr valign="top">
-                <th scope="row"><?php _e("Play video in HD if possible?","wp-youtube-lyte") ?></th>
+                <th scope="row"><?php _e("Try to force HD (experimental)?","wp-youtube-lyte") ?></th>
                 <td>
                         <fieldset>
                                 <legend class="screen-reader-text"><span>HD or not?</span></legend>
-                                <label title="Enable HD?"><input type="radio" name="hidef" value="1" <?php if (get_option('hidef')==="1") echo "checked" ?> /><?php _e("Enable HD","wp-youtube-lyte") ?></label><br />
-                                <label title="Don't enable HD playback"><input type="radio" name="hidef" value="0" <?php if (get_option('hidef')!=="1") echo "checked" ?> /><?php _e("No HD, we're smallband!","wp-youtube-lyte") ?></label>
+                                <label title="Enable HD?"><input type="radio" name="lyte_hidef" value="1" <?php if (get_option('lyte_hidef','0')==="1") echo "checked" ?> /><?php _e("Enable HD","wp-youtube-lyte") ?></label><br />
+                                <label title="Don't enable HD playback"><input type="radio" name="lyte_hidef" value="0" <?php if (get_option('lyte_hidef','0')!=="1") echo "checked" ?> /><?php _e("No HD (default)","wp-youtube-lyte") ?></label>
                         </fieldset>
                 </td>
 	</tr>
-	 <tr valign="top">
-	 	<th scope="row"><?php _e("Bonus feature: ","wp-youtube-lyte") ?><a href="http://wordpress.org/extend/plugins/wp-donottrack/" target="_blank">DoNotTrack</a></th>
-		<td>
-			<?php _e("The DoNotTrack bonus feature has been removed from WP YouTube Lyte. If you need this functionality you might want to install <a href=\"http://wordpress.org/extend/plugins/wp-donottrack/\">WP DoNotTrack</a>, which offers a more flexible and powerful solution","wp-youtube-lyte") ?>
-
-               </td>
+         <tr valign="top">
+                <th scope="row"><?php _e("Add microdata?","wp-youtube-lyte") ?></th>
+                <td>
+                        <fieldset>
+                                <legend class="screen-reader-text"><span>Add video microdata to the HTML?</span></legend>
+                                <label title="Sure, add microdata!"><input type="radio" name="lyte_microdata" value="1" <?php if (get_option('lyte_microdata','1')==="1") echo "checked" ?> /><?php _e("Yes (default)","wp-youtube-lyte") ?></label><br />
+                                <label title="No microdata in my HTML please."><input type="radio" name="lyte_microdata" value="0" <?php if (get_option('lyte_microdata','1')!=="1") echo "checked" ?> /><?php _e("No microdata, thanks.","wp-youtube-lyte") ?></label>
+                        </fieldset>
+                </td>
         </tr>
     </table>
     
