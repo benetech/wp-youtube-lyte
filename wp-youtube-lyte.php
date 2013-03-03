@@ -4,14 +4,14 @@ Plugin Name: WP YouTube Lyte
 Plugin URI: http://blog.futtta.be/wp-youtube-lyte/
 Description: Lite and accessible YouTube audio and video embedding.
 Author: Frank Goossens (futtta)
-Version: 1.2.0
+Version: 1.2.1
 Author URI: http://blog.futtta.be/
 Text Domain: wp-youtube-lyte
 Domain Path: /languages
 */
 
 $debug=false;
-$lyte_version="1.2.0";
+$lyte_version="1.2.1";
 $lyte_db_version=get_option('lyte_version','none');
 
 /** have we updated? */
@@ -131,7 +131,7 @@ function lyte_parse($the_content,$doExcerpt=false) {
 				$audio=false;
 			} else {
 				$audio=true;
-				$audioClass=" audio";
+				$audioClass=" lyte-audio";
 				$divHeight=38;
 			}
 
@@ -280,7 +280,7 @@ function lyte_initer() {
 /* actual initialization */
 function lyte_init() {
 	global $lyteSettings;
-	echo "<script type=\"text/javascript\">var bU='".$lyteSettings['path']."';style = document.createElement('style');style.type = 'text/css';rules = document.createTextNode(\".lyte,.lyMe{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;background-color:#777;} .fourthree .lyMe, .fourthree .lyte {padding-bottom:75%;} .lidget{margin-bottom:5px;} .lidget .lyte, .widget .lyMe {padding-bottom:0!important;height:100%!important;} .lyte-wrapper-audio .lyte{height:38px!important;overflow:hidden;padding:0!important} .lyte iframe,.lyte .pL{position:absolute;top:0;left:0;width:100%;height:100%;background:no-repeat scroll center #000;background-size:cover;cursor:pointer} .tC{background-color:rgba(0,0,0,0.5);left:0;position:absolute;top:0;width:100%} .tT{color:#FFF;font-family:sans-serif;font-size:12px;height:auto;text-align:left;padding:5px 10px} .tT:hover{text-decoration:underline} .play{background:no-repeat scroll 0 0 transparent;width:90px;height:62px;position:absolute;left:43%;left:calc(50% - 45px);left:-webkit-calc(50% - 45px);top:38%;top:calc(50% - 31px);top:-webkit-calc(50% - 31px);} .widget .play {top:30%;top:calc(45% - 31px);top:-webkit-calc(45% - 31px);transform:scale(0.6);-webkit-transform:scale(0.6);-ms-transform:scale(0.6);} .lyte:hover .play{background-position:0 -65px} .audio .pL{max-height:38px!important} .audio iframe{height:438px!important} .ctrl{background:repeat scroll 0 -215px transparent;width:100%;height:40px;bottom:0;left:0;position:absolute} .Lctrl{background:no-repeat scroll 0 -132px transparent;width:158px;height:40px;bottom:0;left:0;position:absolute} .Rctrl{background:no-repeat scroll -42px -174px transparent;width:117px;height:40px;bottom:0;right:0;position:absolute} .audio .play,.audio .tC{display:none} .hidden{display:none}\" );if(style.styleSheet) { style.styleSheet.cssText = rules.nodeValue;} else {style.appendChild(rules);}document.getElementsByTagName('head')[0].appendChild(style);</script>";
+	echo "<script type=\"text/javascript\">var bU='".$lyteSettings['path']."';style = document.createElement('style');style.type = 'text/css';rules = document.createTextNode(\".lyte,.lyMe{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;background-color:#777;} .fourthree .lyMe, .fourthree .lyte {padding-bottom:75%;} .lidget{margin-bottom:5px;} .lidget .lyte, .widget .lyMe {padding-bottom:0!important;height:100%!important;} .lyte-wrapper-audio .lyte{height:38px!important;overflow:hidden;padding:0!important} .lyte iframe,.lyte .pL{position:absolute;top:0;left:0;width:100%;height:100%;background:no-repeat scroll center #000;background-size:cover;cursor:pointer} .tC{background-color:rgba(0,0,0,0.5);left:0;position:absolute;top:0;width:100%} .tT{color:#FFF;font-family:sans-serif;font-size:12px;height:auto;text-align:left;padding:5px 10px} .tT:hover{text-decoration:underline} .play{background:no-repeat scroll 0 0 transparent;width:90px;height:62px;position:absolute;left:43%;left:calc(50% - 45px);left:-webkit-calc(50% - 45px);top:38%;top:calc(50% - 31px);top:-webkit-calc(50% - 31px);} .widget .play {top:30%;top:calc(45% - 31px);top:-webkit-calc(45% - 31px);transform:scale(0.6);-webkit-transform:scale(0.6);-ms-transform:scale(0.6);} .lyte:hover .play{background-position:0 -65px} .lyte-audio .pL{max-height:38px!important} .lyte-audio iframe{height:438px!important} .ctrl{background:repeat scroll 0 -215px transparent;width:100%;height:40px;bottom:0;left:0;position:absolute} .Lctrl{background:no-repeat scroll 0 -132px transparent;width:158px;height:40px;bottom:0;left:0;position:absolute} .Rctrl{background:no-repeat scroll -42px -174px transparent;width:117px;height:40px;bottom:0;right:0;position:absolute} .lyte-audio .play,.lyte-audio .tC{display:none} .hidden{display:none}\" );if(style.styleSheet) { style.styleSheet.cssText = rules.nodeValue;} else {style.appendChild(rules);}document.getElementsByTagName('head')[0].appendChild(style);</script>";
 	echo "<script type=\"text/javascript\" async=true src=\"".$lyteSettings['path'].$lyteSettings['file']."\"></script>";
 }
 
