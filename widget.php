@@ -18,9 +18,11 @@ class WYLWidget extends WP_Widget {
 	$WYLaudio = apply_filters( 'widget_text', $instance['WYLaudio'], $instance );
 	if ($WYLaudio!=="audio") {
 		$wrapperClass = " lidget";
+		$audioClass = "";
 		$wHeight = $wSize[$WYLsize]['h'];
 	} else {
 		$wrapperClass = "-audio lidget";
+		$audioClass = " lyte-audio";
 		$wHeight = "38";
 	}
 
@@ -56,7 +58,7 @@ class WYLWidget extends WP_Widget {
 	?>
 	<?php echo $before_widget; ?>
         <?php if ( $WYLtitle ) echo $before_title . $WYLtitle . $after_title; ?>
-	<div class="lyte-wrapper<?php echo $wrapperClass; ?>" style="width:<?php echo $wSize[$WYLsize]['w']; ?>px; height:<?php echo $wHeight; ?>px; min-width:200px; max-width:100%;"><div class="lyMe <?php echo $WYLaudio; echo $qsaClass; ?>" id="<?php echo $WYL_dom_id; ?>"><div id="lyte_<?php echo $WYLid; ?>" data-src="<?php echo $WYLthumb;?>" class="pL"><div class="play"></div><div class="ctrl"><div class="Lctrl"></div></div></div></div><noscript><a href="http://youtu.be/<?php echo $WYLid;?>"><img src="<?php echo $WYLthumb; ?>" alt="" /></a></noscript></div>
+	<div class="lyte-wrapper<?php echo $wrapperClass; ?>" style="width:<?php echo $wSize[$WYLsize]['w']; ?>px; height:<?php echo $wHeight; ?>px; min-width:200px; max-width:100%;"><div class="lyMe<?php echo $audioClass; echo $qsaClass; ?>" id="<?php echo $WYL_dom_id; ?>"><div id="lyte_<?php echo $WYLid; ?>" data-src="<?php echo $WYLthumb;?>" class="pL"><div class="play"></div><div class="ctrl"><div class="Lctrl"></div></div></div></div><noscript><a href="http://youtu.be/<?php echo $WYLid;?>"><img src="<?php echo $WYLthumb; ?>" alt="" /></a></noscript></div>
 	<div><?php echo $WYLtext ?></div>
         <?php echo $after_widget; ?>
         <?php

@@ -2,8 +2,8 @@
 Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5, widget, youtube audio, audio, playlist, youtube playlist, hd, performance, accessibility, sidebar, lazy load, responsive, microdata, videoobject
 Requires at least: 2.9
-Tested up to: 3.5.1
-Stable tag: 1.2.0
+Tested up to: 3.6
+Stable tag: 1.2.1
 
 High performance YouTube video, playlist and audio-only embeds which don't slow down your blog and offer optimal accessibility.
 
@@ -78,6 +78,7 @@ This was added as a beta feature in version 1.1.0; add ?enablejsapi=1 to the htt
 * Having the same YouTube-video on one page can cause WP YouTube Lyte to malfunction (as the YouTube id is used as the div's id in the DOM, and DOM id's are supposed to be unique)
 * As youtube-nocookie.com does not serve the HTML5-player, WP YouTube Lyte uses the youtube.com domain (which provides less privacy), but as soon as youtube-nocookie.com serves HTML5-video, this will become the default domain for WP YouTube Lyte again.
 * When using the Firefox plugin Karma Blocker, the [video isn't visible when clicking "play", with a warning message being shown instead](http://blog.futtta.be/?p=7584). This is expected behavior and should be solved by tweaking Karma Blocker's configuration.
+* If you use a CDN and you are upgrading, you'll have to make sure to either flush the CDN cache or -if available- make sure it is set not to ignore the querystring parameters (e.g. "Treat Query Strings as a separate cacheable item" at MaxCDN/NetDNA) to avoid that an old version of lyte-min.js is loaded.
 * The translations have not been updated entirely for version 1.2.0, this will be included in 1.2.1. Help with translations is always welcome!
 
 = I found a bug/ I would like a feature to be added! =
@@ -91,7 +92,8 @@ Just tell me, I like the feedback! Use the [Contact-page on my blog](http://blog
 == Changelog ==
 
 = 1.2.1 =
-* bugfix: if e.g. modernizr added "audio" as class to the html element, wp youtube lyte got confused. reported by [Peco of dubtechnoblog.com](http://www.dubtechnoblog.com/) and [Delphuk](http://delphuk.ru/)
+* bugfix: if e.g. modernizr added "audio" as class to the html element, wp youtube lyte got confused, as reported by [Peco of dubtechnoblog.com](http://www.dubtechnoblog.com/) and [Delphuk](http://delphuk.ru/), thanks guys!
+* tested succesfully with WordPress 3.6 (development-version)
 
 = 1.2.0 =
 * LYTE embeds are now fully responsive
