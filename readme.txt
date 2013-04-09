@@ -3,7 +3,7 @@ Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5, widget, youtube audio, audio, playlist, youtube playlist, hd, performance, accessibility, sidebar, lazy load, responsive, microdata, videoobject
 Requires at least: 2.9
 Tested up to: 3.6
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 
 High performance YouTube video, playlist and audio-only embeds which don't slow down your blog and offer optimal accessibility.
 
@@ -73,12 +73,23 @@ This was added as a beta feature in version 1.1.0; add ?enablejsapi=1 to the htt
 * Widgets are not responsive.
 * if the content div width gets to around 200 pixels, the LYTE UI will become garbled (YouTube requires the minimum embed width to be 200px as well).
 
+= Can I use WP YouTube Lyte on normal YouTube links? =
+Sure, just add the following code-snippet in your theme's functions.php:
+
+`
+/** force wp youtube lyte on http://www.youtube.com url's as well */
+add_filter('the_content', 'force_lyte_parse', 1);
+function force_lyte_parse($content) {
+     $content=str_replace('http://www.youtube.com/watch?v=','httpv://www.youtube.com/watch?v=',$content);
+     return $content;
+}
+`
+
 = Any bugs/ issues should I know about? =
 * Although the widget is available in (very) small sizes, these do not display that great and might, in the near future, be disabled by YouTube as their Terms of Service state that the smallest available embedded player is 200X200 pixels. Use the deprecated smaller sizes at your own risk.
 * Having the same YouTube-video on one page can cause WP YouTube Lyte to malfunction (as the YouTube id is used as the div's id in the DOM, and DOM id's are supposed to be unique)
 * As youtube-nocookie.com does not serve the HTML5-player, WP YouTube Lyte uses the youtube.com domain (which provides less privacy), but as soon as youtube-nocookie.com serves HTML5-video, this will become the default domain for WP YouTube Lyte again.
 * When using the Firefox plugin Karma Blocker, the [video isn't visible when clicking "play", with a warning message being shown instead](http://blog.futtta.be/?p=7584). This is expected behavior and should be solved by tweaking Karma Blocker's configuration.
-* If you use a CDN and you are upgrading, you'll have to make sure to either flush the CDN cache or -if available- make sure it is set not to ignore the querystring parameters (e.g. "Treat Query Strings as a separate cacheable item" at MaxCDN/NetDNA) to avoid that an old version of lyte-min.js is loaded.
 * The translations have not been updated entirely for version 1.2.0, this will be included in 1.2.1. Help with translations is always welcome!
 
 = I found a bug/ I would like a feature to be added! =
@@ -91,8 +102,17 @@ Just tell me, I like the feedback! Use the [Contact-page on my blog](http://blog
 
 == Changelog ==
 
+= 1.2.2 =
+* bugfix: apply sanitize_text_field to microdata description- and title-fields to escape e.g. quotes
+* bugfix: added CSS resets to better avoid CSS-conflicts with themes (as reported by longtime user [FruityOaty](http://fruityoaty.com/))
+* bugfix: fallback for missing wp_trim_words function in wordpress < 3.3 (as reported by [Armude](http://www.armudepictures.es/))
+* bugfix: check if the data from cache/ youtube is valid before trying to extract info from it [as reported by Collin](http://blog.futtta.be/2013/03/01/the-best-wp-youtube-lyte-to-date/#li-comment-39222)
+* improvement: better support for RSS/ ATOM feeds [as requested by drreen](http://wordpress.org/support/topic/textlinks-around-embedded-video-in-rss-feed)
+* added item in FAQ on how to force normal YouTube links to be parsed by WP YouTube Lyte as well
+* tested with WordPress 3.6 beta 1
+
 = 1.2.1 =
-* bugfix: if e.g. modernizr added "audio" as class to the html element, wp youtube lyte got confused, as reported by [Peco of dubtechnoblog.com](http://www.dubtechnoblog.com/) and [Delphuk](http://delphuk.ru/), thanks guys!
+* bugfix: if e.g. modernizr added "audio" as class to the html element, wp youtube lyte got confused. reported by [Peco of dubtechnoblog.com](http://www.dubtechnoblog.com/) and [Delphuk](http://delphuk.ru/)
 * tested succesfully with WordPress 3.6 (development-version)
 
 = 1.2.0 =
