@@ -1,15 +1,15 @@
 === WP YouTube Lyte ===
 Contributors: futtta
-Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5, widget, youtube audio, audio, playlist, youtube playlist, hd, performance, accessibility, sidebar, lazy load
+Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5, widget, youtube audio, audio, playlist, youtube playlist, hd, performance, accessibility, sidebar, lazy load, responsive, microdata, videoobject
 Requires at least: 2.9
-Tested up to: 3.4.2
-Stable tag: 1.1.9
+Tested up to: 3.6
+Stable tag: 1.2.2
 
 High performance YouTube video, playlist and audio-only embeds which don't slow down your blog and offer optimal accessibility.
 
 == Description ==
 
-WP YouTube Lyte allows you to "lazy load" your video's, by inserting "Lite YouTube Embeds". These look and feel like normal embedded YouTube, but only call the actual "fat" Flash or HTML5-player when clicked on, thereby [reducing download size & rendering time substantially](http://blog.futtta.be/2012/04/03/speed-matters-re-evaluating-wp-youtube-lytes-performance/) when embedding YouTube occasionally and improving page performance dramatically when you've got multiple YouTube video's on one and the same page.
+WP YouTube Lyte allows you to "lazy load" your video's, by inserting responsive "Lite YouTube Embeds". These look and feel like normal embedded YouTube, but only call the actual "fat" Flash or HTML5-player when clicked on, thereby [reducing download size & rendering time substantially](http://blog.futtta.be/2012/04/03/speed-matters-re-evaluating-wp-youtube-lytes-performance/) when embedding YouTube occasionally and improving page performance dramatically when you've got multiple YouTube video's on one and the same page.
 
 Just add a YouTube-link for a video or [an entire playlist](http://blog.futtta.be/2011/10/11/wp-youtube-lyte-support-for-playlists-almost-included/) with "httpv" (or "httpa" to [embed YouTube's audio](http://blog.futtta.be/2011/04/19/audio-only-youtube-embedding-with-wp-youtube-lyte-0-7/) only) instead of "http" or add a Lyte widget to your sidebar and WP YouTube Lyte replaces that link with the correct performance-optimized code. When a visitor clicks the play-button, WP YouTube Lyte seamlessly initiates [YouTube's new embedded player](http://apiblog.youtube.com/2010/07/new-way-to-embed-youtube-videos.html). Some examples:
 
@@ -20,12 +20,12 @@ Just add a YouTube-link for a video or [an entire playlist](http://blog.futtta.b
 * httpv://www.youtube.com/watch?v=_SQkWbRublY#stepSize=-1 (video player, one size smaller than what's configured as default)
 * httpv://www.youtube.com/watch?v=_SQkWbRublY?start=20&showinfo=0 (video player, start playing at 20 seconds and don't show title)
 
-Or using shortcodes (beta):
+Or using shortcodes:
 `[lyte id="_SQkWbRublY" /]`
 `[lyte id="_SQkWbRublY" audio="true" /]`
 `[lyte id="A486E741B25F8E00" playlist="true" /]`
 
-WP YouTube Lyte has been written with optimal performance as primary goal, but has been tested for maximum browser-compatibility (iPad included) while keeping an eye on accessibility. The plugin is fully multi-language, with support for Catalan, Dutch, English, French, German, Hebrew, Romanian, Spanish and Slovene.
+WP YouTube Lyte has been written with optimal performance as primary goal, but has been tested for maximum browser-compatibility (iPad included) while keeping an eye on accessibility. Starting with version 1.2.0 lyte embeds are fully responsive and can automatically embed [videoObject microdata](http://support.google.com/webmasters/bin/answer.py?hl=en&answer=2413309) as well. The plugin is fully multi-language, with support for Catalan, Dutch, English, French, German, Hebrew, Romanian, Spanish and Slovene.
 
 Feedback is welcome; see [info in the faq](http://wordpress.org/extend/plugins/wp-youtube-lyte/faq/) for bug reports/ feature requests and feel free to [rate and/or report on compatibility on wordpress.org](http://wordpress.org/extend/plugins/wp-youtube-lyte/).
 
@@ -44,7 +44,7 @@ When playing, HTML5 video will not be visible for everyone (see requirements). I
 
 = What are the requirements to see embedded YouTube HTML5 video? =
 * It only works in browsers that support the h264 (Safari, Chrome, IE9) or WebM (currently Chrome, Opera and Firefox) video codecs
-* Your visitor has to be enrolled in the [YouTube html5 beta](http://www.youtube.com/html5)
+* Your visitor has to be enrolled in the [YouTube html5 beta](http://www.youtube.com/html5) except if no Flash in present, in which case YouTube will attempt to fall-back to HTML5 as well
 
 = Does WP YouTube Lyte protect my visitor's privacy? =
 As opposed to some of the [most important](http://blog.futtta.be/2010/12/15/wordpress-com-stats-trojan-horse-for-quantcast-tracking/) [plugins](http://blog.futtta.be/2010/01/22/add-to-any-removed-from-here/) there is no 3rd party tracking code in WP YouTube Lyte, but YouTube off course does see visitor requests coming in (see also the youtube-nocookie.com remark in Bugs/Issues below).
@@ -62,11 +62,35 @@ Starting from version 1.1.0 it does; in [Infinite Scroll](http://wordpress.org/e
 = Can I still integrate with YouTube's JS API? =
 This was added as a beta feature in version 1.1.0; add ?enablejsapi=1 to the httpv URL. WP YouTube Lyte will pick this up, and add ?enablejsapi=1&origin=<hostname-of-blog> to the URL of the iFrame with the iFrame id being set to iF_<youtube-video-id>. As soon as your visitors plays the video, you should be able to hook up with the video.
 
+= How does WP YouTube Lyte support microdata? =
+* There is a [specific microdata scheme for "videoObject"](http://support.google.com/webmasters/bin/answer.py?hl=en&answer=2413309) which WP YouTube Lyte can add to your page, which Google can use to display the video thumbnail next to the search-result
+* This is optional and can be disabled in the options page
+* The videoobject microdata is NOT added for audio-only embeds, playlists or widgets
+* Google will not always display the thumbnail, this presumably depends of the relevance of the video to the rest of the page.
+
+= Responsive LYTE embeds =
+* The video width in posts and pages will adapt to the width of the container (the div) in which your blogposts/ pages are shown. This means that if your theme is responsive, WP YouTube Lyte will follow.
+* Widgets are not responsive.
+* if the content div width gets to around 200 pixels, the LYTE UI will become garbled (YouTube requires the minimum embed width to be 200px as well).
+
+= Can I use WP YouTube Lyte on normal YouTube links? =
+Sure, just add the following code-snippet in your theme's functions.php:
+
+`
+/** force wp youtube lyte on http://www.youtube.com url's as well */
+add_filter('the_content', 'force_lyte_parse', 1);
+function force_lyte_parse($content) {
+     $content=str_replace('http://www.youtube.com/watch?v=','httpv://www.youtube.com/watch?v=',$content);
+     return $content;
+}
+`
+
 = Any bugs/ issues should I know about? =
 * Although the widget is available in (very) small sizes, these do not display that great and might, in the near future, be disabled by YouTube as their Terms of Service state that the smallest available embedded player is 200X200 pixels. Use the deprecated smaller sizes at your own risk.
 * Having the same YouTube-video on one page can cause WP YouTube Lyte to malfunction (as the YouTube id is used as the div's id in the DOM, and DOM id's are supposed to be unique)
 * As youtube-nocookie.com does not serve the HTML5-player, WP YouTube Lyte uses the youtube.com domain (which provides less privacy), but as soon as youtube-nocookie.com serves HTML5-video, this will become the default domain for WP YouTube Lyte again.
 * When using the Firefox plugin Karma Blocker, the [video isn't visible when clicking "play", with a warning message being shown instead](http://blog.futtta.be/?p=7584). This is expected behavior and should be solved by tweaking Karma Blocker's configuration.
+* The translations have not been updated entirely for version 1.2.0, this will be included in 1.2.1. Help with translations is always welcome!
 
 = I found a bug/ I would like a feature to be added! =
 Just tell me, I like the feedback! Use the [Contact-page on my blog](http://blog.futtta.be/contact/), [leave a comment in a post about wp-youtube-lyte](http://blog.futtta.be/tag/wp-youtube-lyte/) or [create a new topic on the wordpress.org forum](http://wordpress.org/tags/wp-youtube-lyte?forum_id=10#postform).
@@ -77,6 +101,27 @@ Just tell me, I like the feedback! Use the [Contact-page on my blog](http://blog
 * [Rate my plugin on wordpress.org](http://wordpress.org/extend/plugins/wp-youtube-lyte/), even if you think it stinks ;-)
 
 == Changelog ==
+
+= 1.2.2 =
+* bugfix: apply sanitize_text_field to microdata description- and title-fields to escape e.g. quotes
+* bugfix: added CSS resets to better avoid CSS-conflicts with themes (as reported by longtime user [FruityOaty](http://fruityoaty.com/))
+* bugfix: fallback for missing wp_trim_words function in wordpress < 3.3 (as reported by [Armude](http://www.armudepictures.es/))
+* bugfix: check if the data from cache/ youtube is valid before trying to extract info from it [as reported by Collin](http://blog.futtta.be/2013/03/01/the-best-wp-youtube-lyte-to-date/#li-comment-39222)
+* improvement: better support for RSS/ ATOM feeds [as requested by drreen](http://wordpress.org/support/topic/textlinks-around-embedded-video-in-rss-feed)
+* added item in FAQ on how to force normal YouTube links to be parsed by WP YouTube Lyte as well
+* tested with WordPress 3.6 beta 1
+
+= 1.2.1 =
+* bugfix: if e.g. modernizr added "audio" as class to the html element, wp youtube lyte got confused. reported by [Peco of dubtechnoblog.com](http://www.dubtechnoblog.com/) and [Delphuk](http://delphuk.ru/)
+* tested succesfully with WordPress 3.6 (development-version)
+
+= 1.2.0 =
+* LYTE embeds are now fully responsive
+* automatic inclusion of [scheme.org microdata (VideoObject)](http://support.google.com/webmasters/bin/answer.py?hl=en&answer=2413309)
+* even better performance (less requests; was 5, now 3)
+* updated to current YouTube look & feel
+* less JavaScript, more CSS
+* bugfix: all lyte-output is now removed from excerpts
 
 = 1.1.9 =
 * privacy enhancement: load thumbnails from the cookie-less i.ytimg.com instead of from the cookie-riddled youtube.com (but there are some caveats, [see FAQ](http://wordpress.org/extend/plugins/wp-youtube-lyte/faq/))
