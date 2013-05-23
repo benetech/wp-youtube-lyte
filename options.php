@@ -61,9 +61,9 @@ function lyte_settings_page() {
 			foreach (array("169","43") as $f) {
 				foreach ($pSizeOrder[$f] as $i) {
 					$pS=$pSize[$i];
-					if ($pS[a]===true) {
+					if ($pS['a']===true) {
 						?>
-						<label title="<?php echo $pS[w]."X".$pS[h]; ?>"><input type="radio" name="lyte_size" class="l_size" value="<?php echo $i."\"";if($i===$sel) echo " checked";echo " /> ".$pS[w]."X".$pS[h]." (".$pS[t];?>)</label><br />
+						<label title="<?php echo $pS['w']."X".$pS['h']; ?>"><input type="radio" name="lyte_size" class="l_size" value="<?php echo $i."\"";if($i===$sel) echo " checked";echo " /> ".$pS['w']."X".$pS['h']." (".$pS['t'];?>)</label><br />
 						<?php
 					}
 				}

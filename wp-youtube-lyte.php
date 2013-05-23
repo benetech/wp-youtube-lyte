@@ -93,6 +93,14 @@ function lyte_parse($the_content,$doExcerpt=false) {
 			preg_match("/showinfo\=([0-1]{1})/",$match[12],$showinfo);
 			preg_match("/start\=([0-9]*)/",$match[12],$start);
 			preg_match("/enablejsapi\=([0-1]{1})/",$match[12],$jsapi);
+			preg_match("/hqThumb\=([0-1]{1})/",$match[12],$hqThumb);
+
+			$thumb="0.jpg";
+                        if (!empty($hqThumb)) {
+                        	if ($hqThumb[0]==="hqThumb=1") {
+                                	$thumb="maxresdefault.jpg";
+                        	}
+                        }
 
 			$qsa="";
 			if (!empty($showinfo[0])) {
@@ -231,17 +239,17 @@ function lyte_parse($the_content,$doExcerpt=false) {
 				$yt_resp_array=json_decode($yt_resp,true);
 				if (is_array($yt_resp_array)) {
 				  if ($plClass===" playlist") {
-					$yt_title="Playlist: ".esc_attr(sanitize_text_field($yt_resp_array['feed']['title']['$t']));
-					$thumbUrl=esc_url($yt_resp_array['feed']['media$group']['media$thumbnail'][2]['url']);
-					$dateField=sanitize_text_field($yt_resp_array['feed']['updated']['$t']);
+					$yt_title="Playlist: ".esc_attr(sanitize_text_field(@$yt_resp_array['feed']['title']['$t']));
+					$thumbUrl=esc_url(@$yt_resp_array['feed']['media$group']['media$thumbnail'][2]['url']);
+					$dateField=sanitize_text_field(@$yt_resp_array['feed']['updated']['$t']);
 					$duration="";
 					$description=$yt_title;
 				  } else {
-					$yt_title=esc_attr(sanitize_text_field($yt_resp_array['entry']['title']['$t']));
-					$thumbUrl=esc_url($lyteSettings['scheme']."://i.ytimg.com/vi/".$vid."/0.jpg");
-					$dateField=sanitize_text_field($yt_resp_array['entry']['published']['$t']);
-					$duration="T".sanitize_text_field($yt_resp_array['entry']['media$group']['yt$duration']['seconds'])."S";
-					$description=esc_attr(sanitize_text_field($yt_resp_array['entry']['media$group']['media$description']['$t']));
+					$yt_title=esc_attr(sanitize_text_field(@$yt_resp_array['entry']['title']['$t']));
+					$thumbUrl=esc_url($lyteSettings['scheme']."://i.ytimg.com/vi/".$vid."/".$thumb);
+					$dateField=sanitize_text_field(@$yt_resp_array['entry']['published']['$t']);
+					$duration="T".sanitize_text_field(@$yt_resp_array['entry']['media$group']['yt$duration']['seconds'])."S";
+					$description=esc_attr(sanitize_text_field(@$yt_resp_array['entry']['media$group']['media$description']['$t']));
 				  }
 				}
 			}
@@ -367,5 +375,6 @@ if ( is_admin() ) {
 	add_shortcode("lyte", "shortcode_lyte");
 	remove_filter('get_the_excerpt', 'wp_trim_excerpt');
 	add_filter('get_the_excerpt', 'lyte_trim_excerpt');
+	// add_filter('widget_text', 'lyte_parse', 4);
 }
 ?>

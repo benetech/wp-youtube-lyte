@@ -102,6 +102,11 @@ Just tell me, I like the feedback! Use the [Contact-page on my blog](http://blog
 
 == Changelog ==
 
+= ongoing: 1.2.3 =
+* improvement: support for higher quality thumbnails by adding hqThumb=1 to httpv-link
+* bugfix: suppress error messages if yt_resp does not contain all data
+* bugfix: solve PHP notice for pS-array in options.php
+
 = 1.2.2 =
 * bugfix: apply sanitize_text_field to microdata description- and title-fields to escape e.g. quotes
 * bugfix: added CSS resets to better avoid CSS-conflicts with themes (as reported by longtime user [FruityOaty](http://fruityoaty.com/))
