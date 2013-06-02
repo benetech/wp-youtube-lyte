@@ -1,0 +1,91 @@
+<?php
+/*
+Plugin Name: Lyte Helper
+Plugin URI: http://blog.futtta.be/category/wp-youtube-lyte/
+Description: Lyte Helper contains some helper functions to make WP YouTube Lyte even more flexible
+Author: Frank Goossens (futtta)
+Version: 0.1
+Author URI: http://blog.futtta.be/
+*/
+
+/**
+This file contains examples of how WP YouTube Lyte's API allows you to change its behavior. In order to do that, copy this file (without the _example in the name) to /wp-content/plugins and activate it in the plugins screen.The examples below can then be activated by removing the double slash. Take care (because you can break stuff here) and have fun! 
+*/
+
+/** force widget text to be parsed as well using lyte_actionsfilters action */
+// add_action("lyte_actionsfilters",lyte_force_widgets,10,0);
+function lyte_force_widgets() {
+	add_filter('widget_text', 'lyte_parse', 4);
+}
+
+/** force wp youtube lyte on normal youtube url's as well using lyte_content_preparse filter */
+// add_filter('lyte_content_preparse',lyte_force_nonhttpv,10,1);
+function lyte_force_nonhttpv($content) {
+        $content=preg_replace('/https?:\/\/(www.)?youtu(be.com|.be)\/(watch\?v=)?/','httpv://www.youtube.com/watch?v=',$content);
+        return $content;
+        }
+
+/** force hqThumb for all lytes using lyte_match_preparse_fragment */
+// add_filter('lyte_match_preparse_fragment',lyte_force_hqthumb,10,1);
+function lyte_force_hqthumb($httpv) {
+        if (strpos($httpv,"hqThumb")===FALSE) {
+			if (strpos($httpv,"#")===FALSE) {
+				$httpv.="#hqThumb=1";
+			} else {
+				$httpv.="&hqThumb=1";
+			}
+		}
+        return $httpv;
+}
+
+/** force showinfo=0 for all lytes using lyte_match_preparse_fragment filter */
+// add_filter('lyte_match_preparse_fragment',lyte_force_noinfo,10,1);
+function lyte_force_noinfo($httpv) {
+        if (strpos($httpv,"showinfo")===FALSE) {
+			if (strpos($httpv,"#")===FALSE) {
+				$httpv.="#showinfo=0";
+			} else {
+				$httpv.="&showinfo=0";
+			}
+		}
+        return $httpv;
+}
+
+/** hide controls for all but audio using lyte_match_postparse_template, could also be done with lyte_css */
+// add_filter('lyte_match_postparse_template',lyte_hide_ctrl,10,1);
+function lyte_hide_ctrl($content) {
+		if (strpos($content,"lyte-audio")===FALSE) {
+			$content=str_replace("<div class=\"ctrl\">","<div class=\"ctrl\" style=\"display:none\">",$content);
+			}
+        return $content;
+        }
+
+/** change css using lyte_css filter */
+// add_filter('lyte_css',lyte_change_css,10,1);
+function lyte_change_css($lyte_css) {
+	/** you can replace the entire css here or just add some declarations overriding the default ones */
+	return $lyte_css.=" .tT{font-size:24px};";
+}
+
+/** change settings using lyte_settings filter */
+// add_filter('lyte_settings',lyte_change_settings,10,1);
+function lyte_change_settings($settingsArray) {
+	$selectedSize=$settingsArray['selSize'];
+	$settingsArray['sizeArray'][$selectedSize]['w']=321;
+	return $settingsArray;
+}
+
+/** force lyte javascript (which includes css) to be loaded in head instead of footer */
+// lyte_force_jshead();
+function lyte_force_jshead() {
+	add_filter('wp_head', lyte_init);
+	global $lynited;
+	$lynited=true;
+	}
+
+/** function to call from within themes */
+/** use with e.g. : <?php if(function_exists('lyte_parse')) { echo lyte_parse($videoId); } ?> */
+function lyte_preparse($videoId) {
+    return lyte_parse('httpv://www.youtube.com/watch?v='.$videoId);
+    }
+?>

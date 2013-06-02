@@ -102,8 +102,10 @@ Just tell me, I like the feedback! Use the [Contact-page on my blog](http://blog
 
 == Changelog ==
 
-= ongoing: 1.2.3 =
-* improvement: support for higher quality thumbnails by adding hqThumb=1 to httpv-link
+= 1.3.0 =
+* WP YouTube Lyte now has an API to allow its behavior to be changed
+* Support for higher quality thumbnails by adding hqThumb=1 to httpv-link
+* improvement: opacity of the play-button when not hovered over
 * bugfix: suppress error messages if yt_resp does not contain all data
 * bugfix: solve PHP notice for pS-array in options.php
 
