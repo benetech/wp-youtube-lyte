@@ -4,6 +4,28 @@ load_plugin_textdomain( 'wp-youtube-lyte', false, $plugin_dir );
 
 add_action('admin_menu', 'lyte_create_menu');
 
+if (get_option('lyte_emptycache','0')==="1") {
+	$emptycache=lyte_rm_cache();
+	if ($emptycache==="OK") {
+		add_action('admin_notices', 'lyte_cacheclear_ok_notice');
+	} else {
+		add_action('admin_notices', 'lyte_cacheclear_fail_notice');
+	}
+	update_option('lyte_emptycache','0');
+}
+
+function lyte_cacheclear_ok_notice() {
+	echo '<div class="updated"><p>';
+	_e('Your WP YouTube Lyte cache has been succesfully cleared.', 'wp-youtube-lyte' );
+	echo '</p></div>';
+}
+
+function lyte_cacheclear_fail_notice() {
+	echo '<div class="error"><p>';
+	_e('There was a problem, the WP YouTube Lyte cache could not be cleared.', 'wp-youtube-lyte' );
+	echo '</p></div>';
+}
+
 function lyte_create_menu() {
         $hook=add_options_page( 'WP YouTube Lyte settings', 'WP YouTube Lyte', 'manage_options', 'lyte_settings_page', 'lyte_settings_page');
         add_action( 'admin_init', 'register_lyte_settings' );
@@ -18,6 +40,7 @@ function register_lyte_settings() {
 	register_setting( 'lyte-settings-group', 'lyte_position' );
 	register_setting( 'lyte-settings-group', 'lyte_notification' );
 	register_setting( 'lyte-settings-group', 'lyte_microdata' );
+	register_setting( 'lyte-settings-group', 'lyte_emptycache' );
 }
 
 function lyte_admin_scripts() {
@@ -111,6 +134,15 @@ function lyte_settings_page() {
                                 <legend class="screen-reader-text"><span>Add video microdata to the HTML?</span></legend>
                                 <label title="Sure, add microdata!"><input type="radio" name="lyte_microdata" value="1" <?php if (get_option('lyte_microdata','1')==="1") echo "checked" ?> /><?php _e("Yes (default)","wp-youtube-lyte") ?></label><br />
                                 <label title="No microdata in my HTML please."><input type="radio" name="lyte_microdata" value="0" <?php if (get_option('lyte_microdata','1')!=="1") echo "checked" ?> /><?php _e("No microdata, thanks.","wp-youtube-lyte") ?></label>
+                        </fieldset>
+                </td>
+        </tr>
+	<tr valign="top">
+                <th scope="row"><?php _e("Empty WP YouTube Lyte's cache","wp-youtube-lyte") ?></th>
+                <td>
+                        <fieldset>
+                                <legend class="screen-reader-text"><span>Remove WP YouTube Lyte's cache</span></legend>
+                                <input type="checkbox" name="lyte_emptycache" value="1" />
                         </fieldset>
                 </td>
         </tr>

@@ -103,6 +103,7 @@ function lyte_parse($the_content,$doExcerpt=false) {
 			preg_match("/start\=([0-9]*)/",$match[12],$start);
 			preg_match("/enablejsapi\=([0-1]{1})/",$match[12],$jsapi);
 			preg_match("/hqThumb\=([0-1]{1})/",$match[12],$hqThumb);
+			preg_match("/noMicroData\=([0-1]{1})/",$match[12],$microData);
 
 			$thumb="0.jpg";
                         if (!empty($hqThumb)) {
@@ -110,6 +111,13 @@ function lyte_parse($the_content,$doExcerpt=false) {
                                 	$thumb="maxresdefault.jpg";
                         	}
                         }
+
+			$noMicroData="0";
+			if (!empty($microData)) {
+				if ($microData[0]==="noMicroData=1") {
+					$noMicroData="1";
+				}
+			}
 
 			$qsa="";
 			if (!empty($showinfo[0])) {
@@ -271,17 +279,21 @@ function lyte_parse($the_content,$doExcerpt=false) {
 
 			if ($doExcerpt) {
 				$lytetemplate="";
+				$templateType="excerpt";
 			} elseif ($lyte_feed) {
 				$postURL = get_permalink( $postID ); 
 				$textLink = ($lyteSettings['links']===0)? "" : "<br />".strip_tags($lytelinks_txt, '<a>')."<br />";
 				$lytetemplate = "<a href=\"".$postURL."\"><img src=\"".$lyteSettings['scheme']."://i.ytimg.com/vi/".$vid."/0.jpg\" alt=\"YouTube Video\"></a>".$textLink;
-			} elseif (($audio !== true) && ( $plClass !== " playlist") && ($lyteSettings['microdata'] === "1")) {
-				$lytetemplate = $wrapper."<div class=\"lyMe".$audioClass.$hidefClass.$plClass.$qsaClass."\" id=\"WYL_".$vid."\" itemprop=\"video\" itemscope itemtype=\"http://schema.org/VideoObject\"><meta itemprop=\"duration\" content=\"".$duration."\" /><meta itemprop=\"thumbnailUrl\" content=\"".$thumbUrl."\" /><meta itemprop=\"embedURL\" content=\"http://www.youtube.com/embed/".$vid."\" /><meta itemprop=\"uploadDate\" content=\"".$dateField."\" /><div id=\"lyte_".$vid."\" data-src=\"".$thumbUrl."\" class=\"pL\"><div class=\"tC".$titleClass."\"><div class=\"tT\" itemprop=\"name\">".$yt_title."</div></div><div class=\"play\"></div><div class=\"ctrl\"><div class=\"Lctrl\"></div><div class=\"Rctrl\"></div></div></div>".$noscript."<meta itemprop=\"description\" content=\"".$description."\"></div></div>".$lytelinks_txt;
+				$templateType="feed";
+			} elseif (($audio !== true) && ( $plClass !== " playlist") && (($lyteSettings['microdata'] === "1")&&($noMicroData !== "1" ))) {
+				$lytetemplate = $wrapper."<div class=\"lyMe".$audioClass.$hidefClass.$plClass.$qsaClass."\" id=\"WYL_".$vid."\" itemprop=\"video\" itemscope itemtype=\"http://schema.org/VideoObject\"><meta itemprop=\"thumbnailUrl\" content=\"".$thumbUrl."\" /><meta itemprop=\"embedURL\" content=\"http://www.youtube.com/embed/".$vid."\" /><meta itemprop=\"uploadDate\" content=\"".$dateField."\" /><div id=\"lyte_".$vid."\" data-src=\"".$thumbUrl."\" class=\"pL\"><div class=\"tC".$titleClass."\"><div class=\"tT\" itemprop=\"name\">".$yt_title."</div></div><div class=\"play\"></div><div class=\"ctrl\"><div class=\"Lctrl\"></div><div class=\"Rctrl\"></div></div></div>".$noscript."<meta itemprop=\"description\" content=\"".$description."\"></div></div>".$lytelinks_txt;
+				$templateType="postMicrodata";
 			} else {
 				$lytetemplate = $wrapper."<div class=\"lyMe".$audioClass.$hidefClass.$plClass.$qsaClass."\" id=\"WYL_".$vid."\"><div id=\"lyte_".$vid."\" data-src=\"".$thumbUrl."\" class=\"pL\"><div class=\"tC".$titleClass."\"><div class=\"tT\">".$yt_title."</div></div><div class=\"play\"></div><div class=\"ctrl\"><div class=\"Lctrl\"></div><div class=\"Rctrl\"></div></div></div>".$noscript."</div></div>".$lytelinks_txt;
+				$templateType="post";
 			}
 			/** API: filter hook to parse template before being applied */
-			$lytetemplate = apply_filters( 'lyte_match_postparse_template',$lytetemplate );
+			$lytetemplate = apply_filters( 'lyte_match_postparse_template',$lytetemplate,$templateType );
 
 			$the_content = preg_replace($lytes_regexp, $lytetemplate, $the_content, 1);
         }
@@ -377,17 +389,28 @@ function lyte_options_update() {
         }
 }
 
-/** function to clean YT responses from cache */
+/** function to flush YT responses from cache */
 function lyte_rm_cache() {
-	$lyte_posts=json_decode(get_option('lyte_cache_index'),true);
-	if (is_array($lyte_posts)){
-		foreach ($lyte_posts as $postID => $lyte_post) {
-			foreach ($lyte_post as $cachekey) {
-				delete_post_meta($postID, $cachekey);
+	try {
+		$lyte_posts=json_decode(get_option('lyte_cache_index'),true);
+		if (is_array($lyte_posts)){
+			foreach ($lyte_posts as $postID => $lyte_post) {
+				foreach ($lyte_post as $cachekey) {
+					delete_post_meta($postID, $cachekey);
+				}
 			}
+			delete_option('lyte_cache_index');
 		}
-		delete_option('lyte_cache_index');
+		return "OK";
+	} catch(Exception $e) {
+		return $e->getMessage();
 	}
+}
+
+/** function to call from within themes */
+/* use with e.g. : <?php if(function_exists('lyte_preparse')) { echo lyte_preparse($videoId); } ?> */
+function lyte_preparse($videoId) {
+    return lyte_parse('httpv://www.youtube.com/watch?v='.$videoId);
 }
 
 /** hooking it all up to wordpress */

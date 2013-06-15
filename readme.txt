@@ -52,8 +52,8 @@ As opposed to some of the [most important](http://blog.futtta.be/2010/12/15/word
 If you want to stop YouTube from setting cookies, add the "&showinfo=0" parameter to your httpv-url. This will prevent the call to the Youtube API, which is used to fetch the title of the video, and stop YouTube-cookies from being set when the LYTE-player is loaded. This however does not work for playlists (the API-call is needed to be able to present something meaningful). You should also take into account that any user actually playing the video, will always receive YouTube-cookies ([as is the case with youtube-nocokie embeds as well](http://support.google.com/youtube/bin/answer.py?hl=en&answer=171780&expand=PrivacyEnhancedMode#privacy)).
 
 = Can I use WP YouTube Lyte for a custom field? =
-As tested and confirmed by [rumultik.ru's Dimitri](http://rumultik.ru) (thanks for that man!), this indeed does work. Just pass the httpv url of such a field to lyte_parse like this: 
-`if(function_exists('lyte_parse')) { echo lyte_parse($video); }`
+As tested and confirmed by [rumultik.ru's Dimitri](http://rumultik.ru) (thanks for that man!), this indeed does work. Just pass the httpv url of such a field to lyte_preparse like this: 
+`if(function_exists('lyte_preparse')) { echo lyte_preparse($video); }`
 and you're good to go!
 
 = Does WP YouTube Lyte work with Infinite Scroll? =
@@ -74,23 +74,26 @@ This was added as a beta feature in version 1.1.0; add ?enablejsapi=1 to the htt
 * if the content div width gets to around 200 pixels, the LYTE UI will become garbled (YouTube requires the minimum embed width to be 200px as well).
 
 = Can I use WP YouTube Lyte on normal YouTube links? =
-Sure, just add the following code-snippet in your theme's functions.php:
+Yes, using the API you can make WP YouTube Lyte parse normal YouTube links. The code for this is in lyte_helper.php_example.
 
-`
-/** force wp youtube lyte on http://www.youtube.com url's as well */
-add_filter('the_content', 'force_lyte_parse', 1);
-function force_lyte_parse($content) {
-     $content=str_replace('http://www.youtube.com/watch?v=','httpv://www.youtube.com/watch?v=',$content);
-     return $content;
-}
-`
+= What can I do with the API? =
+A whole lot; there are filters to pre-parse the_content, to change settings, to change the CSS, to change the HTML of the LYTE-div, ... There are examples for all filters (and one action) in lyte_helper.php_example
+
+= How can I use/ activate lyte_helper.php_example? =
+Make a copy of it in /wp-content/plugins/lyte_helper.php and activate it in WordPress' plugin page. After that you can simple remove the comment-sequence (double-slash) to activate one (or more) of the functions in there.
+
+= Problem with All In One Seo Pack =
+All in One SEO Pack be default generates a description which still has httpv-links in it. To remove those, you'll have to use lyte_helper.php (see above) and activate the aioseop-filter in there.
+
+= When I click on a LYTE video, a link to YouTube opens, what's up with that? =
+You probably added a link (<a href>)around the httpv-url. No link is needed, just the httpv-url.
 
 = Any bugs/ issues should I know about? =
 * Although the widget is available in (very) small sizes, these do not display that great and might, in the near future, be disabled by YouTube as their Terms of Service state that the smallest available embedded player is 200X200 pixels. Use the deprecated smaller sizes at your own risk.
 * Having the same YouTube-video on one page can cause WP YouTube Lyte to malfunction (as the YouTube id is used as the div's id in the DOM, and DOM id's are supposed to be unique)
 * As youtube-nocookie.com does not serve the HTML5-player, WP YouTube Lyte uses the youtube.com domain (which provides less privacy), but as soon as youtube-nocookie.com serves HTML5-video, this will become the default domain for WP YouTube Lyte again.
 * When using the Firefox plugin Karma Blocker, the [video isn't visible when clicking "play", with a warning message being shown instead](http://blog.futtta.be/?p=7584). This is expected behavior and should be solved by tweaking Karma Blocker's configuration.
-* The translations have not been updated entirely for version 1.2.0, this will be included in 1.2.1. Help with translations is always welcome!
+* The translations have not been updated entirely for version 1.2.0 and later. Help with translations is high on my wish-list, [contact me if you are interested to help](http://blog.futtta.be/contact)!
 
 = I found a bug/ I would like a feature to be added! =
 Just tell me, I like the feedback! Use the [Contact-page on my blog](http://blog.futtta.be/contact/), [leave a comment in a post about wp-youtube-lyte](http://blog.futtta.be/tag/wp-youtube-lyte/) or [create a new topic on the wordpress.org forum](http://wordpress.org/tags/wp-youtube-lyte?forum_id=10#postform).
@@ -103,9 +106,12 @@ Just tell me, I like the feedback! Use the [Contact-page on my blog](http://blog
 == Changelog ==
 
 = 1.3.0 =
-* WP YouTube Lyte now has an API to allow its behavior to be changed
-* Support for higher quality thumbnails by adding hqThumb=1 to httpv-link
-* improvement: opacity of the play-button when not hovered over
+* WP YouTube Lyte now has an API to allow its behavior to be changed, with extensive examples in lyte_helper.php_example
+* Support for higher quality thumbnails by adding #hqThumb=1 to httpv-link
+* You can disable microdata on a per-video level by adding #noMicrodata=1 to the httpv-link when microdata is enabled.
+* Checkbox on admin-page to flush WP YouTube Lyte cache (which holds title, description, ... from YouTube)
+* added a lyte_preparse function to be used by themes/ plugins (input is the YouTube ID)
+* improvement: added opacity to the play-button when not hovered over
 * bugfix: suppress error messages if yt_resp does not contain all data
 * bugfix: solve PHP notice for pS-array in options.php
 
