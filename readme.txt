@@ -3,7 +3,7 @@ Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5, widget, youtube audio, audio, playlist, youtube playlist, hd, performance, accessibility, sidebar, lazy load, responsive, microdata, videoobject
 Requires at least: 2.9
 Tested up to: 3.6
-Stable tag: 1.2.2
+Stable tag: 1.3.0
 
 High performance YouTube video, playlist and audio-only embeds which don't slow down your blog and offer optimal accessibility.
 
@@ -52,7 +52,7 @@ As opposed to some of the [most important](http://blog.futtta.be/2010/12/15/word
 If you want to stop YouTube from setting cookies, add the "&showinfo=0" parameter to your httpv-url. This will prevent the call to the Youtube API, which is used to fetch the title of the video, and stop YouTube-cookies from being set when the LYTE-player is loaded. This however does not work for playlists (the API-call is needed to be able to present something meaningful). You should also take into account that any user actually playing the video, will always receive YouTube-cookies ([as is the case with youtube-nocokie embeds as well](http://support.google.com/youtube/bin/answer.py?hl=en&answer=171780&expand=PrivacyEnhancedMode#privacy)).
 
 = Can I use WP YouTube Lyte for a custom field? =
-As tested and confirmed by [rumultik.ru's Dimitri](http://rumultik.ru) (thanks for that man!), this indeed does work. Just pass the httpv url of such a field to lyte_preparse like this: 
+Just pass the httpv url of such a field to lyte_preparse like this: 
 `if(function_exists('lyte_preparse')) { echo lyte_preparse($video); }`
 and you're good to go!
 
@@ -80,10 +80,10 @@ Yes, using the API you can make WP YouTube Lyte parse normal YouTube links. The 
 A whole lot; there are filters to pre-parse the_content, to change settings, to change the CSS, to change the HTML of the LYTE-div, ... There are examples for all filters (and one action) in lyte_helper.php_example
 
 = How can I use/ activate lyte_helper.php_example? =
-Make a copy of it in /wp-content/plugins/lyte_helper.php and activate it in WordPress' plugin page. After that you can simple remove the comment-sequence (double-slash) to activate one (or more) of the functions in there.
+Copy it to /wp-content/plugins/lyte_helper.php and activate it in WordPress' plugin page. After that you can simple remove the one of the comment-sequences (double-slash) to activate one (or more) of the functions in there.
 
 = Problem with All In One Seo Pack =
-All in One SEO Pack be default generates a description which still has httpv-links in it. To remove those, you'll have to use lyte_helper.php (see above) and activate the aioseop-filter in there.
+All in One SEO Pack be default generates a description which still has httpv-links in it. To remove those, you'll have to use lyte_helper.php (see above) and add lyte_filter_aioseop_description to the aioseop-filter in there.
 
 = When I click on a LYTE video, a link to YouTube opens, what's up with that? =
 You probably added a link (<a href>)around the httpv-url. No link is needed, just the httpv-url.
