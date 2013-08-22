@@ -62,8 +62,14 @@ ly.play = function(id) {
 
     qsa=ly.getQ(tH);
 
-    if (tH.className.indexOf("audio") !== -1) { qsa+="&amp;autohide=0";aHgh="438";aSt="position:relative;top:-400px;" } else { aHgh=tH.clientHeight;aSt=""; }
-    
+    if ((tH.className.indexOf("audio") !== -1) && (aP == 1)) {
+        qsa+="&autohide=0";aHgh="438";aSt="position:relative;top:-400px;"
+    } else if ((tH.className.indexOf("audio") !== -1) && (aP == 0)) {
+        tH.parentNode.style.height="";tH.style.height="";aHgh=tH.clientHeight;aSt="height:"+aHgh+"px !important;";
+    } else {
+        aHgh=tH.clientHeight;aSt="";
+    }
+
     tH.innerHTML="<iframe id=\"iF_" + vid + "\" width=\"" + tH.clientWidth + "px\" height=\"" + aHgh + "px\" src=\""+eU+"autoplay="+aP+"&amp;wmode=opaque&amp;rel=0&amp;egm=0&amp;iv_load_policy=3&amp;hd="+hidef+qsa+"\" frameborder=\"0\" style=\"" + aSt + "\" allowfullscreen></iframe>"
 
     if(typeof tH.firstChild.getAttribute('kabl')=="string") tH.innerHTML="Please check Karma Blocker's config.";

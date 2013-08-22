@@ -3,7 +3,7 @@ Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds, html5 video, html5, widget, youtube audio, audio, playlist, youtube playlist, hd, performance, accessibility, sidebar, lazy load, responsive, microdata, videoobject
 Requires at least: 2.9
 Tested up to: 3.6
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 
 High performance YouTube video, playlist and audio-only embeds which don't slow down your blog and offer optimal accessibility.
 
@@ -104,6 +104,10 @@ Just tell me, I like the feedback! Use the [Contact-page on my blog](http://blog
 * [Rate my plugin on wordpress.org](http://wordpress.org/extend/plugins/wp-youtube-lyte/), even if you think it stinks ;-)
 
 == Changelog ==
+
+= 1.3.1 =
+* Workaround for broken audio-only on mobile (due to YouTube not showing bottom controls when iOS or Android is detected) as reported by [stevygee1987](http://wordpress.org/support/topic/audio-embed-is-a-black-bar-on-iphone). Result; audio-only YouTube becomes a normal YouTube video on mobile [until a better solution can be found](http://stackoverflow.com/questions/18273658/embedded-yt-on-mobile-autohide-0controls-1-but-controls-invisible).
+* Added extra check to prevent plugin-files being called outside of WordPress [as suggested in this good article on security](http://mikejolley.com/2013/08/keeping-your-shit-secure-whilst-developing-for-wordpress/).
 
 = 1.3.0 =
 * WP YouTube Lyte now has an API to allow its behavior to be changed, with extensive examples in lyte_helper.php_example

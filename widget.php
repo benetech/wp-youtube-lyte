@@ -1,4 +1,6 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 class WYLWidget extends WP_Widget {
     function WYLWidget() {
 		parent::WP_Widget(false, $name = 'WP YouTube Lyte');
