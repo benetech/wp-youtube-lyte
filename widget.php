@@ -26,7 +26,7 @@ class WYLWidget extends WP_Widget {
 		$wHeight = "38";
 	}
 
-	$WYLurl=str_replace("httpv://","http://",$instance['WYLurl']);
+	$WYLurl=str_replace("httpv://","http://",trim($instance['WYLurl']));
 
         $WYLqs=substr(strstr($WYLurl,'?'),1);
         parse_str($WYLqs,$WYLarr);
