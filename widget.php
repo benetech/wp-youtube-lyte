@@ -1,9 +1,7 @@
 <?php
-require_once(dirname(__FILE__).'/player_sizes.inc.php');
-
 class WYLWidget extends WP_Widget {
     function WYLWidget() {
-        parent::WP_Widget(false, $name = 'WP YouTube Lyte');
+		parent::WP_Widget(false, $name = 'WP YouTube Lyte');
     }
 
     function widget($args, $instance) {
@@ -11,16 +9,24 @@ class WYLWidget extends WP_Widget {
 	global $wSize, $wyl_version, $wp_lyte_plugin_url, $lyteSettings;
 	$qsa="";
 
-        $WYLtitle = apply_filters('widget_title', $instance['WYLtitle']);
+	$WYLtitle = apply_filters('widget_title', $instance['WYLtitle']);
 	$WYLtext = apply_filters( 'widget_text', $instance['WYLtext'], $instance );
 
 	$WYLsize = apply_filters( 'widget_text', $instance['WYLsize'], $instance );
 	if ($WYLsize=="") $WYLsize=$wDefault;
 
 	$WYLaudio = apply_filters( 'widget_text', $instance['WYLaudio'], $instance );
-	if ($WYLaudio!=="audio") $WYLaudio="";
+	if ($WYLaudio!=="audio") {
+		$wrapperClass = " lidget";
+		$audioClass = "";
+		$wHeight = $wSize[$WYLsize]['h'];
+	} else {
+		$wrapperClass = "-audio lidget";
+		$audioClass = " lyte-audio";
+		$wHeight = "38";
+	}
 
-	$WYLurl=str_replace("httpv://","http://",$instance['WYLurl']);
+	$WYLurl=str_replace("httpv://","http://",trim($instance['WYLurl']));
 
         $WYLqs=substr(strstr($WYLurl,'?'),1);
         parse_str($WYLqs,$WYLarr);
@@ -28,7 +34,15 @@ class WYLWidget extends WP_Widget {
         if (strpos($WYLurl,'youtu.be')) {
                 $WYLid=substr(parse_url($WYLurl,PHP_URL_PATH),1,11);
         } else {
-                $WYLid=$WYLarr['v'];
+		if (isset($WYLarr['v'])) {
+			$WYLid=$WYLarr['v'];
+			$PLClass="";
+			$WYLthumb="http://img.youtube.com/vi/".$WYLid."/mqdefault.jpg";
+		} else if (isset($WYLarr['list'])) {
+                	$WYLid=$WYLarr['list'];
+			$PLClass=" playlist";
+			$WYLthumb="";
+		}
         }
 
 	if (isset($WYLarr['start'])) $qsa="&amp;start=".$WYLarr['start'];
@@ -39,22 +53,21 @@ class WYLWidget extends WP_Widget {
 	}
 
 	if (!empty($qsa)) {
-        	$esc_arr=array("&" => "\&", "?" => "\?", "=" => "\=");
-                $qsaClass=" qsa_".strtr($qsa,$esc_arr);
-        } else {
-                $qsaClass="";
-        }
+		$esc_arr=array("&" => "\&", "?" => "\?", "=" => "\=");
+		$qsaClass=" qsa_".strtr($qsa,$esc_arr);
+	} else {
+		$qsaClass="";
+	}
 
-	$WYLid="YLW_".$WYLid;
+	$WYL_dom_id="YLW_".$WYLid;
 
 	$lyteSettings['path']=$wp_lyte_plugin_url."lyte/";
 	?>
-
-        <?php echo $before_widget; ?>
-              <?php if ( $WYLtitle ) echo $before_title . $WYLtitle . $after_title; ?>
-	      <div class="lyMe widget <?php echo $WYLaudio; ?> <?php echo $qsaClass; ?>" id="<?php echo $WYLid; ?>" style="width:<?php echo $wSize[$WYLsize]['w']; ?>px;height:<?php if($WYLaudio==="audio") {echo "38";} else {echo $wSize[$WYLsize]['h'];} ?>px;overflow:hidden;"><noscript><a href="http://youtu.be/<?php echo $WYLid;?>"><img src="http://img.youtube.com/vi/<?php echo $WYLid; ?>/default.jpg" alt="" /></a></noscript></div>
-	      <div><?php echo $WYLtext ?></div>
-              <?php echo $after_widget; ?>
+	<?php echo $before_widget; ?>
+        <?php if ( $WYLtitle ) echo $before_title . $WYLtitle . $after_title; ?>
+	<div class="lyte-wrapper<?php echo $wrapperClass; ?>" style="width:<?php echo $wSize[$WYLsize]['w']; ?>px; height:<?php echo $wHeight; ?>px; min-width:200px; max-width:100%;"><div class="lyMe<?php echo $PLClass; echo $audioClass; echo $qsaClass; ?>" id="<?php echo $WYL_dom_id; ?>"><div id="lyte_<?php echo $WYLid; ?>" data-src="<?php echo $WYLthumb;?>" class="pL"><div class="play"></div><div class="ctrl"><div class="Lctrl"></div></div></div></div><noscript><a href="http://youtu.be/<?php echo $WYLid;?>"><img src="<?php echo $WYLthumb; ?>" alt="" /></a></noscript></div>
+	<div><?php echo $WYLtext ?></div>
+        <?php echo $after_widget; ?>
         <?php
 	lyte_initer();
     }
@@ -66,25 +79,49 @@ class WYLWidget extends WP_Widget {
 		$instance['WYLsize'] = strip_tags($new_instance['WYLsize']);
 		$instance['WYLaudio'] = strip_tags($new_instance['WYLaudio']);
 
-                if ( current_user_can('unfiltered_html') )
-			$instance['WYLtext'] = $new_instance['WYLtext'];
-                else
-                        $instance['WYLtext'] = stripslashes( wp_filter_post_kses( addslashes($new_instance['WYLtext']) ) ); 
+        if ( current_user_can('unfiltered_html') ) {
+		$instance['WYLtext'] = $new_instance['WYLtext'];
+	} else {
+        	$instance['WYLtext'] = stripslashes( wp_filter_post_kses( addslashes($new_instance['WYLtext']) ) );
+	}
 
-		return $instance;
+	return $instance;
     }
 
     function form($instance) {
         global $wSize, $wDefault;
 
-        $WYLtitle = esc_attr($instance['WYLtitle']);
-	$WYLurl = esc_attr($instance['WYLurl']);
-	$WYLtext = format_to_edit($instance['WYLtext']);
+        if (isset($instance['WYLtitle'])) {
+		$WYLtitle = esc_attr($instance['WYLtitle']);
+	} else {
+		$WYLtitle = "";
+	}
 
-	$WYLaudio = esc_attr($instance['WYLaudio']);
+	if (isset($instance['WYLurl'])) {
+		$WYLurl = esc_attr($instance['WYLurl']);
+	} else {
+		$WYLurl = "";
+	}
+
+	if (isset($instance['WYLtext'])) {
+		$WYLtext = format_to_edit($instance['WYLtext']);
+        } else {
+                $WYLtext = "";
+        }
+
+	if (isset($instance['WYLaudio'])) {
+		$WYLaudio = esc_attr($instance['WYLaudio']);
+        } else {
+                $WYLaudio = "";
+        }
 	if ($WYLaudio!=="audio") $WYLaudio="";
 
-	$WYLsize = esc_attr($instance['WYLsize']);
+	if (isset($instance['WYLsize'])) {
+		$WYLsize = esc_attr($instance['WYLsize']);
+        } else {
+                $WYLsize = "";
+        }
+
 	if ($WYLsize=="") $WYLsize=$wDefault;
 
         ?>
@@ -100,8 +137,9 @@ class WYLWidget extends WP_Widget {
 						$selected="";
 						}
 					unset($deprecated);
-					if ($wSize[$x]['depr']===true) $deprecated=" (deprecated!)";
-					echo "<option value=\"".$x."\"".$selected.">".$wSize[$x]['w']."X".$wSize[$x]['h'].$deprecated."</option>";
+					if ($wSize[$x]['depr']!==true) {
+						echo "<option value=\"".$x."\"".$selected.">".$wSize[$x]['w']."X".$wSize[$x]['h']."</option>";
+					}
 					$x++;
 				}
 			?>
