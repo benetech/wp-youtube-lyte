@@ -3,7 +3,7 @@ Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds, html5 video, widget, youtube audio, audio, playlist, performance, accessibility, sidebar, lazy load, responsive, microdata, videoobject
 Requires at least: 2.9
 Tested up to: 3.6
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 
 High performance YouTube video, playlist and audio-only embeds which don't slow down your blog and offer optimal accessibility.
 
