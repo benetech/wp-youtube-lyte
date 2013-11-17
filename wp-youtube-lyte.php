@@ -4,7 +4,7 @@ Plugin Name: WP YouTube Lyte
 Plugin URI: http://blog.futtta.be/wp-youtube-lyte/
 Description: Lite and accessible YouTube audio and video embedding.
 Author: Frank Goossens (futtta)
-Version: 1.3.2
+Version: 1.3.3
 Author URI: http://blog.futtta.be/
 Text Domain: wp-youtube-lyte
 Domain Path: /languages
@@ -13,7 +13,7 @@ Domain Path: /languages
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 $debug=false;
-$lyte_version="1.3.2";
+$lyte_version="1.3.3";
 $lyte_db_version=get_option('lyte_version','none');
 
 /** have we updated? */
@@ -97,6 +97,9 @@ function lyte_parse($the_content,$doExcerpt=false) {
 		preg_match_all($lytes_regexp, $the_content, $matches, PREG_SET_ORDER); 
 
 		foreach($matches as $match) {
+			/* echo "<pre>";
+			print_r($match);
+			echo "</pre>"; */
 			/** API: filter hook to preparse fragment in a httpv-url, e.g. to force hqThumb=1 or showinfo=0 */
 			$match[12] = apply_filters( 'lyte_match_preparse_fragment',$match[12] );
 
@@ -373,7 +376,7 @@ function shortcode_lyte($atts) {
         ), $atts));
         
 	if ($audio) {$proto="httpa";} else {$proto="httpv";}
-	if ($playlist) {$action="playlist?list=PL";} else {$action="watch?v=";}
+	if ($playlist) {$action="playlist?list=";} else {$action="watch?v=";}
 
         return lyte_parse($proto.'://www.youtube.com/'.$action.$id);
     }

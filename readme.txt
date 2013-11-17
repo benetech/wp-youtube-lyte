@@ -1,8 +1,9 @@
 === WP YouTube Lyte ===
 Contributors: futtta
 Tags: youtube, video, lyte, lite youtube embeds, html5 video, widget, youtube audio, audio, playlist, performance, accessibility, sidebar, lazy load, responsive, microdata, videoobject
+Donate link: http://blog.futtta.be/2013/10/21/do-not-donate-to-me/
 Requires at least: 2.9
-Tested up to: 3.6
+Tested up to: 3.7
 Stable tag: 1.3.2
 
 High performance YouTube video, playlist and audio-only embeds which don't slow down your blog and offer optimal accessibility.
@@ -101,9 +102,15 @@ Just tell me, I like the feedback! Use the [Contact-page on my blog](http://blog
 = How you can help =
 * Tell me about bugs you think you've found and if you can't find any, [confirm it works with your version of WP on wordpress.org](http://wordpress.org/extend/plugins/wp-youtube-lyte/)
 * Ask me for a feature you would like to see added
-* [Rate my plugin on wordpress.org](http://wordpress.org/extend/plugins/wp-youtube-lyte/), even if you think it stinks ;-)
+* [Rate my plugin on wordpress.org](http://wordpress.org/extend/plugins/wp-youtube-lyte/)
 
 == Changelog ==
+
+= 1.3.3 =
+* fix for playlist shortcode as [reported by pete777](http://wordpress.org/support/topic/playlist-via-shortcode-broken)
+* fix for mobile orientation-change bug [describedby Kevinlikes](http://wordpress.org/support/topic/rotation-bug-on-iphoneipad)
+* tested and confirmed working with WordPress 3.7
+* added "Do not Donate"-link
 
 = 1.3.2 =
 * Added playlist support in the WP YouTube Lyte widget (forget to add it really, thanks to [Ed Dingwall](http://www.sinthomedia.com/) to remind me)

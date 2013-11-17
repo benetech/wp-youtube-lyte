@@ -167,6 +167,7 @@ function lyte_settings_page() {
                         </select>
                 </h3>
                 <div id="futtta_feed"></div>
+		<div style="float:right;margin:50px 15px;"><a href="http://blog.futtta.be/2013/10/21/do-not-donate-to-me/" target="_blank"><img width="100px" height="85px" src="<?php echo content_url(); ?>/plugins/wp-youtube-lyte/external/do_not_donate_smallest.png" title="<?php _e("Do not donate for this plugin!"); ?>"></a></div>
         </div>
 </div>
 

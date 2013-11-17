@@ -86,19 +86,15 @@ ly.play = function(id) {
 	aHgh=tH.clientHeight;
 	aSt="height:"+aHgh+"px !important;";
     } else {
-    	aHgh=tH.clientHeight;aSt=""; 
+    	aHgh=tH.clientHeight;
+	aSt="";
     }
     
-    tH.innerHTML="<iframe id=\"iF_" + vid + "\" width=\"" + tH.clientWidth + "px\" height=\"" + aHgh + "px\" src=\""+eU+"autoplay="+aP+"&amp;controls=1&amp;wmode=opaque&amp;rel=0&amp;egm=0&amp;iv_load_policy=3&amp;hd="+hidef+qsa+"\" frameborder=\"0\" style=\"" + aSt + "\" allowfullscreen></iframe>"
-
-    /*
-    ytUrl=eU+"autoplay="+aP+"&amp;wmode=opaque&amp;rel=0&amp;egm=0&amp;iv_load_policy=3&amp;hd="+hidef+qsa;
-
-    lytePop=window.open(ytUrl,'name','height='+aHgh+',width='+tH.clientWidth);
-    if (window.focus) {lytePop.focus()}
-    */
+    tH.innerHTML="<iframe id=\"iF_" + vid + "\" width=\"" + tH.clientWidth*2 + "\" height=\"" + aHgh + "\" src=\""+eU+"autoplay="+aP+"&amp;controls=1&amp;wmode=opaque&amp;rel=0&amp;egm=0&amp;iv_load_policy=3&amp;hd="+hidef+qsa+"\" frameborder=\"0\" style=\"" + aSt + "\" allowfullscreen></iframe>"
 
     if(typeof tH.firstChild.getAttribute('kabl')=="string") tH.innerHTML="Please check Karma Blocker's config.";
+
+    if (aP==0){window.addEventListener("orientationchange", function() {ly.te();}, false);}
 }
 
 ly.getElementsByClassName = function(className, tag, elm) {
