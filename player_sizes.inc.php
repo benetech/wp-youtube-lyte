@@ -79,7 +79,10 @@ $wSize[4]['depr']=false;
 $wSize[5]['h']=200;
 $wSize[5]['w']=250;
 $wSize[5]['depr']=false;
-$wSize[6]['h']=333;
-$wSize[6]['w']=400;
+$wSize[6]['h']=225;
+$wSize[6]['w']=300;
 $wSize[6]['depr']=false;
+$wSize[7]['h']=300;
+$wSize[7]['w']=400;
+$wSize[7]['depr']=false;
 ?>
