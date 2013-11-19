@@ -4,7 +4,7 @@ Tags: youtube, video, lyte, lite youtube embeds, html5 video, widget, youtube au
 Donate link: http://blog.futtta.be/2013/10/21/do-not-donate-to-me/
 Requires at least: 2.9
 Tested up to: 3.7
-Stable tag: 1.3.2
+Stable tag: 1.3.3
 
 High performance YouTube video, playlist and audio-only embeds which don't slow down your blog and offer optimal accessibility.
 
@@ -108,7 +108,8 @@ Just tell me, I like the feedback! Use the [Contact-page on my blog](http://blog
 
 = 1.3.3 =
 * fix for playlist shortcode as [reported by pete777](http://wordpress.org/support/topic/playlist-via-shortcode-broken)
-* fix for mobile orientation-change bug [describedby Kevinlikes](http://wordpress.org/support/topic/rotation-bug-on-iphoneipad)
+* fix for mobile orientation-change bug [described by Kevinlikes](http://wordpress.org/support/topic/rotation-bug-on-iphoneipad)
+* fix for better html-validation as [requested by Kevinlikes](http://wordpress.org/support/topic/validatorw3-error)
 * tested and confirmed working with WordPress 3.7
 * added "Do not Donate"-link
 
