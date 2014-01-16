@@ -292,17 +292,41 @@ function lyte_parse($the_content,$doExcerpt=false) {
 				$templateType="feed";
 			} elseif (($audio !== true) && ( $plClass !== " playlist") && (($lyteSettings['microdata'] === "1")&&($noMicroData !== "1" ))) {
 				
-				$context = stream_context_create(['http' => ['timeout' => 3]]);
-				// check for captions on YouTube and Amara for accessibility metadata 
-				$jsonCaptions = file_get_contents("http://benetech.herokuapp.com/captions/youtubeid=".$vid, false, $context);
-				$decodeJson= json_decode($jsonCaptions, true);
-								
-				if ($decodeJson['status'] == 'success' && $decodeJson['data']['captions'] == '1') {
-					$captionsMeta="<meta itemprop=\"accessibilityFeature\" content=\"captions\" />";
-				} else {
-					$captionsMeta="";
+				$post_id = 10011;
+				$post_id_data = 10012;
+				$meta_key = $vid;
+									
+				// caching captions data, checking once per day		
+				// captions already checked today
+				if (get_post_meta($post_id, $meta_key)[0] == date('d')) {
+					$captions_cache = get_post_meta($post_id_data, $meta_key)[0];
+										
+					if($captions_cache == "true") {
+						$captionsMeta="<meta itemprop=\"accessibilityFeature\" content=\"captions\" />";
+					} elseif($captions_cache == "false") {
+						$captionsMeta="";
+					}
+										
+				} else { // captions not checked
+					
+					// check for captions on YouTube and Amara
+					$context = stream_context_create(['http' => ['timeout' => 3]]);
+					$jsonCaptions = file_get_contents("http://api.a11ymetadata.org/captions/youtubeid=".$vid, false, $context);
+					$decodeJson = json_decode($jsonCaptions, true);
+					
+					//update time
+					update_post_meta($post_id, $meta_key, date('d'), false);
+					
+					//fetch captions, update captions meta
+					if ($decodeJson['status'] == 'success' && $decodeJson['data']['captions'] == '1') {
+						$captionsMeta="<meta itemprop=\"accessibilityFeature\" content=\"captions\" />";
+						update_post_meta($post_id_data, $meta_key, "true", false);
+					} else {
+						$captionsMeta="";
+						update_post_meta($post_id_data, $meta_key, "false", false);
+					}
 				}
-				
+								
 				$lytetemplate = $wrapper."<div class=\"lyMe".$audioClass.$hidefClass.$plClass.$qsaClass."\" id=\"WYL_".$vid."\" itemprop=\"video\" itemscope itemtype=\"http://schema.org/VideoObject\"><meta itemprop=\"thumbnailUrl\" content=\"".$thumbUrl."\" /><meta itemprop=\"embedURL\" content=\"http://www.youtube.com/embed/".$vid."\" /><meta itemprop=\"uploadDate\" content=\"".$dateField."\" />".$captionsMeta."<div id=\"lyte_".$vid."\" data-src=\"".$thumbUrl."\" class=\"pL\"><div class=\"tC".$titleClass."\"><div class=\"tT\" itemprop=\"name\">".$yt_title."</div></div><div class=\"play\"></div><div class=\"ctrl\"><div class=\"Lctrl\"></div><div class=\"Rctrl\"></div></div></div>".$noscript."<meta itemprop=\"description\" content=\"".$description."\"></div></div>".$lytelinks_txt;
 				$templateType="postMicrodata";
 			} else {
