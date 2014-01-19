@@ -291,23 +291,31 @@ function lyte_parse($the_content,$doExcerpt=false) {
 				$lytetemplate = "<a href=\"".$postURL."\"><img src=\"".$lyteSettings['scheme']."://i.ytimg.com/vi/".$vid."/0.jpg\" alt=\"YouTube Video\"></a>".$textLink;
 				$templateType="feed";
 			} elseif (($audio !== true) && ( $plClass !== " playlist") && (($lyteSettings['microdata'] === "1")&&($noMicroData !== "1" ))) {
+						
+				// caching for Accessible Metadata captions feature 
 				
-				$post_id = 10011;
-				$post_id_data = 10012;
+				$post_id = 99;
+				$post_id_data = 98;
 				$meta_key = $vid;
+					
+				// check time of last cache				
+				$last_cache = get_post_meta($post_id, $meta_key);
+				$interval = (strtotime("now") - $last_cache[0])/60/60/24;				
+				
+				// if caching occured less than 24 hours ago
+				if ($interval < 1) {
+					$captions_cache = get_post_meta($post_id_data, $meta_key);
+					$captions_cache_data = $captions_cache[0];
 									
-				// caching captions data, checking once per day		
-				// captions already checked today
-				if (get_post_meta($post_id, $meta_key)[0] == date('d')) {
-					$captions_cache = get_post_meta($post_id_data, $meta_key)[0];
-										
-					if($captions_cache == "true") {
+					//update captions meta	
+					if($captions_cache_data == "true") {
 						$captionsMeta="<meta itemprop=\"accessibilityFeature\" content=\"captions\" />";
-					} elseif($captions_cache == "false") {
+					} elseif($captions_cache_data == "false") {
 						$captionsMeta="";
 					}
 										
-				} else { // captions not checked
+										
+				} else { // captions not checked in 24 hour period
 					
 					// check for captions on YouTube and Amara
 					$context = stream_context_create(['http' => ['timeout' => 3]]);
@@ -315,16 +323,19 @@ function lyte_parse($the_content,$doExcerpt=false) {
 					$decodeJson = json_decode($jsonCaptions, true);
 					
 					//update time
-					update_post_meta($post_id, $meta_key, date('d'), false);
+					update_post_meta($post_id, $meta_key, strtotime("now"), false);
 					
 					//fetch captions, update captions meta
 					if ($decodeJson['status'] == 'success' && $decodeJson['data']['captions'] == '1') {
 						$captionsMeta="<meta itemprop=\"accessibilityFeature\" content=\"captions\" />";
 						update_post_meta($post_id_data, $meta_key, "true", false);
+						
 					} else {
 						$captionsMeta="";
-						update_post_meta($post_id_data, $meta_key, "false", false);
+						update_post_meta($post_id_data, $meta_key, "false", false);						
 					}
+					
+					
 				}
 								
 				$lytetemplate = $wrapper."<div class=\"lyMe".$audioClass.$hidefClass.$plClass.$qsaClass."\" id=\"WYL_".$vid."\" itemprop=\"video\" itemscope itemtype=\"http://schema.org/VideoObject\"><meta itemprop=\"thumbnailUrl\" content=\"".$thumbUrl."\" /><meta itemprop=\"embedURL\" content=\"http://www.youtube.com/embed/".$vid."\" /><meta itemprop=\"uploadDate\" content=\"".$dateField."\" />".$captionsMeta."<div id=\"lyte_".$vid."\" data-src=\"".$thumbUrl."\" class=\"pL\"><div class=\"tC".$titleClass."\"><div class=\"tT\" itemprop=\"name\">".$yt_title."</div></div><div class=\"play\"></div><div class=\"ctrl\"><div class=\"Lctrl\"></div><div class=\"Rctrl\"></div></div></div>".$noscript."<meta itemprop=\"description\" content=\"".$description."\"></div></div>".$lytelinks_txt;
