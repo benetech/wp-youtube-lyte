@@ -318,8 +318,8 @@ function lyte_parse($the_content,$doExcerpt=false) {
 				} else { // captions not checked in 24 hour period
 					
 					// check for captions on YouTube and Amara
-					$context = stream_context_create(['http' => ['timeout' => 3]]);
-					$jsonCaptions = file_get_contents("http://api.a11ymetadata.org/captions/youtubeid=".$vid, false, $context);
+					//$context = stream_context_create(['http' => ['timeout' => 3]]);
+					$jsonCaptions = file_get_contents("http://api.a11ymetadata.org/captions/youtubeid=".$vid, false);
 					$decodeJson = json_decode($jsonCaptions, true);
 					
 					//update time
