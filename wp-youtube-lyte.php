@@ -71,6 +71,7 @@ $lyteSettings['scheme'] = ( is_ssl() ) ? "https" : "http";
 /** API: filter hook to alter $lyteSettings */
 $lyteSettings = apply_filters( 'lyte_settings', $lyteSettings );
 
+
 /** main function to parse the content, searching and replacing httpv-links */
 function lyte_parse($the_content,$doExcerpt=false) {
 	global $lyteSettings;
@@ -292,57 +293,34 @@ function lyte_parse($the_content,$doExcerpt=false) {
 				$templateType="feed";
 			} elseif (($audio !== true) && ( $plClass !== " playlist") && (($lyteSettings['microdata'] === "1")&&($noMicroData !== "1" ))) {
 				
-					//caching for Accessible Metadata captions feature 
-
-					$post_id = 99;
-					$post_id_data = 98;
-					$meta_key = $vid;
-						
-					// check time of last cache				
-					$last_cache = get_post_meta($post_id, $meta_key);
-					$interval = (strtotime("now") - $last_cache[0])/60/60/24;				
+					//caching for Accessible Metadata captions feature 					
+					$post_id = 200;
 					
-					// if caching occured less than 24 hours ago
-					if ($interval < 1) {
-						$captions_cache = get_post_meta($post_id_data, $meta_key);
+					//check if videoID is in cache
+					$last_cache = get_post_meta($post_id, $vid);
+					
+					if ($last_cache) { // video is already in cache
+						$captions_cache = get_post_meta($post_id, $vid);
 						$captions_cache_data = $captions_cache[0];
-										
-						//update captions meta	
+						
+						// if captions exist, write to metadata
 						if($captions_cache_data == "true") {
 							$captionsMeta="<meta itemprop=\"accessibilityFeature\" content=\"captions\" />";
 						} elseif($captions_cache_data == "false") {
 							$captionsMeta="";
 						}
+												
+					} else { //if video id is not in cache, make a false entry in cache and then schedule event to look up metadata in an hour
 						
-						//error_log("cache \n", 3, "/Users/adbern/Documents/Benetech/wp-youtube-lyte/error_log.log");
-											
-											
-					} else { // captions not checked in 24 hour period
+						// set captions to false in cache
+						update_post_meta($post_id, $vid, "false", false);
+						// fire off event to check for captions in 1 hour
+						wp_schedule_single_event(strtotime("now") + 60*60, 'schedule_captions_lookup', array($post_id, $vid));
 						
-						// check for captions on YouTube and Amara
-						$context = stream_context_create(array('http' => array('timeout' => 3)));
-						$jsonCaptions = file_get_contents("http://api.a11ymetadata.org/captions/youtubeid=".$vid, false, $context);
-						$decodeJson = json_decode($jsonCaptions, true);
+						$captionsMeta="";
 						
-						//update time
-						update_post_meta($post_id, $meta_key, strtotime("now"), false);
-						
-						//fetch captions, update captions meta
-						if ($decodeJson['status'] == 'success' && $decodeJson['data']['captions'] == '1') {
-							$captionsMeta="<meta itemprop=\"accessibilityFeature\" content=\"captions\" />";
-							update_post_meta($post_id_data, $meta_key, "true", false);
-							
-						} else {
-							$captionsMeta="";
-							update_post_meta($post_id_data, $meta_key, "false", false);						
-						}
-						
-						//error_log("new entry \n", 3, "/Users/adbern/Documents/Benetech/wp-youtube-lyte/error_log.log");	
-						
-					}
-				
-				
-				
+					}	
+	
 				$lytetemplate = $wrapper."<div class=\"lyMe".$audioClass.$hidefClass.$plClass.$qsaClass."\" id=\"WYL_".$vid."\" itemprop=\"video\" itemscope itemtype=\"http://schema.org/VideoObject\"><meta itemprop=\"thumbnailUrl\" content=\"".$thumbUrl."\" /><meta itemprop=\"embedURL\" content=\"http://www.youtube.com/embed/".$vid."\" /><meta itemprop=\"uploadDate\" content=\"".$dateField."\" />".$captionsMeta."<div id=\"lyte_".$vid."\" data-src=\"".$thumbUrl."\" class=\"pL\"><div class=\"tC".$titleClass."\"><div class=\"tT\" itemprop=\"name\">".$yt_title."</div></div><div class=\"play\"></div><div class=\"ctrl\"><div class=\"Lctrl\"></div><div class=\"Rctrl\"></div></div></div>".$noscript."<meta itemprop=\"description\" content=\"".$description."\"></div></div>".$lytelinks_txt;
 				$templateType="postMicrodata";
 			} else {
@@ -371,6 +349,22 @@ function lyte_parse($the_content,$doExcerpt=false) {
 $the_content = apply_filters( 'lyte_content_postparse',$the_content );
 
 return $the_content;
+}
+
+add_action('schedule_captions_lookup', 'captions_lookup', 1, 2);
+
+// captions lookup API call for YouTube
+function captions_lookup($post_id, $vid) {
+	
+	// call YouTube captions API
+	$jsonCaptions = file_get_contents("http://api.a11ymetadata.org/captions/youtubeid=".$vid."/youtube", false);
+	$decodeJson = json_decode($jsonCaptions, true);
+	
+	// if captions exist, update cache
+	if ($decodeJson['status'] == 'success' && $decodeJson['data']['captions'] == '1') {
+		update_post_meta($post_id, $vid, "true", false);
+	}
+		
 }
 
 /* only add js/css once and only if needed */
