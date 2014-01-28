@@ -301,27 +301,24 @@ function lyte_parse($the_content,$doExcerpt=false) {
 					$cache_timestamp = get_post_meta($post_id_timestamp, $vid);					
 					$interval = (strtotime("now") - $cache_timestamp[0])/60/60/24;
 					
+					
 					$caption_cache = get_post_meta($post_id_caption, $vid);
 					$caption_value = $caption_cache[0];
 					
-					// error_log(print_r($interval." \n", true), 3, "/Users/adbern/Documents/Benetech/wp-youtube-lyte/error_log.log");					
-					// error_log(print_r($caption_value." \n", true), 3, "/Users/adbern/Documents/Benetech/wp-youtube-lyte/error_log.log");
 					
 					if ($interval < 1 || $caption_value) { // if captions have been checked less than 1 day previously or captions = true						
 						
 						// write captions value to metadata
 						if($caption_value) {
-							$captionsMeta="<meta itemprop=\"accessibilityFeature\" content=\"captions\" />";
+							$captionsMeta="<meta itemprop=\"accesssibilityFeature\" content=\"captions\" />";
 														
 						} else {
 							$captionsMeta="";
 						}
-						
-						error_log("cache 9 \n", 3, "/Users/adbern/Documents/Benetech/wp-youtube-lyte/error_log.log");
-						
+																	
 					
 					// if captions = false and haven't been checked in the last day		
-					} else { 
+					} else { 						
 						
 						// set captions to false in cache
 						update_post_meta($post_id_caption, $vid, false);
@@ -331,10 +328,7 @@ function lyte_parse($the_content,$doExcerpt=false) {
 						wp_schedule_single_event(strtotime("now") + 60*60, 'schedule_captions_lookup', array($post_id_caption, $post_id_timestamp, $vid));
 						
 						$captionsMeta="";
-						
-						// error_log("schedule new entry 2 \n", 3, "/Users/adbern/Documents/Benetech/wp-youtube-lyte/error_log.log");
-						
-						
+																
 					}	
 	
 				$lytetemplate = $wrapper."<div class=\"lyMe".$audioClass.$hidefClass.$plClass.$qsaClass."\" id=\"WYL_".$vid."\" itemprop=\"video\" itemscope itemtype=\"http://schema.org/VideoObject\"><meta itemprop=\"thumbnailUrl\" content=\"".$thumbUrl."\" /><meta itemprop=\"embedURL\" content=\"http://www.youtube.com/embed/".$vid."\" /><meta itemprop=\"uploadDate\" content=\"".$dateField."\" />".$captionsMeta."<div id=\"lyte_".$vid."\" data-src=\"".$thumbUrl."\" class=\"pL\"><div class=\"tC".$titleClass."\"><div class=\"tT\" itemprop=\"name\">".$yt_title."</div></div><div class=\"play\"></div><div class=\"ctrl\"><div class=\"Lctrl\"></div><div class=\"Rctrl\"></div></div></div>".$noscript."<meta itemprop=\"description\" content=\"".$description."\"></div></div>".$lytelinks_txt;
@@ -381,10 +375,8 @@ function captions_lookup($post_id_caption, $post_id_timestamp, $vid) {
 		update_post_meta($post_id_caption, $vid, true);
 	} 
 	
-	update_post_meta($post_id_timestamp, $vid, strtotime("now"));		
-	
-	// error_log("new entry executed \n", 3, "/Users/adbern/Documents/Benetech/wp-youtube-lyte/error_log.log");
-		
+	update_post_meta($post_id_timestamp, $vid, strtotime("now"));			
+			
 }
 
 /* only add js/css once and only if needed */
