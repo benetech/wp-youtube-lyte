@@ -310,7 +310,7 @@ function lyte_parse($the_content,$doExcerpt=false) {
 						
 						// write captions value to metadata
 						if($caption_value) {
-							$captionsMeta="<meta itemprop=\"accesssibilityFeature\" content=\"captions\" />";
+							$captionsMeta="<meta itemprop=\"accessibilityFeature\" content=\"captions\" />";
 														
 						} else {
 							$captionsMeta="";
