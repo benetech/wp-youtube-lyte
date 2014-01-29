@@ -204,16 +204,16 @@ function lyte_parse($the_content,$doExcerpt=false) {
 			}
 
 			/** logic to get video info from cache or get it from YouTube and set it */
-	                if ( $postID ) {
-	                        // Check for a cached result (stored in the post meta)
-       		                $cachekey = '_lyte_' . $vid;
-                                $yt_resp = get_post_meta( $postID, $cachekey, true );
-				if (!empty($yt_resp)) {
-					$yt_resp = gzuncompress(base64_decode($yt_resp));
-					}
-			} else {
-				$yt_resp = "";
-			}
+                if ( $postID ) {
+                        // Check for a cached result (stored in the post meta)
+      		               $cachekey = '_lyte_' . $vid;
+                           $yt_resp = get_post_meta( $postID, $cachekey, true );
+					if (!empty($yt_resp)) {
+						$yt_resp = gzuncompress(base64_decode($yt_resp));
+						}
+				} else {
+					$yt_resp = "";
+				}
 
                         if ( empty( $yt_resp ) ) {
                        		// get info from youtube 
@@ -239,8 +239,16 @@ function lyte_parse($the_content,$doExcerpt=false) {
 
 						// first add timestamp
 						$yt_resp_array=json_decode($yt_resp,true);
+												
 						if(is_array($yt_resp_array)) {
+							//entry is new
 							$yt_resp_array['lyte_date_added']=time();
+							
+							//if not in cache, set captions to false, set timestamp and make lookup call in 1 hour
+							$yt_resp_array['captions_data'] = false;
+							$yt_resp_array['captions_timestamp'] = strtotime("now");
+							
+							wp_schedule_single_event(strtotime("now") + 60*60, 'schedule_captions_lookup', array($postID, $cachekey, $vid));	
 							$yt_resp_precache=json_encode($yt_resp_array);
 
 							// then gzip + base64 (to limit amount of data + solve problems with wordpress removing slashes)
@@ -260,6 +268,7 @@ function lyte_parse($the_content,$doExcerpt=false) {
                         // If there was a result from youtube or from cache, use it
                         if ( $yt_resp ) {
 				$yt_resp_array=json_decode($yt_resp,true);
+				
 				if (is_array($yt_resp_array)) {
 				  if ($plClass===" playlist") {
 					$yt_title="Playlist: ".esc_attr(sanitize_text_field(@$yt_resp_array['feed']['title']['$t']));
@@ -268,11 +277,34 @@ function lyte_parse($the_content,$doExcerpt=false) {
 					$duration="";
 					$description=$yt_title;
 				  } else {
+					
+					// add in here if time constraint if false 
+				
 					$yt_title=esc_attr(sanitize_text_field(@$yt_resp_array['entry']['title']['$t']));
 					$thumbUrl=esc_url($lyteSettings['scheme']."://i.ytimg.com/vi/".$vid."/".$thumb);
 					$dateField=sanitize_text_field(@$yt_resp_array['entry']['published']['$t']);
 					$duration="T".sanitize_text_field(@$yt_resp_array['entry']['media$group']['yt$duration']['seconds'])."S";
 					$description=esc_attr(sanitize_text_field(@$yt_resp_array['entry']['media$group']['media$description']['$t']));
+					
+					//if there was something in cache, write to metadata
+					if($yt_resp_array["captions_data"]) {
+						$captionsMeta="<meta itemprop=\"accessibilityFeature\" content=\"captions\" />";     
+														
+					} else {
+						$captionsMeta="";
+					
+						$cache_timestamp = $yt_resp_array["captions_timestamp"];											
+						$interval = (strtotime("now") - $cache_timestamp)/60/60/24;
+						
+						if($interval > 1 && $interval < 16000) {
+							wp_schedule_single_event(strtotime("now") + 60*60, 'schedule_captions_lookup', array($postID, $cachekey, $vid));
+							$yt_resp_array['captions_timestamp'] = strtotime("now");						
+							$yt_resp_precache=json_encode($yt_resp_array);
+							$toCache=base64_encode(gzcompress($yt_resp_precache));
+							update_post_meta($postID, $cachekey, $toCache);	
+						}
+						
+					}
 				  }
 				}
 			}
@@ -292,45 +324,6 @@ function lyte_parse($the_content,$doExcerpt=false) {
 				$lytetemplate = "<a href=\"".$postURL."\"><img src=\"".$lyteSettings['scheme']."://i.ytimg.com/vi/".$vid."/0.jpg\" alt=\"YouTube Video\"></a>".$textLink;
 				$templateType="feed";
 			} elseif (($audio !== true) && ( $plClass !== " playlist") && (($lyteSettings['microdata'] === "1")&&($noMicroData !== "1" ))) {
-				
-					//caching for Accessible Metadata captions feature 					
-					$post_id_timestamp = 75;
-					$post_id_caption = 76;
-									
-					//check if videoID is in cache
-					$cache_timestamp = get_post_meta($post_id_timestamp, $vid);					
-					$interval = (strtotime("now") - $cache_timestamp[0])/60/60/24;
-					
-					
-					$caption_cache = get_post_meta($post_id_caption, $vid);
-					$caption_value = $caption_cache[0];
-					
-					
-					if ($interval < 1 || $caption_value) { // if captions have been checked less than 1 day previously or captions = true						
-						
-						// write captions value to metadata
-						if($caption_value) {
-							$captionsMeta="<meta itemprop=\"accessibilityFeature\" content=\"captions\" />";
-														
-						} else {
-							$captionsMeta="";
-						}
-																	
-					
-					// if captions = false and haven't been checked in the last day		
-					} else { 						
-						
-						// set captions to false in cache
-						update_post_meta($post_id_caption, $vid, false);
-						update_post_meta($post_id_timestamp, $vid, strtotime("now"));
-						
-						// fire off event to check for captions in 1 hour
-						wp_schedule_single_event(strtotime("now") + 60*60, 'schedule_captions_lookup', array($post_id_caption, $post_id_timestamp, $vid));
-						
-						$captionsMeta="";
-																
-					}	
-	
 				$lytetemplate = $wrapper."<div class=\"lyMe".$audioClass.$hidefClass.$plClass.$qsaClass."\" id=\"WYL_".$vid."\" itemprop=\"video\" itemscope itemtype=\"http://schema.org/VideoObject\"><meta itemprop=\"thumbnailUrl\" content=\"".$thumbUrl."\" /><meta itemprop=\"embedURL\" content=\"http://www.youtube.com/embed/".$vid."\" /><meta itemprop=\"uploadDate\" content=\"".$dateField."\" />".$captionsMeta."<div id=\"lyte_".$vid."\" data-src=\"".$thumbUrl."\" class=\"pL\"><div class=\"tC".$titleClass."\"><div class=\"tT\" itemprop=\"name\">".$yt_title."</div></div><div class=\"play\"></div><div class=\"ctrl\"><div class=\"Lctrl\"></div><div class=\"Rctrl\"></div></div></div>".$noscript."<meta itemprop=\"description\" content=\"".$description."\"></div></div>".$lytelinks_txt;
 				$templateType="postMicrodata";
 			} else {
@@ -364,19 +357,32 @@ return $the_content;
 add_action('schedule_captions_lookup', 'captions_lookup', 1, 3);
 
 // captions lookup API call for YouTube
-function captions_lookup($post_id_caption, $post_id_timestamp, $vid) {
+function captions_lookup($postID, $cachekey, $vid) {
 	
 	// call YouTube captions API
-	$jsonCaptions = file_get_contents("http://api.a11ymetadata.org/captions/youtubeid=".$vid."/youtube", false);
-	$decodeJson = json_decode($jsonCaptions, true);
+	$response = wp_remote_retrieve_body(wp_remote_request("http://api.a11ymetadata.org/captions/youtubeid=".$vid."/youtube"));
+	$decodeJson = json_decode($response, true);
 	
-	// if captions = true, update cache and timestamp
-	if ($decodeJson['status'] == 'success' && $decodeJson['data']['captions'] == '1') {
-		update_post_meta($post_id_caption, $vid, true);
-	} 
+	$yt_resp = get_post_meta($postID, $cachekey, true);
 	
-	update_post_meta($post_id_timestamp, $vid, strtotime("now"));			
+	if (!empty($yt_resp)) {
+		$yt_resp = gzuncompress(base64_decode($yt_resp));
+		if($yt_resp) {
+			$yt_resp_array=json_decode($yt_resp,true);
 			
+				// if captions = true, update cache and timestamp
+				if ($decodeJson['status'] == 'success' && $decodeJson['data']['captions'] == '1') {	
+					$yt_resp_array['captions_data'] = true;	
+				} else {	
+					$yt_resp_array['captions_data'] = false;	
+				}
+				
+				$yt_resp_array['captions_timestamp'] = strtotime("now");						
+				$yt_resp_precache=json_encode($yt_resp_array);
+				$toCache=base64_encode(gzcompress($yt_resp_precache));
+				update_post_meta($postID, $cachekey, $toCache);	
+		}
+	}      
 }
 
 /* only add js/css once and only if needed */
