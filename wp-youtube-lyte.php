@@ -124,7 +124,7 @@ function lyte_parse($the_content,$doExcerpt=false) {
 					$noMicroData="1";
 				}
 			}
-
+  
 			$qsa="";
 			if (!empty($showinfo[0])) {
 				$qsa="&amp;".$showinfo[0];
@@ -282,35 +282,32 @@ function lyte_parse($the_content,$doExcerpt=false) {
 					$description=esc_attr(sanitize_text_field(@$yt_resp_array['entry']['media$group']['media$description']['$t']));
 					
 					//if there was something in cache, write to metadata
-					if($yt_resp_array["captions_data"]) {
+					if(($lyteSettings['microdata'] === "1")&&($noMicroData !== "1" )) {
+					
+						if($yt_resp_array["captions_data"]) {
 						
-						$captionsMeta="<meta itemprop=\"accessibilityFeature\" content=\"captions\" />";   
-							  										
-					} else {
-						$captionsMeta="";						
-						$cache_timestamp = $yt_resp_array["captions_timestamp"];										
-						$interval = (strtotime("now") - $cache_timestamp)/60/60/24;
+							$captionsMeta="<meta itemprop=\"accessibilityFeature\" content=\"captions\" />";   
+														  										
+						} else {
+							$captionsMeta="";						
+							$cache_timestamp = $yt_resp_array["captions_timestamp"];										
+							$interval = (strtotime("now") - $cache_timestamp)/60/60/24;
+														
 						
-						//for first time, schedule captions lookup and set timestamp
-						if(!is_int($cache_timestamp)) {
-							$yt_resp_array['captions_timestamp'] = strtotime("now");						
-					    	wp_schedule_single_event(strtotime("now") + 60*60, 'schedule_captions_lookup', array($postID, $cachekey, $vid));
-							$yt_resp_precache=json_encode($yt_resp_array);
-							$toCache=base64_encode(gzcompress($yt_resp_precache));
-							update_post_meta($postID, $cachekey, $toCache);        
-							
-						//for not the first time, and false, and last check was more than 24 hours before
-						} else if($interval > 1 && !is_null($yt_resp_array["captions_data"])) { 
-							$yt_resp_array['captions_timestamp'] = strtotime("now");						
-							wp_schedule_single_event(strtotime("now") + 60*60, 'schedule_captions_lookup', array($postID, $cachekey, $vid));
-							$yt_resp_precache=json_encode($yt_resp_array);
-							$toCache=base64_encode(gzcompress($yt_resp_precache));
-							update_post_meta($postID, $cachekey, $toCache);         			
-						}
+							//for first time OR not first time, and false, and last check was more than 24 hours before, schedule captions lookup and set timestamp
+							if(!is_int($cache_timestamp) || ($interval > 1 && !is_null($yt_resp_array["captions_data"]))) {
+								$yt_resp_array['captions_timestamp'] = strtotime("now");						
+						    	wp_schedule_single_event(strtotime("now") + 60*60, 'schedule_captions_lookup', array($postID, $cachekey, $vid));
+								$yt_resp_precache=json_encode($yt_resp_array);
+								$toCache=base64_encode(gzcompress($yt_resp_precache));
+								update_post_meta($postID, $cachekey, $toCache); 
+																       
 
+							}
+					  	}
 					}
-				  }
 				}
+			}
 			}
 		
 			if ($audio===true) {
@@ -379,6 +376,7 @@ function captions_lookup($postID, $cachekey, $vid) {
 					// if captions = true, update cache
 					if ($decodeJson['status'] == 'success' && $decodeJson['data']['captions'] == '1') {	
 						$yt_resp_array['captions_data'] = true;
+						
 					} else {	
 						$yt_resp_array['captions_data'] = false;
 					}
