@@ -244,11 +244,6 @@ function lyte_parse($the_content,$doExcerpt=false) {
 							//entry is new
 							$yt_resp_array['lyte_date_added']=time();
 							
-							//if not in cache, set captions to false, set timestamp and make lookup call in 1 hour
-							$yt_resp_array['captions_data'] = false;
-							$yt_resp_array['captions_timestamp'] = strtotime("now");
-							
-							wp_schedule_single_event(strtotime("now") + 60*60, 'schedule_captions_lookup', array($postID, $cachekey, $vid));	
 							$yt_resp_precache=json_encode($yt_resp_array);
 
 							// then gzip + base64 (to limit amount of data + solve problems with wordpress removing slashes)
@@ -288,22 +283,31 @@ function lyte_parse($the_content,$doExcerpt=false) {
 					
 					//if there was something in cache, write to metadata
 					if($yt_resp_array["captions_data"]) {
-						$captionsMeta="<meta itemprop=\"accessibilityFeature\" content=\"captions\" />";     
-														
+						
+						$captionsMeta="<meta itemprop=\"accessibilityFeature\" content=\"captions\" />";   
+							  										
 					} else {
-						$captionsMeta="";
-					
-						$cache_timestamp = $yt_resp_array["captions_timestamp"];											
+						$captionsMeta="";						
+						$cache_timestamp = $yt_resp_array["captions_timestamp"];										
 						$interval = (strtotime("now") - $cache_timestamp)/60/60/24;
 						
-						if($interval > 1 && $interval < 16000) {
-							wp_schedule_single_event(strtotime("now") + 60*60, 'schedule_captions_lookup', array($postID, $cachekey, $vid));
+						//for first time, schedule captions lookup and set timestamp
+						if(!is_int($cache_timestamp)) {
 							$yt_resp_array['captions_timestamp'] = strtotime("now");						
+					    	wp_schedule_single_event(strtotime("now") + 60*60, 'schedule_captions_lookup', array($postID, $cachekey, $vid));
 							$yt_resp_precache=json_encode($yt_resp_array);
 							$toCache=base64_encode(gzcompress($yt_resp_precache));
-							update_post_meta($postID, $cachekey, $toCache);	
+							update_post_meta($postID, $cachekey, $toCache);        
+							
+						//for not the first time, and false, and last check was more than 24 hours before
+						} else if($interval > 1 && !is_null($yt_resp_array["captions_data"])) { 
+							$yt_resp_array['captions_timestamp'] = strtotime("now");						
+							wp_schedule_single_event(strtotime("now") + 60*60, 'schedule_captions_lookup', array($postID, $cachekey, $vid));
+							$yt_resp_precache=json_encode($yt_resp_array);
+							$toCache=base64_encode(gzcompress($yt_resp_precache));
+							update_post_meta($postID, $cachekey, $toCache);         			
 						}
-						
+
 					}
 				  }
 				}
@@ -358,31 +362,36 @@ add_action('schedule_captions_lookup', 'captions_lookup', 1, 3);
 
 // captions lookup API call for YouTube
 function captions_lookup($postID, $cachekey, $vid) {
-	
 	// call YouTube captions API
-	$response = wp_remote_retrieve_body(wp_remote_request("http://api.a11ymetadata.org/captions/youtubeid=".$vid."/youtube"));
-	$decodeJson = json_decode($response, true);
+	$response = wp_remote_request("http://api.a11ymetadata.org/captions/youtubeid=".$vid."/youtube");
 	
-	$yt_resp = get_post_meta($postID, $cachekey, true);
-	
-	if (!empty($yt_resp)) {
-		$yt_resp = gzuncompress(base64_decode($yt_resp));
-		if($yt_resp) {
-			$yt_resp_array=json_decode($yt_resp,true);
-			
-				// if captions = true, update cache and timestamp
-				if ($decodeJson['status'] == 'success' && $decodeJson['data']['captions'] == '1') {	
-					$yt_resp_array['captions_data'] = true;	
-				} else {	
-					$yt_resp_array['captions_data'] = false;	
-				}
-				
-				$yt_resp_array['captions_timestamp'] = strtotime("now");						
-				$yt_resp_precache=json_encode($yt_resp_array);
-				$toCache=base64_encode(gzcompress($yt_resp_precache));
-				update_post_meta($postID, $cachekey, $toCache);	
+	if(!is_wp_error($response)) {	
+		$rawJson = wp_remote_retrieve_body($response);
+		$decodeJson = json_decode($rawJson, true);
+
+		$yt_resp = get_post_meta($postID, $cachekey, true);
+
+		if (!empty($yt_resp)) {
+			$yt_resp = gzuncompress(base64_decode($yt_resp));
+			if($yt_resp) {
+				$yt_resp_array=json_decode($yt_resp,true);
+
+					// if captions = true, update cache
+					if ($decodeJson['status'] == 'success' && $decodeJson['data']['captions'] == '1') {	
+						$yt_resp_array['captions_data'] = true;
+					} else {	
+						$yt_resp_array['captions_data'] = false;
+					}
+
+					// update timestamps for both
+					$yt_resp_array['captions_timestamp'] = strtotime("now");						
+					$yt_resp_precache=json_encode($yt_resp_array);
+					$toCache=base64_encode(gzcompress($yt_resp_precache));
+					update_post_meta($postID, $cachekey, $toCache);	
+			}
 		}
-	}      
+	}
+      
 }
 
 /* only add js/css once and only if needed */
